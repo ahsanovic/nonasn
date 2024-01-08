@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<HTML>
+<HEAD>
+	<TITLE> ZTREE DEMO - Simple Data</TITLE>
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+	
+	<link rel="stylesheet" href="modul/mod_treeview/ztree/css/zTreeStyle/zTreeStyle.css" type="text/css">
+	
+	<script type="text/javascript" src="modul/mod_treeview/ztree/js/jquery.ztree.core-3.5.js"></script>
+	<!--  <script type="text/javascript" src="js/jquery.ztree.excheck-3.5.js"></script>
+	  <script type="text/javascript" src="modul/mod_treeview/ztree/js/jquery.ztree.exedit-3.5.js"></script>-->
+	<SCRIPT type="text/javascript">
+		<!--
+		var setting = {
+			data: {
+				simpleData: {
+					enable: true
+				}
+			}
+		};
+
+		var zNodes =[
+			{ id:1, pId:0, name:"Pemprov Jatim", open:true},
+			{ id:11, pId:1, name:"Sekretariat Daerah", url:"http://www.baby666.cn", target:"_blank"},
+			{ id:111, pId:11, name:"Asisten Administrasi Umum"},
+			{ id:1111, pId:111, name:"Biro Umum", url:"../media.php?module=pegawai", target:"_blank"},
+			{ id:11111, pId:1111, name:"Bagian 1", url:"../media.php?module=pegawai", target:"_blank"},
+			{ id:111111, pId:11111, name:"Sub Bagian 1", url:"../media.php?module=pegawai", target:"_blank"},
+			{ id:111112, pId:11111, name:"Sub Bagian 2", url:"../media.php?module=pegawai", target:"_blank"},
+			
+			{ id:1112, pId:111, name:"Biro Umum", url:"../media.php?module=pegawai", target:"_blank"},
+			{ id:11121, pId:1112, name:"Bagian 2", url:"../media.php?module=pegawai", target:"_blank"},
+			{ id:111211, pId:11121, name:"Sub Bagian 3", url:"../media.php?module=pegawai", target:"_blank"},
+			{ id:111212, pId:11121, name:"Sub Bagian 4", url:"../media.php?module=pegawai", target:"_blank"},
+			
+			{ id:112, pId:11, name:"Asisten Pemerintahan Umum"},
+			{ id:1121, pId:112, name:"Biro Pemerintahan", url:"../media.php?module=pegawai", target:"_blank"},
+			{ id:11211, pId:1121, name:"Bagian 1", url:"../media.php?module=pegawai", target:"_blank"},
+			{ id:112111, pId:11211, name:"Sub Bagian 1", url:"../media.php?module=pegawai", target:"_blank"},
+			{ id:112112, pId:11211, name:"Sub Bagian 2", url:"../media.php?module=pegawai", target:"_blank"},
+			
+		
+			
+			
+			
+			{ id:12, pId:1, name:"Badan Kepegawaian Daerah", open:true},
+			{ id:121, pId:12, name:"Sekretariat"},
+			{ id:1211, pId:121, name:"Sub Bagian Tata Usaha"},
+			{ id:1212, pId:121, name:"Sub Bagian Keuangan"},
+			{ id:1213, pId:121, name:"Sub Bagian Penyusunan Program"},
+			{ id:122, pId:12, name:"Bidang Formasi dan Pengembangan", isParent:true},
+			{ id:123, pId:12, name:"Bidang Mutasi", isParent:true},
+			{ id:124, pId:12, name:"Bidang Pengolahan Data", isParent:true},
+			{ id:125, pId:12, name:"Bidang Pembinaan dan Kesejahteraan", isParent:true},
+			
+			
+			{ id:3, pId:0, name:"pNode 3 - no child", isParent:true}
+		];
+
+		$(document).ready(function(){
+			$.fn.zTree.init($("#treeDemo"), setting, zNodes);
+		});
+		//-->
+	</SCRIPT>
+ </HEAD>
+
+<BODY>
+
+<div class="content_wrap">
+	<div class="zTreeDemoBackground left">
+		<ul id="treeDemo" class="ztree"></ul>
+	</div>
+	
+</div>
+</BODY>
+</HTML>

@@ -1,0 +1,137 @@
+<?php
+
+namespace App\Http\Controllers\NonAsn;
+
+use Hashids\Hashids;
+use App\Models\Penilaian;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\File;
+use App\Http\Requests\PenilaianRequest;
+use Illuminate\Support\Facades\Storage;
+
+class NonasnPenilaianController extends Controller
+{
+    private function _hashId()
+    {
+        return new Hashids(env('SECRET_SALT_KEY'),10);
+    }
+    
+    public function index()
+    {
+        $hashId = $this->_hashId();
+        $data = Penilaian::whereId_ptt(auth()->user()->id_ptt)->orderByDesc('tahun')->get();
+
+        return view('nonasn.penilaian.index', compact('data', 'hashId'));
+    }
+
+    public function create()
+    {
+        $submit = "Simpan";
+
+        return view('nonasn.penilaian.create', compact('submit'));
+    }
+
+    public function viewFile($file)
+    {
+        try {
+            $file = storage_path('app/upload_penilaian/' . $file);
+            return response()->file($file);
+        } catch (\Throwable $th) {
+            abort(404);
+        }
+    }
+
+    private function _uploadFile($file)
+    {
+        $filenameWithExt = $file->getClientOriginalName();
+        // Get only filename without extension
+        $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+        // Get extension
+        $extension = $file->getClientOriginalExtension();
+        // Give a new name
+        $time = date('YmdHis', time());
+        $filenameToStore = $time . '-' . uniqid() . '-' . preg_replace("/\s+/", "_", $filename) . '.' . $extension;
+        // Upload file
+        Storage::disk('local')->put('/upload_penilaian/' . $filenameToStore, File::get($file));
+
+        return $filenameToStore;
+    }
+
+    public function store(PenilaianRequest $request)
+    {
+        try {
+            $data = Penilaian::whereId_ptt(auth()->user()->id_ptt)->whereTahun($request->tahun)->first(['tahun']);
+            if ($data) return back()->with(["type" => "error", "message" => "data tahun " . $request->tahun . " sudah ada!"]);
+
+            Penilaian::create([
+                'id_ptt' => auth()->user()->id_ptt,
+                'tahun' => $request->tahun,
+                'nilai' => $request->nilai,
+                'rekomendasi' => $request->rekomendasi,
+                'file' => $request->hasFile('file') ? $this->_uploadFile($request->file('file')) : null
+            ]);
+
+            logPtt(auth()->user()->id_ptt, request()->segment(1), 'input');
+
+            return redirect()->route('nonasn.penilaian')->with(["type" => "success", "message" => "berhasil ditambahkan!"]);
+        } catch (\Throwable $th) {
+            return back()->with(["type" => "error", "message" => "terjadi kesalahan!"]);
+        }
+    }
+
+    public function edit($id)
+    {
+        $submit = "Update";
+        $hashId = $this->_hashId();
+        $data = Penilaian::findOrFail($hashId->decode($id)[0]);
+
+        return view('nonasn.penilaian.edit', compact('submit', 'data', 'hashId'));
+    }
+
+    public function update(PenilaianRequest $request, $id)
+    {
+        try {
+            $hashId = $this->_hashId();
+            $data = Penilaian::whereId_ptt_penilaian($hashId->decode($id)[0])->first();
+            if ($request->hasFile('file')) {
+                $file = $this->_uploadFile($request->file('file'));
+                if (Storage::disk('local')->exists('/upload_penilaian/' . $data->file) && $data->file != null) {
+                    unlink(storage_path('app/upload_penilaian/' . $data->file));
+                }
+            } else {
+                $file = $data->file;
+            }
+
+            if ($data) {
+                $data->tahun = $request->tahun;
+                $data->nilai = $request->nilai;
+                $data->rekomendasi = $request->rekomendasi;
+                $data->file = $file;
+                $data->save();
+            }
+
+            logPtt(auth()->user()->id_ptt, request()->segment(1), 'update');
+
+            return redirect()->route('nonasn.penilaian')->with(["type" => "success", "message" => "berhasil diubah!"]);
+        } catch (\Throwable $th) {
+            return back()->with(["type" => "error", "message" => "terjadi kesalahan!"]);
+        }
+    }
+
+    public function destroy($id)
+    {
+        try {
+            $hashId = $this->_hashId();
+            $data = Penilaian::find($hashId->decode($id)[0]);
+
+            if ($data->file) unlink(storage_path('app/upload_penilaian/' . $data->file));
+            $data->delete();
+
+            logPtt(auth()->user()->id_ptt, request()->segment(1), 'hapus');
+
+            return redirect()->back()->with(["type" => "success", "message" => "berhasil dihapus!"]);
+        } catch (\Throwable $th) {
+            return back()->with(["type" => "error", "message" => "terjadi kesalahan!"]);
+        }
+    }
+}
