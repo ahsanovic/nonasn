@@ -76,7 +76,7 @@ class PegawaiController extends Controller
                     })
                     ->orderBy('id_ptt')
                     ->paginate(12);
-        
+                
         $skpd = Skpd::whereId($idSkpd)->first(['id', 'name']);
         if (!$skpd) return back()->with(["type" => "error", "message" => "terjadi kesalahan!"]);
 
