@@ -118,7 +118,7 @@
                                 </div>
                                 <div>
                                     <small class="opacity-7">
-                                        {{ $item->jenisPtt->jenis_ptt }}
+                                        {{ $item->jenisPtt->jenis_ptt ?? '' }}
                                     </small>
                                 </div>
                             </div>

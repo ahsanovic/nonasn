@@ -8,7 +8,7 @@ class DownloadPegawai extends Model
 {
     protected $table = 'download';
     protected $primaryKey = 'id_ptt';
-    protected $guarded = ['id_ptt'];
+    protected $guarded = [];
     public $timestamps = false;
 
     // exclude column in query
