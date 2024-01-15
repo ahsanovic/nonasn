@@ -1,10 +1,16 @@
 @if ($submit == 'Simpan')
 <div>
     <div class="position-relative form-group">
-        <label for="ortu" class="font-weight-bold">Orang Tua {{ $ortu->status_suami_istri_id == 1 ? 'Ayah' : 'Ibu' }}</label>
+        <label for="ortu" class="font-weight-bold">Orang Tua
+            @if (!empty($ortu->status_suami_istri_id))
+            {{ $ortu->status_suami_istri_id == 1 ? 'Ayah' : 'Ibu' }}                
+            @endif
+        </label>
         <select class="form-control form-control-sm @error('ortu') is-invalid @enderror" name="ortu">
             <option selected disabled>- pilih -</option>
+            @if (!empty($ortu->suami_istri_id))
             <option value="{{ $ortu->suami_istri_id }}" {{ old('ortu') == $ortu->suami_istri_id ? 'selected' : '' }}>{{ $ortu->nama_suami_istri }}</option>
+            @endif
         </select>
         @error('ortu')
         <div class="invalid-feedback">
@@ -138,9 +144,15 @@
 @else
 <div>
     <div class="position-relative form-group">
-        <label for="ortu" class="font-weight-bold">Orang Tua {{ $ortu->status_suami_istri_id == 1 ? 'Ayah' : 'Ibu' }}</label>
+        <label for="ortu" class="font-weight-bold">Orang Tua
+            @if (!empty($ortu->status_suami_istri_id))
+            {{ $ortu->status_suami_istri_id == 1 ? 'Ayah' : 'Ibu' }}                
+            @endif
+        </label>
         <select class="form-control form-control-sm @error('ortu') is-invalid @enderror" name="ortu">
+            @if (!empty($ortu->suami_istri_id))
             <option value="{{ $ortu->suami_istri_id }}" selected>{{ $ortu->nama_suami_istri }}</option>
+            @endif
         </select>
         @error('ortu')
         <div class="invalid-feedback">
