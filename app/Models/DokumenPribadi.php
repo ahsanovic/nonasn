@@ -8,8 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class DokumenPribadi extends Model
 {
     protected $table = 'ptt_dok_pribadi';
-    protected $guarded = ['id_ptt'];
-    protected $primaryKey = 'id_ptt';
+    protected $guarded = ['id', 'id_ptt'];
+    // protected $primaryKey = 'id_ptt';
     public $timestamps = false;
 
     protected function getUpdatedAtFileKtpAttribute($value)

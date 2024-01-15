@@ -66,10 +66,10 @@ class PegawaiController extends Controller
         $pegawai = Biodata::select('id_ptt','id_skpd','jenis_ptt_id','nama','niptt','tempat_lahir','thn_lahir','jk','foto')
                     ->whereAktif('Y')
                     ->with(['skpd', 'pendidikan.jenjang', 'jabatan.refJabatan', 'jenisPtt'])
-                    ->whereHas('skpd', function($query) use($request) {
-                        $query->where('id_skpd', 'like', $this->hashidSkpd->decode($request->segment(3))[0] . '%');
-                    })
-                    // ->where('id_skpd', 'like', $this->hashidSkpd->decode($request->segment(3))[0] . '%')
+                    // ->whereHas('skpd', function($query) use($request) {
+                    //     $query->where('id_skpd', 'like', $this->hashidSkpd->decode($request->segment(3))[0] . '%');
+                    // })
+                    ->where('id_skpd', 'like', $this->hashidSkpd->decode($request->segment(3))[0] . '%')
                     ->when($request->nama, function($query) use ($request) {
                         $query->where('nama', 'like', '%' . $request->nama . '%')
                                 ->orWhere('niptt', 'like', $request->nama . '%');

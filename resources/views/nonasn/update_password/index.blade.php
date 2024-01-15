@@ -16,7 +16,7 @@
                             <input
                                 name="password"
                                 id="password-baru"
-                                type="text"
+                                type="password"
                                 class="form-control form-control-sm @error('password') is-invalid @enderror"
                                 value="{{ old('password') }}"
                             >
@@ -31,7 +31,7 @@
                             <input
                                 name="password_confirmation"
                                 id="password-conf"
-                                type="text"
+                                type="password"
                                 class="form-control form-control-sm"
                             >
                             @error('password_confirmation')
