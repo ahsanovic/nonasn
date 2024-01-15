@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Fasilitator;
 
-use App\Http\Controllers\Controller;
 use App\Models\Biodata;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use App\Models\Fasilitator\DownloadPegawai;
 
 class PegawaiNonAktifController extends Controller
 {
@@ -45,15 +47,27 @@ class PegawaiNonAktifController extends Controller
 
     public function aktivasi(Request $request)
     {
+        DB::beginTransaction();
         try {
             $data = Biodata::whereNiptt($request->niptt)->first(['id_ptt']);
             Biodata::whereNiptt($request->niptt)->update(['aktif' => 'Y']);
+
+            // update table download
+            $update = DownloadPegawai::whereNiptt($request->niptt)->first();
+
+            if (!$update) return back()->with(["type" => "error", "message" => "terjadi kesalahan!"]);
+
+            $update->aktif = 'Y';
+            $update->save();
+
+            DB::commit();
 
             logFasilitator(auth()->user()->username, auth()->user()->id_skpd, $data->id_ptt, 'aktivasi', 'update');
 
             return redirect()->route('fasilitator.pegawai-nonaktif')->with(["type" => "success", "message" => "berhasil diaktifkan!"]);
         } catch (\Throwable $th) {
             //throw $th;
+            DB::rollback();
             return back()->with(["type" => "error", "message" => "terjadi kesalahan!"]);
         }
     }
