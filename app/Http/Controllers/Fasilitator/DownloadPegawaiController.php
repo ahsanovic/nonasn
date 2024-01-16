@@ -30,7 +30,7 @@ class DownloadPegawaiController extends Controller
                         ->get();
             } else {
                 $pegawai = DownloadPegawai::whereAktif('Y')
-                        ->where('id_skpd', 'like', auth()->user()->id_skpd . '%')
+                        ->where('id_skpd', 'like', $hashid->decode($request->segment(3))[0] . '%')
                         ->get()->makeHidden(['tahun_penilaian', 'rekomendasi']);
             }
             return (new FastExcel($pegawai))->download('data-pegawai.xlsx');
