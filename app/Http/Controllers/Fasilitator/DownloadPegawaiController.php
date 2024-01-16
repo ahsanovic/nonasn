@@ -24,9 +24,15 @@ class DownloadPegawaiController extends Controller
     {
         try {
             $hashid = $this->_hashId();
-            $pegawai = DownloadPegawai::whereAktif('Y')
-                    ->where('id_skpd', 'like', $hashid->decode($request->segment(3))[0] . '%')
-                    ->get();
+            if (auth()->user()->level == 'admin') {
+                $pegawai = DownloadPegawai::whereAktif('Y')
+                        ->where('id_skpd', 'like', $hashid->decode($request->segment(3))[0] . '%')
+                        ->get();
+            } else {
+                $pegawai = DownloadPegawai::whereAktif('Y')
+                        ->where('id_skpd', 'like', auth()->user()->id_skpd . '%')
+                        ->get()->makeHidden(['tahun_penilaian', 'rekomendasi']);
+            }
             return (new FastExcel($pegawai))->download('data-pegawai.xlsx');
         } catch (\Throwable $th) {
             return back()->with(["type" => "error", "message" => "terjadi kesalahan!"]);
@@ -51,7 +57,7 @@ class DownloadPegawaiController extends Controller
     {
         try {
             $hashid = $this->_hashIdPegawai();
-            $pegawai = DownloadPegawai::where('id_ptt', $hashid->decode($request->segment(3))[0])->get();
+            $pegawai = DownloadPegawai::where('id_ptt', $hashid->decode($request->segment(3))[0])->get()->makeHidden(['tahun_penilaian', 'rekomendasi']);
             return (new FastExcel($pegawai))->download("data-pegawai-{$pegawai[0]->nama}.xlsx");
         } catch (\Throwable $th) {
             return back()->with(["type" => "error", "message" => "terjadi kesalahan!"]);
