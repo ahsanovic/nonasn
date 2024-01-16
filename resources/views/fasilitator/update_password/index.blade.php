@@ -6,7 +6,7 @@
     </x-page-header-nonasn>
     <div class="row mb-2">
         <div class="col-md-6">
-            <div class="alert alert-danger fade show" role="alert">
+            <div class="alert alert-info fade show" role="alert">
                 password harus berupa kombinasi dari huruf kecil, huruf besar, dan angka
             </div>    
         </div>    

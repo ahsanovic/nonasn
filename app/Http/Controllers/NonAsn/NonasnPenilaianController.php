@@ -4,10 +4,12 @@ namespace App\Http\Controllers\NonAsn;
 
 use Hashids\Hashids;
 use App\Models\Penilaian;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\File;
 use App\Http\Requests\PenilaianRequest;
 use Illuminate\Support\Facades\Storage;
+use App\Models\Fasilitator\DownloadPegawai;
 
 class NonasnPenilaianController extends Controller
 {
@@ -59,6 +61,7 @@ class NonasnPenilaianController extends Controller
 
     public function store(PenilaianRequest $request)
     {
+        DB::beginTransaction();
         try {
             $data = Penilaian::whereId_ptt(auth()->user()->id_ptt)->whereTahun($request->tahun)->first(['tahun']);
             if ($data) return back()->with(["type" => "error", "message" => "data tahun " . $request->tahun . " sudah ada!"]);
@@ -71,10 +74,21 @@ class NonasnPenilaianController extends Controller
                 'file' => $request->hasFile('file') ? $this->_uploadFile($request->file('file')) : null
             ]);
 
+            // update table download
+            $update = DownloadPegawai::whereId_ptt(auth()->user()->id_ptt)->first();        
+            if (!$update) return back()->with(["type" => "error", "message" => "terjadi kesalahan!"]);
+
+            $update->tahun_penilaian = $request->tahun;
+            $update->rekomendasi = $request->rekomendasi;
+            $update->save();
+
+            DB::commit();
+
             logPtt(auth()->user()->id_ptt, request()->segment(1), 'input');
 
             return redirect()->route('nonasn.penilaian')->with(["type" => "success", "message" => "berhasil ditambahkan!"]);
         } catch (\Throwable $th) {
+            DB::rollBack();
             return back()->with(["type" => "error", "message" => "terjadi kesalahan!"]);
         }
     }
@@ -90,6 +104,7 @@ class NonasnPenilaianController extends Controller
 
     public function update(PenilaianRequest $request, $id)
     {
+        DB::beginTransaction();
         try {
             $hashId = $this->_hashId();
             $data = Penilaian::whereId_ptt_penilaian($hashId->decode($id)[0])->first();
@@ -110,16 +125,39 @@ class NonasnPenilaianController extends Controller
                 $data->save();
             }
 
+            $row = Penilaian::whereId_ptt(auth()->user()->id_ptt)->orderByDesc('tahun')->first(['tahun']);
+            if ($row->tahun == $request->tahun) {
+                DB::beginTransaction();
+                try {
+                    // update table download
+                    $update = DownloadPegawai::whereId_ptt(auth()->user()->id_ptt)->first();
+                    if (!$update) return back()->with(["type" => "error", "message" => "terjadi kesalahan!"]);
+        
+                    $update->tahun_penilaian = $request->tahun;
+                    $update->rekomendasi = $request->rekomendasi;
+                    $update->save();
+        
+                    DB::commit();
+                } catch (\Throwable $th) {
+                    DB::rollBack();
+                    return back()->with(["type" => "error", "message" => "gagal update!"]);
+                }
+            }
+
+            DB::commit();
+
             logPtt(auth()->user()->id_ptt, request()->segment(1), 'update');
 
             return redirect()->route('nonasn.penilaian')->with(["type" => "success", "message" => "berhasil diubah!"]);
         } catch (\Throwable $th) {
+            DB::rollBack();
             return back()->with(["type" => "error", "message" => "terjadi kesalahan!"]);
         }
     }
 
     public function destroy($id)
     {
+        DB::beginTransaction();
         try {
             $hashId = $this->_hashId();
             $data = Penilaian::find($hashId->decode($id)[0]);
@@ -127,10 +165,49 @@ class NonasnPenilaianController extends Controller
             if ($data->file) unlink(storage_path('app/upload_penilaian/' . $data->file));
             $data->delete();
 
+            $count_data = Penilaian::whereId_ptt(auth()->user()->id_ptt)->count();
+            $row = Penilaian::select('tahun', 'rekomendasi')->whereId_ptt(auth()->user()->id_ptt)->orderByDesc('tahun')->first();
+            if ($count_data == 0) {
+                DB::beginTransaction();
+                try {
+                    // update table download
+                    $update = DownloadPegawai::whereId_ptt(auth()->user()->id_ptt)->first();
+                    if (!$update) return back()->with(["type" => "error", "message" => "terjadi kesalahan!"]);
+        
+                    $update->tahun_penilaian = null;
+                    $update->rekomendasi = null;
+                    $update->save();
+        
+                    DB::commit();
+                } catch (\Throwable $th) {
+                    DB::rollBack();
+                    return back()->with(["type" => "error", "message" => "gagal menghapus!"]);
+                }
+            } else {
+                DB::beginTransaction();
+                try {
+                    // update table download
+                    $update = DownloadPegawai::whereId_ptt(auth()->user()->id_ptt)->first();
+                    if (!$update) return back()->with(["type" => "error", "message" => "terjadi kesalahan!"]);
+        
+                    $update->tahun_penilaian = $row->tahun;
+                    $update->rekomendasi = $row->rekomendasi;
+                    $update->save();
+        
+                    DB::commit();
+                } catch (\Throwable $th) {
+                    DB::rollBack();
+                    return back()->with(["type" => "error", "message" => "gagal menghapus!"]);
+                }
+            }
+
+            DB::commit();
+
             logPtt(auth()->user()->id_ptt, request()->segment(1), 'hapus');
 
             return redirect()->back()->with(["type" => "success", "message" => "berhasil dihapus!"]);
         } catch (\Throwable $th) {
+            DB::rollBack();
             return back()->with(["type" => "error", "message" => "terjadi kesalahan!"]);
         }
     }
