@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\PegawaiBaruRequest;
+use App\Models\DokumenPribadi;
 use App\Models\Fasilitator\DownloadPegawai;
 
 class PegawaiBaruController extends Controller
@@ -70,6 +71,20 @@ class PegawaiBaruController extends Controller
                     'unit_kerja' => $unit_kerja,
                     'skpd' => $skpd,
                     'aktif' => 'Y'
+                ]);
+
+                DB::commit();
+            } catch (\Throwable $th) {
+                // throw $th;
+                DB::rollBack();
+                return back()->with(["type" => "error", "message" => "gagal update!"]);
+            }
+
+            // update table dokumen pribadi
+            DB::beginTransaction();
+            try {
+                DokumenPribadi::create([
+                    'id_ptt' => $last_id_ptt,
                 ]);
 
                 DB::commit();
