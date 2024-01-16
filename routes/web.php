@@ -177,6 +177,7 @@ Route::prefix('fasilitator')->group(function() {
 
         // download
         Route::post('download-pegawai/{idSkpd}', [DownloadPegawaiController::class, 'download'])->name('fasilitator.download-pegawai');
+        Route::post('download/{idSkpd?}', [DownloadPegawaiController::class, 'download'])->name('fasilitator.download-pegawai-stats');
         Route::post('download-person/{idPegawai}', [DownloadPegawaiController::class, 'downloadPerson'])->name('fasilitator.download-person');
         Route::post('download-pttpk/{idSkpd?}', [DownloadPegawaiController::class, 'downloadPttpk'])->name('fasilitator.download-pttpk');
         Route::post('download-pttc/{idSkpd?}', [DownloadPegawaiController::class, 'downloadPttCabdin'])->name('fasilitator.download-pttcabdin');

@@ -64,6 +64,25 @@ class DownloadPegawaiController extends Controller
         }
     }
 
+    public function downloadPegawai(Request $request)
+    {
+        try {
+            $idSkpd = $request->idSkpd ?? auth()->user()->id_skpd;
+            if (auth()->user()->level == 'admin') {
+                $pegawai = DownloadPegawai::whereAktif('Y')
+                            ->where('id_skpd', 'like', $idSkpd . '%')
+                            ->get();
+            } else {
+                $pegawai = DownloadPegawai::whereAktif('Y')
+                            ->where('id_skpd', 'like', $idSkpd . '%')
+                            ->get()->makeHidden(['tahun_penilaian', 'rekomendasi']);
+            }
+            return (new FastExcel($pegawai))->download("data-pegawai-all.xlsx");
+        } catch (\Throwable $th) {
+            return back()->with(["type" => "error", "message" => "terjadi kesalahan!"]);
+        }
+    }
+
     public function downloadPttpk(Request $request)
     {
         try {

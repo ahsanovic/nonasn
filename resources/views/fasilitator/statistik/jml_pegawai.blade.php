@@ -156,7 +156,13 @@
         <div class="col-md-12 col-lg-6">
             <div class="card mb-3 widget-chart text-left">
                 <div class="widget-chart-actions">
-                    <button class="btn-icon btn-icon-only btn btn-link"><i class="pe-7s-cloud-download btn-icon-wrapper"></i></button>
+                    @php
+                        [$idSkpd] = explode(" - ", request()->input('skpd')) ;
+                    @endphp
+                    <form method="post" action="{{ route('fasilitator.download-pegawai-stats', ['idSkpd' => $idSkpd]) }}">
+                        @csrf
+                        <button class="btn-icon btn-icon-only btn btn-link"><i class="pe-7s-cloud-download btn-icon-wrapper"></i></button>
+                    </form>
                 </div>
                 <div class="icon-wrapper rounded-circle">
                     <div class="icon-wrapper-bg bg-primary"></div>
