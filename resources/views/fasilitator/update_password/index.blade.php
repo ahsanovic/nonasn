@@ -15,7 +15,7 @@
         <div class="col-lg-6 col-md-6">
             <div class="main-card mb-3 card">
                 <div class="card-body">
-                    <form id="form" method="post" action="{{ route('nonasn.password.update') }}">
+                    <form id="form" method="post" action="{{ route('fasilitator.password.update') }}">
                         @csrf
                         @method('put')
                         <div class="position-relative form-group">

@@ -24,7 +24,8 @@ use App\Http\Controllers\Fasilitator\{
     StatsPendidikanController,
     UnitKerjaController,
     LogFasilitatorController,
-    LogNonAsnController
+    LogNonAsnController,
+    UpdatePasswordController
 };
 use App\Http\Controllers\NonAsn\{
     NonasnKunciCpnsController,
@@ -41,7 +42,7 @@ use App\Http\Controllers\NonAsn\{
     NonasnDokumenPribadiController,
     NonasnSimulasiCpnsController,
     NonasnSimulasiPppkController,
-    NonasnUpdatePasswordController
+    NonasnUpdatePasswordController,
 };
 
 /* Fasilitator */
@@ -186,6 +187,10 @@ Route::prefix('fasilitator')->group(function() {
         Route::post('download-by-agama/{idSkpd?}', [DownloadPegawaiController::class, 'downloadByAgama'])->name('fasilitator.download-by-agama');
         Route::get('download-data-anak', [DownloadPegawaiController::class, 'downloadDataAnak'])->name('fasilitator.download-data-anak');
         Route::get('download-data-pasangan', [DownloadPegawaiController::class, 'downloadDataPasangan'])->name('fasilitator.download-data-pasangan');
+
+        // update password
+        Route::get('update-password', [UpdatePasswordController::class, 'index'])->name('fasilitator.password');
+        Route::put('update-password', [UpdatePasswordController::class, 'update'])->name('fasilitator.password.update');
 
         // logout
         Route::post('/logout', [LoginController::class, 'logout'])->name('fasilitator.logout');

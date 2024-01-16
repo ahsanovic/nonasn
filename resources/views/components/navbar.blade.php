@@ -109,7 +109,9 @@
                                                         </a>
                                                     </li>
                                                     <li class="nav-item">
-                                                        @if (auth()->guard('nonasn')->check())
+                                                        @if (auth()->guard('fasilitator')->check())
+                                                            <a href="{{ route('fasilitator.password') }}" class="nav-link">Ubah Password</a>
+                                                        @else
                                                             <a href="{{ route('nonasn.password') }}" class="nav-link">Ubah Password</a>
                                                         @endif
                                                     </li>
