@@ -99,17 +99,25 @@
                                     <h6 class="menu-header-subtitle">
                                         @php
                                             $panjang_nip = strlen($item->niptt);
-                                            if ($panjang_nip > 21) {
-                                                if (strpos($item->id_skpd, '145') !== false  OR strpos($item->id_skpd, '146') !== false OR strpos($item->id_skpd, '149') !== false OR strpos($item->id_skpd, '147') !== false){
+                                            if ($item->jenis_ptt_id == 1) {
+                                                if ($panjang_nip > 21) {
+                                                    if (strpos($item->id_skpd, '145') !== false  OR strpos($item->id_skpd, '146') !== false OR strpos($item->id_skpd, '149') !== false OR strpos($item->id_skpd, '147') !== false){
                                                     $niptt = substr($item->niptt, 0,3).".".substr($item->niptt, 3,1)."-".substr($item->niptt, 4,8)."-".substr($item->niptt, 12,6)."-".substr($item->niptt, 18,5);
-                                                } else if (strpos($item->id_skpd, '148') !== false OR strpos($item->id_skpd, '10316') !== false OR strpos($item->id_skpd, '10310') !== false OR strpos($item->id_skpd, '10309') !== false OR strpos($item->id_skpd, '10313') !== false OR strpos($item->id_skpd, '10308') !== false OR strpos($item->id_skpd, '10314') !== false OR strpos($item->id_skpd, '10312') !== false OR strpos($item->id_skpd, '10311') !== false OR strpos($item->id_skpd, '10320') !== false OR strpos($item->id_skpd, '10315') !== false OR strpos($item->id_skpd, '10318') !== false OR strpos($item->id_skpd, '10317') !== false OR strpos($item->id_skpd, '11513') !== false) {
-                                                    $niptt = substr($item->niptt, 0,3).".".substr($item->niptt, 3,2)."-".substr($item->niptt, 5,8)."-".substr($item->niptt, 13,6)."-".substr($item->niptt, 19,5);
+                                                    } else if (strpos($item->id_skpd, '148') !== false OR strpos($item->id_skpd, '10316') !== false OR strpos($item->id_skpd, '10310') !== false OR strpos($item->id_skpd, '10309') !== false OR strpos($item->id_skpd, '10313') !== false OR strpos($item->id_skpd, '10308') !== false OR strpos($item->id_skpd, '10314') !== false OR strpos($item->id_skpd, '10312') !== false OR strpos($item->id_skpd, '10311') !== false OR strpos($item->id_skpd, '10320') !== false OR strpos($item->id_skpd, '10315') !== false OR strpos($item->id_skpd, '10318') !== false OR strpos($item->id_skpd, '10317') !== false OR strpos($item->id_skpd, '11513') !== false) {
+                                                        $niptt = substr($item->niptt, 0,3).".".substr($item->niptt, 3,2)."-".substr($item->niptt, 5,8)."-".substr($item->niptt, 13,6)."-".substr($item->niptt, 19,5);
+                                                    } else {
+                                                        $niptt = substr($item->niptt, 0,3)."-".substr($item->niptt, 3,8)."-".substr($item->niptt, 11,6)."-".substr($item->niptt, 17,5);
+                                                    }
                                                 } else {
                                                     $niptt = substr($item->niptt, 0,3)."-".substr($item->niptt, 3,8)."-".substr($item->niptt, 11,6)."-".substr($item->niptt, 17,5);
                                                 }
+                                            } else if ($item->jenis_ptt_id == 2) {
+                                                $niptt = substr($item->niptt,0,2) . "-" . substr($item->niptt,2,6) . "-" . substr($item->niptt,8,4) . "-" . substr($item->niptt,12,3);
+                                            } else if ($item->jenis_ptt_id == 3) {
+                                                $niptt = substr($item->niptt,0,8) . "-" . substr($item->niptt,8,6) . "-" . substr($item->niptt,14,4) . "-" . substr($item->niptt,18,5);
                                             } else {
-                                                $niptt = substr($item->niptt, 0,3)."-".substr($item->niptt, 3,8)."-".substr($item->niptt, 11,6)."-".substr($item->niptt, 17,5);
-                                            }
+                                                $niptt = substr($item->niptt,0,8) . "-" . substr($item->niptt,8,6) . "-" . substr($item->niptt,14,4) . "-" . substr($item->niptt,18,5);
+                                            }                                            
                                         @endphp
                                         {{ $niptt }}
                                     </h6>
