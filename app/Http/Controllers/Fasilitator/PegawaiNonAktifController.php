@@ -50,7 +50,7 @@ class PegawaiNonAktifController extends Controller
         DB::beginTransaction();
         try {
             $data = Biodata::whereNiptt($request->niptt)->first(['id_ptt']);
-            Biodata::whereNiptt($request->niptt)->update(['aktif' => 'Y']);
+            Biodata::whereNiptt($request->niptt)->update(['aktif' => 'Y', 'blokir' => 'N']);
 
             // update table download
             $update = DownloadPegawai::whereNiptt($request->niptt)->first();
