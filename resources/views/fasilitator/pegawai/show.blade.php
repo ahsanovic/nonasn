@@ -115,7 +115,7 @@
                             </div>
                             <div class="position-relative form-group">
                                 <label for="niptt" class="font-weight-bold">NIPTT-PK (tanpa tanda "." dan "-")</label>
-                                <input name="niptt" id="niptt" type="text" class="form-control form-control-sm @error('niptt') is-invalid @enderror" value="{{ $pegawai->niptt }}">
+                                <input name="niptt" id="niptt" type="text" class="form-control form-control-sm @error('niptt') is-invalid @enderror" value="{{ $pegawai->niptt }}" {{ auth()->user()->level != 'admin' ? 'disabled' : '' }}>
                                 @error('niptt')
                                 <div class="invalid-feedback">
                                     {{ $message }}
