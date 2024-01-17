@@ -88,7 +88,10 @@
                             {{-- <div class="menu-header-image" style="background-image: url({{ asset('assets/images/dropdown-header/abstract2.jpg'); }})"></div> --}}
                             <div class="menu-header-content">
                                 <div class="avatar-icon-wrapper avatar-icon-xl">
-                                    <div class="avatar-icon rounded btn-hover-shine"><img src="{{ asset('upload_foto/' . $item->foto) }}" alt="foto"></div>
+                                    <div class="avatar-icon rounded btn-hover-shine">
+                                    @if ($item->foto)
+                                        <img src="{{ route('pegawai.image', ['image' => rtrim($item->foto)]) }}" alt="foto"></div>
+                                    @endif
                                 </div>
                                 <div><h5 class="menu-header-title">{{ $item->nama }}</h5></div>
                                 {{-- <div><h6 class="menu-header-subtitle">{{ $item->niptt }}</h6></div> --}}

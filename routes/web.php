@@ -49,6 +49,7 @@ use App\Http\Controllers\NonAsn\{
 Route::prefix('fasilitator')->group(function() {
     Route::get('/', [LoginController::class, 'showLoginForm'])->name('fasilitator.login')->middleware('guest:fasilitator');
     Route::post('/', [LoginController::class, 'login']);
+    Route::get('image/{image?}', [PegawaiController::class, 'viewImage'])->name('pegawai.image');
     Route::middleware(['auth:fasilitator', 'revalidate'])->group(function() {
         // dashboard
         Route::get('dashboard', [DashboardController::class, 'index'])->name('fasilitator.dashboard');
