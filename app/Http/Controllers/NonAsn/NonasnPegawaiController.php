@@ -11,6 +11,8 @@ use App\Models\RefJenisPtt;
 use App\Models\RefKelasBpjs;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\NonasnBiodataRequest;
 use App\Models\Fasilitator\DownloadPegawai;
 
@@ -71,9 +73,10 @@ class NonasnPegawaiController extends Controller
         $extension = $file->getClientOriginalExtension();
         // Give a new name
         $time = date('YmdHis', time());
-        $filenameToStore = $time . '-' . uniqid() . '-' . preg_replace("/\s+/", "_", $filename) . '.' . $extension;
+        $filenameToStore = $time . '-' . uniqid() . '.' . $extension;
         // Upload file
-        $file->move(public_path('upload_foto'), $filenameToStore);
+        // $file->move(public_path('upload_foto'), $filenameToStore);
+        Storage::disk('local')->put('/upload_foto/' . $filenameToStore, File::get($file));
 
         return $filenameToStore;
     }

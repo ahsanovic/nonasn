@@ -77,7 +77,7 @@ class NonasnJabatanController extends Controller
         $extension = $file->getClientOriginalExtension();
         // Give a new name
         $time = date('YmdHis', time());
-        $filenameToStore = $time . '-' . uniqid() . '-' . preg_replace("/\s+/", "_", $filename) . '.' . $extension;
+        $filenameToStore = $time . '-' . uniqid() . '.' . $extension;
         // Upload file
         Storage::disk('local')->put('/upload_jabatan/' . $filenameToStore, File::get($file));
 

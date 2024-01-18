@@ -46,7 +46,7 @@ class NonasnDokumenPribadiController extends Controller
         $extension = $file->getClientOriginalExtension();
         // Give a new name
         $time = date('YmdHis', time());
-        $filenameToStore = $time . '-' . uniqid() . '-' . preg_replace("/\s+/", "_", $filename) . '.' . $extension;
+        $filenameToStore = $time . '-' . uniqid() . '.' . $extension;
         // Upload file
         Storage::disk('local')->put('/upload_dok_pribadi/' . $filenameToStore, File::get($file));
 
@@ -66,7 +66,7 @@ class NonasnDokumenPribadiController extends Controller
         $hashId = $this->_hashId();
         if ($request->field == 'file_ktp') {
             $request->validate([
-                'file_ktp' => ['required','file','mimes:jpg,png','max:512']
+                'file_ktp' => ['required','file','mimes:jpg,jpeg,png','max:512']
             ], [
                 'file_ktp.required' => 'dokumen harus diupload',
                 'file_ktp.mimes' => 'dokumen harus berformat jpg/png',
@@ -90,7 +90,7 @@ class NonasnDokumenPribadiController extends Controller
 
         if ($request->field == 'file_bpjs') {
             $request->validate([
-                'file_bpjs' => ['required','file','mimes:jpg,png','max:512'],
+                'file_bpjs' => ['required','file','mimes:jpg,jpeg,png','max:512'],
                 'file_bpjs.mimes' => 'dokumen harus berformat jpg/png',
                 'file_bpjs.max' => 'dokumen maksimal berukuran 512 kilobytes',
             ], [
@@ -116,7 +116,7 @@ class NonasnDokumenPribadiController extends Controller
 
         if ($request->field == 'file_bpjs_naker') {
             $request->validate([
-                'file_bpjs_naker' => ['required','file','mimes:jpg,png','max:512']
+                'file_bpjs_naker' => ['required','file','mimes:jpg,jpeg,png','max:512']
             ],  [
                 'file_bpjs_naker.required' => 'dokumen harus diupload',
                 'file_bpjs_naker.mimes' => 'dokumen harus berformat jpg/png',
