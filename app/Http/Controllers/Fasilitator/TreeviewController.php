@@ -39,7 +39,6 @@ class TreeviewController extends Controller
 
     public function unorNoLink()
     {
-        $hashid = $this->_hashId();
         $skpd = Skpd::where('id', 'like', auth()->user()->id_skpd . '%')->get();
         $tree = [];
         foreach ($skpd as $unor) {

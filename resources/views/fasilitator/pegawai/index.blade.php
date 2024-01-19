@@ -67,7 +67,7 @@
                 <span class="font-weight-bold">Jumlah Pegawai: {{ $pegawai->total() }}</span>
             </div>
             <div class="d-flex justify-content-end">
-                <form method="post" action="{{ route('fasilitator.download-pegawai', request()->segment(3)) }}">
+                <form method="post" action="{{ route('fasilitator.download-pegawai', ['idSkpd' => request()->segment(3), 'nama' => request()->nama]) }}">
                     @csrf
                     <button class="btn btn-dark btn-sm btn-square btn-hover-shine mr-2"><i class="pe-7s-cloud-download"></i> Download Excel</button>
                 </form>

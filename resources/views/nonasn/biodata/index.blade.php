@@ -27,7 +27,7 @@
                             @csrf
                             @method("put")
                             <div class="position-relative form-group">
-                                <img src="{{ asset('upload_foto/' . $biodata->foto) }}" class="rounded d-block" alt="foto" width="150" height="200">
+                                <img src="{{ route('nonasn.image', [rtrim($biodata->foto)]) }}" class="rounded d-block" alt="foto" width="150" height="200">
                             </div>
                             <div class="position-relative form-group">
                                 <label for="file" class="font-weight-bold">Ubah Foto <small class="text-primary">*) format file jpg/png</small></label>

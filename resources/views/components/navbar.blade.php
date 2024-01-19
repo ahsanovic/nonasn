@@ -50,7 +50,11 @@
                             <div class="widget-content-left">
                                 <div class="btn-group">
                                     <a data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="p-0 btn">
+                                        @if (auth()->guard('fasilitator')->check())
                                         <img width="42" class="rounded-circle" src="{{ asset('assets/images/avatars/default.png') }}" alt="">
+                                        @else
+                                        <img width="42" class="rounded" src="{{ route('nonasn.image', ['iamge' => rtrim(auth()->user()->foto)]) }}" alt="">
+                                        @endif
                                         <i class="fa fa-angle-down ml-2 opacity-8"></i>
                                     </a>
                                     <div tabindex="-1" role="menu" aria-hidden="true" class="rm-pointers dropdown-menu-lg dropdown-menu dropdown-menu-right">
@@ -66,8 +70,8 @@
                                                                         src="{{ asset('assets/images/avatars/default.png') }}"
                                                                         alt="">
                                                                 @else
-                                                                    <img width="42" class="rounded-circle"
-                                                                        src="{{ auth()->user()->foto }}"
+                                                                    <img width="42" class="rounded"
+                                                                        src="{{ rtrim(auth()->user()->foto) }}"
                                                                         alt="">
                                                                 @endif
                                                             </div>

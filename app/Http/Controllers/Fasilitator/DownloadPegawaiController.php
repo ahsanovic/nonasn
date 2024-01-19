@@ -25,13 +25,25 @@ class DownloadPegawaiController extends Controller
         try {
             $hashid = $this->_hashId();
             if (auth()->user()->level == 'admin') {
-                $pegawai = DownloadPegawai::whereAktif('Y')
-                        ->where('id_skpd', 'like', $hashid->decode($request->segment(3))[0] . '%')
-                        ->get();
+                if (!$request->query('nama')) {
+                    $pegawai = DownloadPegawai::whereAktif('Y')
+                            ->where('id_skpd', 'like', $hashid->decode($request->segment(3))[0] . '%')
+                            ->get();
+                } else {
+                    $pegawai = DownloadPegawai::whereAktif('Y')
+                            ->where('nama', $request->query('nama'))
+                            ->get();
+                }
             } else {
-                $pegawai = DownloadPegawai::whereAktif('Y')
+                if (!$request->query('nama')) {
+                    $pegawai = DownloadPegawai::whereAktif('Y')
                         ->where('id_skpd', 'like', $hashid->decode($request->segment(3))[0] . '%')
                         ->get()->makeHidden(['tahun_penilaian', 'rekomendasi']);
+                } else {
+                    $pegawai = DownloadPegawai::whereAktif('Y')
+                            ->where('nama', $request->query('nama'))
+                            ->get()->makeHidden(['tahun_penilaian', 'rekomendasi']);
+                }                
             }
             return (new FastExcel($pegawai))->download('data-pegawai.xlsx');
         } catch (\Throwable $th) {

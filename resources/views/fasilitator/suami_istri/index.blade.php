@@ -109,6 +109,7 @@
                                                     >
                                                         @csrf
                                                         @method('put')
+                                                        <input type="hidden" name="id_pegawai" value="{{ $hashidPegawai->encode($pegawai->id_ptt) }}">
                                                         @if ($item->aktif == 'N')
                                                             <button type="submit" tabindex="0" class="dropdown-item">Aktifkan</button>
                                                         @endif

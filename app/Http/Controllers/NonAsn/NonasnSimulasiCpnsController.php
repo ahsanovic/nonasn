@@ -13,7 +13,7 @@ class NonasnSimulasiCpnsController extends Controller
 {
     public function index()
     {
-        $nilai = HasilUjianCpns::orderByDesc('created_at')->paginate(10);
+        $nilai = HasilUjianCpns::whereId_ptt(auth()->user()->id_ptt)->orderByDesc('created_at')->paginate(10);
         return view('nonasn.simulasi.cpns.index', compact('nilai'));
     }
 

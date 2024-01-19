@@ -201,6 +201,7 @@ Route::prefix('fasilitator')->group(function() {
 /* Personal */
 Route::get('/', [NonasnLoginController::class, 'showLoginForm'])->name('nonasn.login')->middleware('guest:nonasn');
 Route::post('/', [NonasnLoginController::class, 'login']);
+Route::get('image/{image?}', [NonasnPegawaiController::class, 'viewImage'])->name('nonasn.image');
 Route::middleware(['auth:nonasn', 'revalidate'])->group(function() {
     // dashboard
     Route::get('dashboard', [NonasnDashboardController::class, 'index'])->name('nonasn.dashboard');

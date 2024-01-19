@@ -2,7 +2,7 @@
 <script>
     $(document).ready(function() {
         $.ajax({
-            url: "{{ route('unor') }}",
+            url: "{{ route('treeview.skpd.nolink') }}",
             type: "GET",
             dataType: "JSON",
             success: function(data) {

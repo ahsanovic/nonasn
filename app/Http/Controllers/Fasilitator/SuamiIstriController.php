@@ -260,23 +260,39 @@ class SuamiIstriController extends Controller
         }
     }
 
-    public function activate($id)
+    public function activate(Request $request, $id)
     {
         try {
+            $hashidPegawai = $this->hashidPegawai;
             $id = $this->hashid->decode($id)[0];
             $status_aktif = SuamiIstri::where('suami_istri_id', $id)->first(['id_ptt', 'aktif']);
             if ($status_aktif->aktif == 'Y') {
-                SuamiIstri::select('aktif')->where('suami_istri_id', $id)->update(['aktif' => 'N']);
-                SuamiIstri::select('aktif')->where('suami_istri_id', '!=', $id)->update(['aktif' => 'Y']);
+                // SuamiIstri::select('aktif')->where('suami_istri_id', $id)->update(['aktif' => 'N']);
+                // SuamiIstri::select('aktif')->where('suami_istri_id', '!=', $id)->update(['aktif' => 'Y']);
+                SuamiIstri::where('suami_istri_id', $id)
+                    ->whereId_ptt($hashidPegawai->decode($request->id_pegawai)[0])
+                    ->update(['aktif' => 'N']);
+
+                SuamiIstri::where('suami_istri_id', '!=', $id)
+                    ->whereId_ptt($hashidPegawai->decode($request->id_pegawai)[0])
+                    ->update(['aktif' => 'Y']);
             } else {
-                SuamiIstri::select('aktif')->where('suami_istri_id', $id)->update(['aktif' => 'Y']);
-                SuamiIstri::select('aktif')->where('suami_istri_id', '!=', $id)->update(['aktif' => 'N']);
+                // SuamiIstri::select('aktif')->where('suami_istri_id', $id)->update(['aktif' => 'Y']);
+                // SuamiIstri::select('aktif')->where('suami_istri_id', '!=', $id)->update(['aktif' => 'N']);
+                SuamiIstri::where('suami_istri_id', $id)
+                    ->whereId_ptt($hashidPegawai->decode($request->id_pegawai)[0])
+                    ->update(['aktif' => 'Y']);
+
+                SuamiIstri::where('suami_istri_id', '!=', $id)
+                    ->whereId_ptt($hashidPegawai->decode($request->id_pegawai)[0])
+                    ->update(['aktif' => 'N']);
             }
 
             logFasilitator(auth()->user()->username, auth()->user()->id_skpd, $status_aktif->id_ptt, request()->segment(2), 'aktif');
 
             return redirect()->back()->with(["type" => "success", "message" => "berhasil diupdate!"]);
         } catch (\Throwable $th) {
+            throw $th;
             return back()->with(["type" => "error", "message" => "terjadi kesalahan!"]);
         }
     }

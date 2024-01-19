@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\File;
 use App\Http\Requests\BiodataRequest;
+use Illuminate\Support\Facades\Storage;
 use App\Models\Fasilitator\DownloadPegawai;
 
 class PegawaiController extends Controller
@@ -46,9 +47,10 @@ class PegawaiController extends Controller
         $extension = $file->getClientOriginalExtension();
         // Give a new name
         $time = date('YmdHis', time());
-        $filenameToStore = $time . '-' . uniqid() . '-' . preg_replace("/\s+/", "_", $filename) . '.' . $extension;
+        $filenameToStore = $time . '-' . uniqid() . '.' . $extension;
         // Upload file
-        $file->move(public_path('upload_foto'), $filenameToStore);
+        // $file->move(public_path('upload_foto'), $filenameToStore);
+        Storage::disk('local')->put('/upload_foto/' . $filenameToStore, File::get($file));
 
         return $filenameToStore;
     }
@@ -164,7 +166,9 @@ class PegawaiController extends Controller
 
             if ($data) {
                 $data->nama = $request->nama;
-                $data->niptt = $request->niptt;
+                if (auth()->user()->level == 'admin') {
+                    $data->niptt = $request->niptt;
+                }
                 $data->nik = $request->nik;
                 $data->jenis_ptt_id = $request->jenis_ptt;
                 $data->kk = $request->kk;
@@ -216,7 +220,9 @@ class PegawaiController extends Controller
 
             if (!$update) return back()->with(["type" => "error", "message" => "terjadi kesalahan!"]);
 
-            $update->niptt = $request->niptt;
+            if (auth()->user()->level == 'admin') {
+                $update->niptt = $request->niptt;
+            }
             $update->nama = $request->nama;
             $update->jenis_ptt = $ref_jenis_ptt->jenis_ptt;
             $update->tempat_lahir = $request->tempat_lahir;

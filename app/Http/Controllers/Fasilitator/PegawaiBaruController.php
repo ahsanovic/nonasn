@@ -38,6 +38,9 @@ class PegawaiBaruController extends Controller
 
     public function store(PegawaiBaruRequest $request)
     {
+        $check_exist = Biodata::whereNiptt($request->niptt)->first(['niptt']);
+        if ($check_exist) return back()->with(["type" => "error", "message" => "pegawai dengan nip " . $check_exist->niptt . " sudah ada!"]);
+
         DB::beginTransaction();
         try {
             list($id_skpd, $unit_kerja) = explode(" - ", $request->skpd);
@@ -47,10 +50,10 @@ class PegawaiBaruController extends Controller
                 'niptt' => $request->niptt,
                 'nama' => $request->nama,
                 'alamat' => '||||||',
-                'password' => Hash::make('Nonasnjatim1')
+                'password' => Hash::make('Nonasnjatim24')
             ]);
 
-            $last_id_ptt = $pegawai->id_ptt;
+            // $last_id_ptt = $pegawai->id_ptt;
 
             // update table download
             DB::beginTransaction();
@@ -62,11 +65,14 @@ class PegawaiBaruController extends Controller
                     $skpd = $unit_kerja;
                 }
 
+                $data = Biodata::whereNiptt($request->niptt)->first(['id_ptt']);
+
                 DownloadPegawai::create([
-                    'id_ptt' => $last_id_ptt,
+                    'id_ptt' => $data->id_ptt,
                     'niptt' => $request->niptt,
                     'nama' => $request->nama,
                     'jenis_ptt' => 'PTT-PK',
+                    'alamat' => '||||||',
                     'id_skpd' => $id_skpd,
                     'unit_kerja' => $unit_kerja,
                     'skpd' => $skpd,
@@ -75,7 +81,7 @@ class PegawaiBaruController extends Controller
 
                 DB::commit();
             } catch (\Throwable $th) {
-                // throw $th;
+                //throw $th;
                 DB::rollBack();
                 return back()->with(["type" => "error", "message" => "gagal update!"]);
             }
@@ -83,13 +89,14 @@ class PegawaiBaruController extends Controller
             // update table dokumen pribadi
             DB::beginTransaction();
             try {
+                $data = Biodata::whereNiptt($request->niptt)->first(['id_ptt']);
                 DokumenPribadi::create([
-                    'id_ptt' => $last_id_ptt,
+                    'id_ptt' => $data->id_ptt,
                 ]);
 
                 DB::commit();
             } catch (\Throwable $th) {
-                // throw $th;
+                //throw $th;
                 DB::rollBack();
                 return back()->with(["type" => "error", "message" => "gagal update!"]);
             }
@@ -97,7 +104,7 @@ class PegawaiBaruController extends Controller
             DB::commit();
             return back()->with(["type" => "success", "message" => "berhasil ditambahkan!"]);
         } catch (\Throwable $err) {
-            // throw $err;
+            //throw $err;
             DB::rollBack();
             return back()->with(["type" => "error", "message" => "terjadi kesalahan!"]);
         }

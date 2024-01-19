@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class DokumenPribadi extends Model
 {
     protected $table = 'ptt_dok_pribadi';
-    protected $guarded = ['id', 'id_ptt'];
+    protected $guarded = ['id'];
     // protected $primaryKey = 'id_ptt';
     public $timestamps = false;
 

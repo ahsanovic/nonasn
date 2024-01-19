@@ -57,7 +57,7 @@
                                             <td scope="row">{{ $loop->iteration }}</td>
                                             <td align="center">
                                                 @if ($item->file_bpjs)
-                                                <a href="{{ route('suami-istri.file', ['file' => $item->file_bpjs]) }}" target="_blank">
+                                                <a href="{{ route('nonasn.suami-istri.file', ['file' => $item->file_bpjs]) }}" target="_blank">
                                                     <i class="lnr-file-empty icon-gradient bg-love-kiss"></i>
                                                 </a>
                                                 @endif

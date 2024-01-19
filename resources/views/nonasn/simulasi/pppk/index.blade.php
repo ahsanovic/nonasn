@@ -145,7 +145,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($history as $key => $item)
+                                    @forelse ($history as $key => $item)
                                         <tr>
                                             <td>{{ $history->firstItem() + $key }}</td>
                                             <td>{{ $item->jenis_tes }}</td>
@@ -185,7 +185,11 @@
                                                 @endswitch
                                             </td>
                                         </tr>
-                                    @endforeach
+                                    @empty
+                                        <tr>
+                                            <td colspan="7" class="text-center">- tidak ada data -</td>
+                                        </tr>
+                                    @endforelse
                                 </tbody>
                             </table>
                         </div>

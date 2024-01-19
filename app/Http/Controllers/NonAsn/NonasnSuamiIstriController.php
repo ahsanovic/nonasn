@@ -154,13 +154,25 @@ class NonasnSuamiIstriController extends Controller
     {
         try {
             $hashId = $this->_hashId();
-            $status_aktif = SuamiIstri::where('suami_istri_id', $hashId->decode($id)[0])->first(['aktif']);
+            $id = $hashId->decode($id)[0];
+            
+            $status_aktif = SuamiIstri::where('suami_istri_id', $id)->first(['aktif']);
             if ($status_aktif->aktif == 'Y') {
-                SuamiIstri::select('aktif')->where('suami_istri_id', $hashId->decode($id)[0])->update(['aktif' => 'N']);
-                SuamiIstri::select('aktif')->where('suami_istri_id', '!=', $hashId->decode($id)[0])->update(['aktif' => 'Y']);
+                SuamiIstri::where('suami_istri_id', $id)
+                    ->whereId_ptt(auth()->user()->id_ptt)
+                    ->update(['aktif' => 'N']);
+
+                SuamiIstri::where('suami_istri_id', '!=', $id)
+                    ->whereId_ptt(auth()->user()->id_ptt)
+                    ->update(['aktif' => 'Y']);
             } else {
-                SuamiIstri::select('aktif')->where('suami_istri_id', $hashId->decode($id)[0])->update(['aktif' => 'Y']);
-                SuamiIstri::select('aktif')->where('suami_istri_id', '!=', $hashId->decode($id)[0])->update(['aktif' => 'N']);
+                SuamiIstri::where('suami_istri_id', $id)
+                    ->whereId_ptt(auth()->user()->id_ptt)
+                    ->update(['aktif' => 'Y']);
+
+                SuamiIstri::where('suami_istri_id', '!=', $id)
+                    ->whereId_ptt(auth()->user()->id_ptt)
+                    ->update(['aktif' => 'N']);
             }
 
             logPtt(auth()->user()->id_ptt, request()->segment(1), 'aktif');

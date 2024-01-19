@@ -38,7 +38,7 @@
         new ApexCharts(document.querySelector("#pie-chart"), options).render();
         
         $.ajax({
-            url: "{{ route('stats-agama.unor') }}",
+            url: "{{ route('stats-pendidikan.unor') }}",
             type: "GET",
             dataType: "JSON",
             success: function(data) {

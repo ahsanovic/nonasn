@@ -23,9 +23,9 @@ class BiodataRequest extends FormRequest
      */
     public function rules()
     {
-        return [
+        $rules = [
             'nama' => ['required', 'string'],
-            'niptt' => ['required', 'numeric'],
+            'niptt' => ['numeric'],
             'nik' => ['numeric'],
             'kk' => ['numeric'],
             'no_bpjs' => ['required','numeric'],
@@ -35,6 +35,12 @@ class BiodataRequest extends FormRequest
             'thn_lahir' => ['required','date_format:d/m/Y'],
             'foto' => ['image', 'mimes:jpg,png,jpeg','max:200']
         ];
+
+        if (auth()->user()->level == 'admin') {
+            $rules['niptt'] = 'required|numeric';
+        }
+
+        return $rules;
     }
 
     public function messages()

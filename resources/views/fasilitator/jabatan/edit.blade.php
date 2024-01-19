@@ -1,4 +1,6 @@
 @push('scripts')
+<!--Tree View-->
+<script src="{{ asset('zTree/js/jquery.ztree.core-3.5.js') }}"></script>
 <!--Datepickers-->
 <script src="{{ asset('assets/js/vendors/form-components/datepicker.js') }}"></script>
 <script src="{{ asset('assets/js/scripts-init/form-components/datepicker.js') }}"></script>
