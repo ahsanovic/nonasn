@@ -5,6 +5,7 @@ namespace App\Http\Controllers\NonAsn;
 use Hashids\Hashids;
 use App\Models\Jabatan;
 use App\Models\RefJabatan;
+use App\Models\RefGuruMapel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
@@ -90,6 +91,7 @@ class NonasnJabatanController extends Controller
             Jabatan::create([
                 'id_ptt' => auth()->user()->id_ptt,
                 'id_jabatan' => explode(" - ", $request->jabatan)[0],
+                'id_guru_mapel' => (auth()->user()->jenis_ptt_id == 4) ? $request->id_guru_mapel : null,
                 'no_surat' => $request->no_surat,
                 'tgl_surat' => $request->tgl_surat,
                 'pejabat_penetap' => $request->pejabat_penetap,
@@ -116,8 +118,9 @@ class NonasnJabatanController extends Controller
         $hashId = $this->_hashId();
 
         $jab = Jabatan::findOrFail($hashId->decode($id)[0]);
+        $mapel = RefGuruMapel::whereId($jab->id_guru_mapel)->first();
 
-        return view('nonasn.jabatan.edit', compact('submit', 'jab', 'hashId'));
+        return view('nonasn.jabatan.edit', compact('submit', 'jab', 'hashId', 'mapel'));
     }
 
     public function update(JabatanRequest $request, $id)
@@ -138,6 +141,7 @@ class NonasnJabatanController extends Controller
 
             if ($data) {
                 $data->id_jabatan = explode(" - ", $request->jabatan)[0];
+                $data->id_guru_mapel = $request->id_guru_mapel ?? null;
                 $data->no_surat = $request->no_surat;
                 $data->tgl_surat = $request->tgl_surat;
                 $data->pejabat_penetap = $request->pejabat_penetap;
@@ -270,5 +274,21 @@ class NonasnJabatanController extends Controller
             DB::rollback();
             return back()->with(["type" => "error", "message" => "terjadi kesalahan!"]);
         }
+    }
+
+    public function autocomplete(Request $request)
+    {
+        $data = RefGuruMapel::where('guru_mapel', 'like', '%'. $request->search . '%')
+                ->limit(10)
+                ->get();
+        
+        $res = [];
+        foreach ($data as $value) {
+            $res[] = [
+                'label' => $value->guru_mapel,
+                'value' => $value->id
+            ];
+        }
+        return response()->json($res);
     }
 }

@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\File;
 use App\Http\Requests\JabatanRequest;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Fasilitator\DownloadPegawai;
+use App\Models\RefGuruMapel;
 
 class JabatanController extends Controller
 {
@@ -114,7 +115,7 @@ class JabatanController extends Controller
 
         $pegawai = Biodata::whereId_ptt($idPegawai)
                     ->whereAktif('Y')
-                    ->first(['id_ptt', 'id_skpd', 'nama', 'foto']);
+                    ->first(['id_ptt', 'jenis_ptt_id', 'id_skpd', 'nama', 'foto']);
         if (!$pegawai) return back()->with(["type" => "error", "message" => "terjadi kesalahan!"]);
 
         $skpd = Skpd::whereId($idSkpd)->first(['id', 'name']);
@@ -164,6 +165,7 @@ class JabatanController extends Controller
             Jabatan::create([
                 'id_ptt' => $idPegawai,
                 'id_jabatan' => explode(" - ", $request->jabatan)[0],
+                'id_guru_mapel' => $request->id_guru_mapel,
                 'no_surat' => $request->no_surat,
                 'tgl_surat' => $request->tgl_surat,
                 'pejabat_penetap' => $request->pejabat_penetap,
@@ -205,9 +207,11 @@ class JabatanController extends Controller
         $jab = Jabatan::whereId_ptt_jab($id)->first();
         if (!$jab) return back()->with(["type" => "error", "message" => "terjadi kesalahan!"]);
 
+        $mapel = RefGuruMapel::whereId($jab->id_guru_mapel)->first();
+
         $pegawai = Biodata::whereId_ptt($idPegawai)
                     ->whereAktif('Y')
-                    ->first(['id_ptt', 'id_skpd', 'nama', 'foto']);
+                    ->first(['id_ptt', 'jenis_ptt_id', 'id_skpd', 'nama', 'foto']);
         if (!$pegawai) return back()->with(["type" => "error", "message" => "terjadi kesalahan!"]);
 
         $skpd = Skpd::whereId($idSkpd)->first(['id', 'name']);
@@ -220,7 +224,8 @@ class JabatanController extends Controller
             'skpd',
             'hashidSkpd',
             'hashidPegawai',
-            'hashid'
+            'hashid',
+            'mapel'
         ));
     }
 
@@ -243,6 +248,7 @@ class JabatanController extends Controller
 
             if ($data) {
                 $data->id_jabatan = explode(" - ", $request->jabatan)[0];
+                $data->id_guru_mapel = $request->id_guru_mapel ?? null;
                 $data->no_surat = $request->no_surat;
                 $data->tgl_surat = $request->tgl_surat;
                 $data->pejabat_penetap = $request->pejabat_penetap;
@@ -376,5 +382,21 @@ class JabatanController extends Controller
             DB::rollback();
             return back()->with(["type" => "error", "message" => "terjadi kesalahan!"]);
         }
+    }
+
+    public function autocomplete(Request $request)
+    {
+        $data = RefGuruMapel::where('guru_mapel', 'like', '%'. $request->search . '%')
+                ->limit(10)
+                ->get();
+        
+        $res = [];
+        foreach ($data as $value) {
+            $res[] = [
+                'label' => $value->guru_mapel,
+                'value' => $value->id
+            ];
+        }
+        return response()->json($res);
     }
 }

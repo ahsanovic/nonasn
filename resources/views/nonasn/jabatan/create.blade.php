@@ -1,9 +1,39 @@
+@push('styles')
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" />
+@endpush
+
 @push('scripts')
 <!--Tree View-->
 <script src="{{ asset('zTree/js/jquery.ztree.core-3.5.js') }}"></script>
 <!--Datepickers-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 <script src="{{ asset('assets/js/vendors/form-components/datepicker.js') }}"></script>
 <script src="{{ asset('assets/js/scripts-init/form-components/datepicker.js') }}"></script>
+<script>
+    var url = "{{ route('nonasn.jabatan.autocomplete') }}";
+    $("#guru-mapel").autocomplete({
+        minLength: 3,
+        source: function(request, response) {
+          $.ajax({
+            url: url,
+            type: 'post',
+            dataType: "json",
+            data: {
+                _token: $('meta[name="csrf-token"]').attr('content'),
+               search: request.term
+            },
+            success: function(data) {
+               response(data);
+            }
+          });
+        },
+        select: function (event, ui) {
+           $('#guru-mapel').val(ui.item.label);
+           $('#id-guru-mapel').val(ui.item.value);
+           return false;
+        },
+    });
+</script>
 <script>
     $('#form').submit(function() {
         $('#btn-submit, #btn-cancel').hide();

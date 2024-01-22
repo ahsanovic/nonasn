@@ -9,7 +9,7 @@ class Jabatan extends Model
 {
     protected $table = 'ptt_jabatan';
     protected $primaryKey = 'id_ptt_jab';
-    protected $fillable = ['id_ptt','id_jabatan','no_surat','tgl_surat','pejabat_penetap','tgl_mulai','tgl_akhir','gaji','ket','file','file_honor','aktif'];
+    protected $fillable = ['id_ptt','id_jabatan', 'id_guru_mapel', 'no_surat','tgl_surat','pejabat_penetap','tgl_mulai','tgl_akhir','gaji','ket','file','file_honor','aktif'];
     public $timestamps = false;
 
     public function refJabatan()

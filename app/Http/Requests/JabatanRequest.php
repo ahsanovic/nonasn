@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests;
 
+use Hashids\Hashids;
+use App\Models\Biodata;
 use Illuminate\Foundation\Http\FormRequest;
 
 class JabatanRequest extends FormRequest
@@ -14,6 +16,11 @@ class JabatanRequest extends FormRequest
     public function authorize()
     {
         return true;
+    }
+
+    private function _hashIdPegawai()
+    {
+        return new Hashids(env('SECRET_SALT_KEY'),10);
     }
 
     /**
@@ -38,6 +45,21 @@ class JabatanRequest extends FormRequest
             $rules['file'] = ['file','mimes:pdf','max:1024'];
         }
 
+        if (auth()->user()->level == 'admin' || auth()->user()->level == 'user') {
+            $hashidPegawai = $this->_hashidPegawai();
+            $idPegawai = $hashidPegawai->decode(request()->segment(5))[0] ?? '';
+            $pegawai = Biodata::whereId_ptt($idPegawai)
+                        ->whereAktif('Y')
+                        ->first(['jenis_ptt_id']);
+            if ($pegawai->jenis_ptt_id == 4) {
+                $rules['guru_mapel'] = ['required'];
+            }
+        }
+
+        if (auth()->user()->jenis_ptt_id == 4) {
+            $rules['guru_mapel'] = ['required'];
+        }
+
         return $rules;
     }
 
@@ -53,6 +75,7 @@ class JabatanRequest extends FormRequest
     {
         return [
             'jabatan.required' => 'nama jabatan harus dipilih',
+            'guru_mapel.required' => 'nama guru mapel harus diisi',
             'no_surat.required' => 'nomor surat kontrak harus diisi',
             'pejabat_penetap.required' => 'pejabat penetap harus diisi',
             'tgl_surat.required' => 'tanggal surat kontrak harus diisi',

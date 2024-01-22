@@ -77,7 +77,7 @@ Route::prefix('fasilitator')->group(function() {
 
         // biodata
         Route::get('pegawai/{idSkpd}', [PegawaiController::class, 'index'])->name('fasilitator.pegawai');
-        Route::post('autocomplete', [PegawaiController::class, 'autocomplete'])->name('autocomplete');
+        Route::post('pegawai/autocomplete', [PegawaiController::class, 'autocomplete'])->name('autocomplete');
         Route::get('pegawai/{idSkpd}/biodata/{id}', [PegawaiController::class, 'show'])->name('fasilitator.pegawai.show');
         Route::put('pegawai', [PegawaiController::class, 'update'])->name('fasilitator.pegawai.update');
 
@@ -110,6 +110,7 @@ Route::prefix('fasilitator')->group(function() {
         Route::delete('jabatan/{id}', [JabatanController::class, 'destroy'])->name('fasilitator.jabatan.destroy');
         Route::get('jabatan/treeview', [JabatanController::class, 'treeview'])->name('jabatan.treeview');
         Route::get('jabatan/{file}', [JabatanController::class, 'viewFile'])->name('jabatan.file');
+        Route::post('autocomplete', [JabatanController::class, 'autocomplete'])->name('jabatan.autocomplete');
 
         // penilaian
         Route::get('pegawai/{idSkpd}/penilaian/{id}', [PenilaianController::class, 'index'])->name('fasilitator.penilaian');
@@ -239,6 +240,7 @@ Route::middleware(['auth:nonasn', 'revalidate'])->group(function() {
     Route::delete('jabatan/{id}', [NonasnJabatanController::class, 'destroy'])->name('nonasn.jabatan.destroy');
     Route::get('jabatan/treeview', [NonasnJabatanController::class, 'treeview'])->name('nonasn.jabatan.treeview');
     Route::get('jabatan/{file}', [NonasnJabatanController::class, 'viewFile'])->name('nonasn.jabatan.file');
+    Route::post('autocomplete', [NonasnJabatanController::class, 'autocomplete'])->name('nonasn.jabatan.autocomplete');
 
     // penilaian
     Route::get('penilaian', [NonasnPenilaianController::class, 'index'])->name('nonasn.penilaian');

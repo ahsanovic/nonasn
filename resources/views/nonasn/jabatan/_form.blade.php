@@ -13,6 +13,18 @@
         </div>
         @enderror
     </div>
+    @if (auth()->user()->jenis_ptt_id == 4)
+        <div class="position-relative form-group">
+            <label for="guru-mapel" class="font-weight-bold">Guru Mapel <small class="text-primary">*) contoh: Guru Matematika</small></label>
+            <input name="guru_mapel" id="guru-mapel" type="text" class="form-control form-control-sm @error('guru_mapel') is-invalid @enderror" value="{{ old('guru_mapel') }}" placeholder="ketikkan nama jabatan guru mapel kemudian pilih">
+            <input type="hidden" id="id-guru-mapel" name="id_guru_mapel"/>
+            @error('guru_mapel')
+            <div class="invalid-feedback">
+                {{ $message }}
+            </div>
+            @enderror
+        </div>
+    @endif
     <div class="position-relative form-group">
         <label for="no_surat" class="font-weight-bold">Nomor Surat</label>
         <input name="no_surat" id="no_surat" type="text" class="form-control form-control-sm @error('no_surat') is-invalid @enderror" value="{{ old('no_surat') }}">
@@ -158,6 +170,18 @@
         </div>
         @enderror
     </div>
+    @if (auth()->user()->jenis_ptt_id == 4)
+    <div class="position-relative form-group">
+        <label for="guru-mapel" class="font-weight-bold">Guru Mapel <small class="text-primary">*) contoh: Guru Matematika</small></label>
+        <input name="guru_mapel" id="guru-mapel" type="text" class="form-control form-control-sm @error('id_guru_mapel') is-invalid @enderror" value="{{ $mapel->guru_mapel }}" placeholder="ketikkan nama jabatan guru mapel kemudian pilih">
+        <input type="hidden" id="id-guru-mapel" name="id_guru_mapel" value="{{ $jab->id_guru_mapel }}"/>
+        @error('id_guru_mapel')
+        <div class="invalid-feedback">
+            {{ $message }}
+        </div>
+        @enderror
+    </div>
+@endif
     <div class="position-relative form-group">
         <label for="no_surat" class="font-weight-bold">Nomor Surat</label>
         <input name="no_surat" id="no_surat" type="text" class="form-control form-control-sm @error('no_surat') is-invalid @enderror" value="{{ $jab->no_surat }}">

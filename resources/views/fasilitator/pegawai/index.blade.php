@@ -28,7 +28,7 @@
            return false;
         },
     });
-</script> 
+</script>
 @endpush
 
 <x-app-layout>
