@@ -132,7 +132,7 @@
                             </div>
                             <div class="position-relative form-group">
                                 <label for="jenis-ptt" class="font-weight-bold">Jenis Pegawai</label>
-                                <select class="form-control form-control-sm @error('jenis_ptt') is-invalid @enderror" name="jenis_ptt" id="jenis-ptt">
+                                <select class="form-control form-control-sm @error('jenis_ptt') is-invalid @enderror" name="jenis_ptt" id="jenis-ptt" {{ auth()->user()->level != 'admin' ? 'disabled' : ''}}>
                                     @foreach ($ref_jenis_ptt as $id => $item)
                                         <option value="{{ $id }}" {{ ($id == $pegawai->jenis_ptt_id) ? 'selected' : '' }}>{{ $id . ' - ' . $item }}</option>
                                     @endforeach

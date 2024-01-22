@@ -48,7 +48,7 @@
                             </div>
                             <div class="position-relative form-group">
                                 <label for="skpd" class="font-weight-bold">Unit Kerja</label>
-                                <input id="citySel" name="skpd" class="form-control form-control-sm" type="text" readonly value="{{ $biodata->id_skpd . ' - ' . $skpd->name }}"/>
+                                <input id="citySel" name="skpd" class="form-control form-control-sm" type="text" disabled value="{{ $biodata->id_skpd . ' - ' . $skpd->name }}"/>
                             </div>
                             <div class="position-relative form-group">
                                 <label for="jenis-ptt" class="font-weight-bold">Jenis Pegawai</label>

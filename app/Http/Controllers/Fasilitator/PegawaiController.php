@@ -170,7 +170,11 @@ class PegawaiController extends Controller
                     $data->niptt = $request->niptt;
                 }
                 $data->nik = $request->nik;
-                $data->jenis_ptt_id = $request->jenis_ptt;
+
+                if (auth()->user()->level == 'admin') {
+                    $data->jenis_ptt_id = $request->jenis_ptt;
+                }
+                
                 $data->kk = $request->kk;
                 $data->no_bpjs = $request->no_bpjs;
                 $data->kelas_id = $request->kelas;
@@ -224,7 +228,11 @@ class PegawaiController extends Controller
                 $update->niptt = $request->niptt;
             }
             $update->nama = $request->nama;
-            $update->jenis_ptt = $ref_jenis_ptt->jenis_ptt;
+
+            if (auth()->user()->level == 'admin') {
+                $update->jenis_ptt = $ref_jenis_ptt->jenis_ptt;
+            }
+            
             $update->tempat_lahir = $request->tempat_lahir;
             $update->tgl_lahir = $request->thn_lahir;
             $update->jk = $request->jk;
@@ -248,7 +256,7 @@ class PegawaiController extends Controller
 
             return back()->with(["type" => "success", "message" => "berhasil diupdate!"]);
         } catch (\Throwable $th) {
-            // throw $th;
+            throw $th;
             DB::rollback();
             return back()->with(["type" => "error", "message" => "terjadi kesalahan!"]);
         }
