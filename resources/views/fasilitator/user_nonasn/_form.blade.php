@@ -1,7 +1,7 @@
 <div>
     <div class="position-relative form-group">
         <label for="username" class="font-weight-bold">Username</label>
-        <input name="niptt" id="username" type="text" class="form-control form-control-sm" value="{{ $user->niptt }}" readonly>
+        <input name="niptt" id="username" type="text" class="form-control form-control-sm" value="{{ $user->niptt }}" disabled>
      </div>
     <div class="position-relative form-group">
         <label for="password" class="font-weight-bold">Password</label>
@@ -15,7 +15,7 @@
     </div>
     <div class="position-relative form-group">
         <label for="nama" class="font-weight-bold">Nama Lengkap</label>
-        <input name="nama" id="nama-lengkap" type="text" class="form-control form-control-sm" value="{{ $user->nama }}" readonly>
+        <input name="nama" id="nama-lengkap" type="text" class="form-control form-control-sm" value="{{ $user->nama }}" disabled>
     </div>
     <div class="position-relative form-group">
         <label for="skpd" class="font-weight-bold">Unit Kerja</label>
@@ -23,7 +23,7 @@
             $idSkpd = $skpd->id ?? '';
             $skpdName = $skpd->name ?? '';
         @endphp
-        <input id="citySel" name="skpd" class="form-control form-control-sm" type="text" readonly  value="{{ $idSkpd . ' - ' . $skpdName }}"/>
+        <input id="citySel" name="skpd" class="form-control form-control-sm" type="text" disabled  value="{{ $idSkpd . ' - ' . $skpdName }}"/>
     </div>
     <div class="position-relative form-group">
         <label class="font-weight-bold">Blokir</label>

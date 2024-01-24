@@ -16,7 +16,7 @@
     </x-page-header>
     <x-card>
         <h5 class="card-title">Edit User Non ASN</h5>
-        <form id="form" method="post" action="{{ route('fasilitator.user-nonasn.update', $user->niptt) }}">
+        <form id="form" method="post" action="{{ route('fasilitator.user-nonasn.update', ['niptt' => $user->niptt]) }}">
             @csrf
             @method('put')
             @include('fasilitator.user_nonasn._form')
