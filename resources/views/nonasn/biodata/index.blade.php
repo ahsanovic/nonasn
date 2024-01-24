@@ -40,7 +40,7 @@
                             </div>
                             <div class="position-relative form-group">
                                 <label for="nama" class="font-weight-bold">Nama Lengkap</label>
-                                <input name="nama" id="nama" type="text" class="form-control form-control-sm" value="{{ $biodata->nama }}">
+                                <input name="nama" id="nama" type="text" class="form-control form-control-sm" value="{{ $biodata->nama }}" disabled>
                             </div>
                             <div class="position-relative form-group">
                                 <label for="niptt" class="font-weight-bold">NIPTT-PK (tanpa tanda "." dan "-")</label>

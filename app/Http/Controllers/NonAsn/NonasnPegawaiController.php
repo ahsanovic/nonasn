@@ -98,7 +98,7 @@ class NonasnPegawaiController extends Controller
             }
 
             if ($data) {
-                $data->nama = $request->nama;
+                // $data->nama = $request->nama;
                 $data->nik = $request->nik;
                 $data->kk = $request->kk;
                 $data->kelas_id = $request->kelas;
@@ -124,7 +124,7 @@ class NonasnPegawaiController extends Controller
 
             if (!$update) return back()->with(["type" => "error", "message" => "terjadi kesalahan!"]);
 
-            $update->nama = $request->nama;
+            // $update->nama = $request->nama;
             $update->tempat_lahir = $request->tempat_lahir;
             $update->tgl_lahir = $request->thn_lahir;
             $update->jk = $request->jk;
