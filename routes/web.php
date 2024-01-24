@@ -71,9 +71,9 @@ Route::prefix('fasilitator')->group(function() {
         Route::delete('user-fasilitator/{username}', [UserFasilitatorController::class, 'destroy'])->name('fasilitator.user.destroy')->middleware('role:admin');
         
         // user non asn
-        Route::get('user-nonasn', [UserNonAsnController::class, 'index'])->name('fasilitator.user-nonasn')->middleware('role:admin');
-        Route::get('user-nonasn/{username}/edit', [UserNonAsnController::class, 'edit'])->name('fasilitator.user-nonasn.edit')->middleware('role:admin');
-        Route::put('user-nonasn', [UserNonAsnController::class, 'update'])->name('fasilitator.user-nonasn.update')->middleware('role:admin');
+        Route::get('user-nonasn', [UserNonAsnController::class, 'index'])->name('fasilitator.user-nonasn');
+        Route::get('user-nonasn/{username}/edit', [UserNonAsnController::class, 'edit'])->name('fasilitator.user-nonasn.edit');
+        Route::put('user-nonasn', [UserNonAsnController::class, 'update'])->name('fasilitator.user-nonasn.update');
 
         // biodata
         Route::get('pegawai/{idSkpd}', [PegawaiController::class, 'index'])->name('fasilitator.pegawai');

@@ -179,6 +179,36 @@
                         </ul>
                     </li>
                     @endif
+
+                    @if (auth()->user()->level == 'user')
+                    <li class="app-sidebar__heading">Manajemen</li>
+                    <li class="
+                        {{ 
+                            (Request::is('fasilitator/user-fasilitator') or
+                            Request::is('fasilitator/user-nonasn'))
+                             ? 'mm-active' : ''
+                        }}
+                    ">
+                        <a href="#">
+                            <i class="metismenu-icon pe-7s-users"></i>
+                            User
+                            <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
+                        </a>
+                        <ul class="mm-collapse 
+                            {{ 
+                                Request::is('fasilitator/user-nonasn')
+                                ? 'mm-show' : ''
+                            }}"
+                        >
+                            <li>
+                                <a href="{{ route('fasilitator.user-nonasn') }}" class="{{ Request::is('fasilitator/user-nonasn') ? 'mm-active' : '' }}">
+                                    <i class="metismenu-icon">
+                                    </i>User Non ASN
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    @endif
                     <li class="app-sidebar__heading">Download</li>
                     <li>
                         <a href="{{ route('fasilitator.download-data-anak') }}" class="{{ Request::is('fasilitator/data-anak') ? 'mm-active' : '' }}">
