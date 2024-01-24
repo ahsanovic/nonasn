@@ -1,7 +1,36 @@
+@push('styles')
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" />
+@endpush
+
 @push('scripts')
     <script>
         $('#perPage').change(function() {
             $('#form').submit();
+        });
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script>
+        var url = "{{ route('fasilitator.user-nonasn.autocomplete') }}";
+        $("#search").autocomplete({
+            minLength: 3,
+            source: function(request, response) {
+              $.ajax({
+                url: url,
+                type: 'post',
+                dataType: "json",
+                data: {
+                    _token: $('meta[name="csrf-token"]').attr('content'),
+                   search: request.term,
+                },
+                success: function(data) {
+                   response(data);
+                }
+              });
+            },
+            select: function (event, ui) {
+               $('#search').val(ui.item.label);
+               return false;
+            },
         });
     </script>
 @endpush
@@ -37,7 +66,7 @@
                                     <div class="col-md-4">
                                         <label>niptt / nama lengkap</label>
                                         <div class="input-group">
-                                            <input type="text" name="user" id="user" class="form-control form-control-sm">
+                                            <input type="text" name="user" class="form-control form-control-sm" id="search" value="{{ request('nama', '') }}">
                                             <div class="input-group-append">
                                                 <button class="btn btn-success btn-sm btn-square btn-hover-shine" type="submit">Search</button>
                                             </div>

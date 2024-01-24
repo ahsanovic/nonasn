@@ -74,6 +74,7 @@ Route::prefix('fasilitator')->group(function() {
         Route::get('user-nonasn', [UserNonAsnController::class, 'index'])->name('fasilitator.user-nonasn');
         Route::get('user-nonasn/{username}/edit', [UserNonAsnController::class, 'edit'])->name('fasilitator.user-nonasn.edit');
         Route::put('user-nonasn', [UserNonAsnController::class, 'update'])->name('fasilitator.user-nonasn.update');
+        Route::post('user-nonasn/autocomplete', [UserNonAsnController::class, 'autocomplete'])->name('fasilitator.user-nonasn.autocomplete');
 
         // biodata
         Route::get('pegawai/{idSkpd}', [PegawaiController::class, 'index'])->name('fasilitator.pegawai');

@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers\Fasilitator;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\UserNonAsnRequest;
-use App\Models\NonAsn\UserNonAsn;
 use App\Models\Skpd;
+use App\Models\Biodata;
 use Illuminate\Http\Request;
+use App\Models\NonAsn\UserNonAsn;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
+use App\Http\Requests\UserNonAsnRequest;
 
 class UserNonAsnController extends Controller
 {
@@ -65,5 +66,26 @@ class UserNonAsnController extends Controller
             // throw $th;
             return back()->with(["type" => "error", "message" => "terjadi kesalahan!"]);
         }
+    }
+
+    public function autocomplete(Request $request)
+    {
+        $data = Biodata::whereAktif('Y')
+                ->where('id_skpd', 'like', auth()->user()->id_skpd . '%')
+                ->where(function($query) use ($request) {
+                    $query->where('nama', 'like', '%' . $request->search . '%')
+                        ->orWhere('niptt', 'like', $request->search . '%');
+                })
+                ->limit(10)
+                ->orderBy('nama')
+                ->get(['nama', 'niptt']);
+        
+        $res = [];
+        foreach ($data as $value) {
+            $res[] = [
+                'label' => $value->nama
+            ];
+        }
+        return response()->json($res);
     }
 }
