@@ -15,7 +15,7 @@ class UserNonAsnRequest extends FormRequest
     public function rules()
     {
         return [
-            'password' => ['min:8'],
+            'password' => ['min:8', 'regex:/^(?=.*[A-Z])(?=.*[0-9])/'],            
         ];
     }
 
@@ -31,6 +31,7 @@ class UserNonAsnRequest extends FormRequest
     {
         return [
             'password.min' => 'password minimal 8 karakter',
+            'password.regex' => 'password harus berupa kombinasi huruf kecil, huruf besar dan angka'
         ];
     }
 }

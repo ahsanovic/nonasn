@@ -17,14 +17,14 @@ class UserFasilitatorRequest extends FormRequest
         $rules = [
             'username' => ['required', 'min:4', 'unique:users,username'],
             'nama_lengkap' => ['required', 'string'],
-            'password' => ['required', 'min:8'],
+            'password' => ['required', 'min:8', 'regex:/^(?=.*[A-Z])(?=.*[0-9])/'],
             'email' => ['required', 'email'],
             'no_telp' => ['required', 'numeric'],
             'skpd' => ['required'],
         ];
 
         if (in_array($this->method(), ['PUT', 'PATCH'])) {
-            $rules['password'] = ['min:8'];
+            $rules['password'] = ['min:8', 'regex:/^(?=.*[A-Z])(?=.*[0-9])/'];
             $rules['username'] = [Rule::unique('users', 'username')->ignore($this->username, 'username')];
         }
 
@@ -48,6 +48,7 @@ class UserFasilitatorRequest extends FormRequest
             'nama_lengkap.required' => 'nama harus diisi',
             'password.required' => 'password harus diisi',
             'password.min' => 'password minimal 8 karakter',
+            'password.regex' => 'password harus berupa kombinasi huruf kecil, huruf besar dan angka',
             'email.required' => 'email harus diisi',
             'email.email' => 'format email harus benar',
             'no_telp.required' => 'no hp harus diisi',
