@@ -90,8 +90,8 @@ class NonasnPegawaiController extends Controller
             $data = Biodata::whereId_ptt($hashId->decode($request->id)[0])->first();
             if ($request->hasFile('foto')) {
                 $file = $this->_uploadFile($request->file('foto'));
-                if (public_path('upload_foto/' . $data->foto) && $data->foto != null && $data->foto != '') {
-                    unlink(public_path('upload_foto/' . $data->foto));
+                if (storage_path('app/upload_foto/' . $data->foto) && $data->foto != null && $data->foto != '') {
+                    unlink(storage_path('app/upload_foto/' . $data->foto));
                 }
             } else {
                 $file = $data->foto;

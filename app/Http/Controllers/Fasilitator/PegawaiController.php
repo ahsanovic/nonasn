@@ -156,8 +156,8 @@ class PegawaiController extends Controller
             $data = Biodata::whereId_ptt($hashidPegawai->decode($request->id)[0])->first();
 
             if ($request->hasFile('foto')) {
-                if (File::exists(public_path('upload_foto/' . $data->foto)) && $data->foto != null && $data->foto != '') {
-                    unlink(public_path('upload_foto/' . $data->foto));
+                if (File::exists(storage_path('app/upload_foto/' . $data->foto)) && $data->foto != null && $data->foto != '') {
+                    unlink(storage_path('app/upload_foto/' . $data->foto));
                 }
                 $file = $this->_uploadFile($request->file('foto'));
             } else {
