@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Hash;
 class UserFasilitatorController extends Controller
 {
     public function index(Request $request)
-    {
+    {        
         $per_page = $request->perPage ?? 10;
         $users = UserFasilitator::with('skpd')
                 ->select('username','id_skpd','no_telp','nama_lengkap','level','blokir')
@@ -21,6 +21,7 @@ class UserFasilitatorController extends Controller
                             ->orWhere('nama_lengkap', 'like', '%'.$request->user.'%');
                 })
                 ->paginate($per_page);
+
         return view('fasilitator.user.index', compact('users', 'per_page'));
     }
 
