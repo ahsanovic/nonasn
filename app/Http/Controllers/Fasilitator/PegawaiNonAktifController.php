@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Fasilitator;
 
+use App\Models\Skpd;
 use App\Models\Biodata;
 use Illuminate\Http\Request;
+use App\Models\DokumenPribadi;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Models\Fasilitator\DownloadPegawai;
@@ -49,16 +51,47 @@ class PegawaiNonAktifController extends Controller
     {
         DB::beginTransaction();
         try {
-            $data = Biodata::whereNiptt($request->niptt)->first(['id_ptt']);
+            $data = Biodata::whereNiptt($request->niptt)->first(['id_ptt', 'jenis_ptt_id', 'niptt', 'nama', 'id_skpd', 'alamat']);
             Biodata::whereNiptt($request->niptt)->update(['aktif' => 'Y', 'blokir' => 'N']);
 
             // update table download
             $update = DownloadPegawai::whereNiptt($request->niptt)->first();
 
-            if (!$update) return back()->with(["type" => "error", "message" => "terjadi kesalahan!"]);
+            // if (!$update) return back()->with(["type" => "error", "message" => "terjadi kesalahan!"]);
 
-            $update->aktif = 'Y';
-            $update->save();
+            // $update->aktif = 'Y';
+            // $update->save();
+
+            if ($update) {
+                $update->aktif = 'Y';
+                $update->save();
+            } else {
+                $unor = Skpd::whereId($data->id_skpd)->first(['name']);
+                $unit_kerja = $unor->name;
+
+                if ($data->id_skpd > 3) {
+                    $skpd = Skpd::whereId(substr($data->id_skpd,0,3))->first(['name']);
+                    $skpd = $skpd->name;
+                } else {
+                    $skpd = $unor->name;
+                }
+
+                DownloadPegawai::create([
+                    'id_ptt' => $data->id_ptt,
+                    'niptt' => $data->niptt,
+                    'nama' => $data->nama,
+                    'jenis_ptt' => 'PTT-PK',
+                    'alamat' => $data->alamat,
+                    'id_skpd' => $data->id_skpd,
+                    'unit_kerja' => $unit_kerja,
+                    'skpd' => $skpd,
+                    'aktif' => 'Y'
+                ]);
+            }
+
+            DokumenPribadi::create([
+                'id_ptt' => $data->id_ptt,
+            ]);
 
             DB::commit();
 
