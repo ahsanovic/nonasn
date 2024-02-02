@@ -132,7 +132,7 @@ class AnakController extends Controller
 
         $pekerjaan = RefPekerjaanAnak::pluck('pekerjaan', 'pekerjaan_id');
 
-        $ortu = SuamiIstri::whereId_ptt($idPegawai)->first();
+        $ortu = SuamiIstri::whereId_ptt($idPegawai)->whereAktif('Y')->first();
 
         $kelas = RefKelasBpjs::pluck('kelas', 'id');
 
@@ -210,7 +210,7 @@ class AnakController extends Controller
 
         $pekerjaan = RefPekerjaanAnak::pluck('pekerjaan', 'pekerjaan_id');
 
-        $ortu = SuamiIstri::whereId_ptt($idPegawai)->first();
+        $ortu = SuamiIstri::whereId_ptt($idPegawai)->whereAktif('Y')->first();
 
         $kelas = RefKelasBpjs::pluck('kelas', 'id');
 

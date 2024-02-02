@@ -66,7 +66,7 @@ class NonasnAnakController extends Controller
 
         $pekerjaan = RefPekerjaanAnak::pluck('pekerjaan', 'pekerjaan_id');
 
-        $ortu = SuamiIstri::whereId_ptt(auth()->user()->id_ptt)->first();
+        $ortu = SuamiIstri::whereId_ptt(auth()->user()->id_ptt)->whereAktif('Y')->first();
 
         $kelas = RefKelasBpjs::pluck('kelas', 'id');
 
@@ -109,7 +109,7 @@ class NonasnAnakController extends Controller
 
         $pekerjaan = RefPekerjaanAnak::pluck('pekerjaan', 'pekerjaan_id');
 
-        $ortu = SuamiIstri::whereId_ptt(auth()->user()->id_ptt)->first();
+        $ortu = SuamiIstri::whereId_ptt(auth()->user()->id_ptt)->whereAktif('Y')->first();
 
         $kelas = RefKelasBpjs::pluck('kelas', 'id');
 
