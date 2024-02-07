@@ -60,34 +60,44 @@ class NonasnPendidikanSmaController extends Controller
 
     private function _uploadFileIjazah($file)
     {
-        $filenameWithExt = $file->getClientOriginalName();
-        // Get only filename without extension
-        $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
-        // Get extension
-        $extension = $file->getClientOriginalExtension();
-        // Give a new name
-        $time = date('YmdHis', time());
-        $filenameToStore = $time . '-' . uniqid() . '.' . $extension;
-        // Upload file
-        Storage::disk('local')->put('/upload_ijazah/' . $filenameToStore, File::get($file));
-
-        return $filenameToStore;
+        try {
+            $filenameWithExt = $file->getClientOriginalName();
+            // Get only filename without extension
+            $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+            // Get extension
+            $extension = $file->getClientOriginalExtension();
+            // Give a new name
+            $time = date('YmdHis', time());
+            $filenameToStore = $time . '-' . uniqid() . '.' . $extension;
+            // Upload file
+            Storage::disk('local')->put('/upload_ijazah/' . $filenameToStore, File::get($file));
+    
+            return $filenameToStore;
+        } catch (\Throwable $th) {
+            throw $th;
+            return back()->with(["type" => "error", "message" => "gagal upload file!"]);
+        }
     }
 
     private function _uploadFileTranskrip($file)
     {
-        $filenameWithExt = $file->getClientOriginalName();
-        // Get only filename without extension
-        $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
-        // Get extension
-        $extension = $file->getClientOriginalExtension();
-        // Give a new name
-        $time = date('YmdHis', time());
-        $filenameToStore = $time . '-' . uniqid() . '.' . $extension;
-        // Upload file
-        Storage::disk('local')->put('/upload_transkrip/' . $filenameToStore, File::get($file));
-
-        return $filenameToStore;
+        try {
+            $filenameWithExt = $file->getClientOriginalName();
+            // Get only filename without extension
+            $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+            // Get extension
+            $extension = $file->getClientOriginalExtension();
+            // Give a new name
+            $time = date('YmdHis', time());
+            $filenameToStore = $time . '-' . uniqid() . '.' . $extension;
+            // Upload file
+            Storage::disk('local')->put('/upload_transkrip/' . $filenameToStore, File::get($file));
+    
+            return $filenameToStore;
+        } catch (\Throwable $th) {
+            throw $th;
+            return back()->with(["type" => "error", "message" => "gagal upload file!"]);
+        }
     }
 
     public function create()
@@ -151,17 +161,21 @@ class NonasnPendidikanSmaController extends Controller
             
             if ($request->hasFile('file_ijazah_sma')) {
                 $file_ijazah_sma = $this->_uploadFileIjazah($request->file('file_ijazah_sma'));
-                if (Storage::disk('local')->exists('/upload_ijazah/' . $data->file) && $data->file_ijazah_sma != null) {
+                if (Storage::disk('local')->exists('/upload_ijazah/' . $data->file_ijazah_sma) && $data->file_ijazah_sma != null) {
                     unlink(storage_path('app/upload_ijazah/' . $data->file_ijazah_sma));
+                } else {
+                    $file_ijazah_sma = $file_ijazah_sma;
                 }
             } else {
                 $file_ijazah_sma = $data->file_ijazah_sma;
             }
 
             if ($request->hasFile('file_nilai_sma')) {
-                $file_nilai_sma = $this->_uploadFileTranskrip($request->file('file_nilai_sma') && $data->file_nilai_sma != null);
-                if (Storage::disk('local')->exists('/upload_transkrip/' . $data->file)) {
+                $file_nilai_sma = $this->_uploadFileTranskrip($request->file('file_nilai_sma'));
+                if (Storage::disk('local')->exists('/upload_transkrip/' . $data->file_nilai_sma) && $data->file_nilai_sma != null) {
                     unlink(storage_path('app/upload_transkrip/' . $data->file_nilai_sma));
+                } else {
+                    $file_nilai_sma = $file_nilai_sma;
                 }
             } else {
                 $file_nilai_sma = $data->file_nilai_sma;
@@ -211,6 +225,7 @@ class NonasnPendidikanSmaController extends Controller
 
             return redirect()->route('nonasn.pendidikan-sma')->with(["type" => "success", "message" => "berhasil diubah!"]);
         } catch (\Throwable $th) {
+            throw $th;
             DB::rollBack();
             return back()->with(["type" => "error", "message" => "terjadi kesalahan!"]);
         }
@@ -294,9 +309,23 @@ class NonasnPendidikanSmaController extends Controller
                 }
             }
 
-            if ($data->file_ijazah_sma) unlink(storage_path('app/upload_ijazah/' . $data->file_ijazah_sma));
-            if ($data->file_nilai_sma) unlink(storage_path('app/upload_transkrip/' . $data->file_nilai_sma));
-            $data->delete();
+            // if ($data->file_ijazah_sma) unlink(storage_path('app/upload_ijazah/' . $data->file_ijazah_sma));
+            // if ($data->file_nilai_sma) unlink(storage_path('app/upload_transkrip/' . $data->file_nilai_sma));
+            // $data->delete();
+
+            if ($data->file_ijazah_sma && Storage::disk('local')->exists('/upload_ijazah/' . $data->file_ijazah_sma)) {
+                unlink(storage_path('app/upload_ijazah/' . $data->file_ijazah_sma));
+                $data->delete();
+            } else {
+                $data->delete();
+            }
+
+            if ($data->file_nilai_sma && Storage::disk('local')->exists('/upload_transkrip/' . $data->file_nilai_sma)) {
+                unlink(storage_path('app/upload_transkrip/' . $data->file_nilai_sma));
+                $data->delete();
+            } else {
+                $data->delete();
+            }  
 
             DB::commit();
 

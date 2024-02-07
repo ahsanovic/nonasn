@@ -266,8 +266,10 @@ class PendidikanSmaController extends Controller
             
             if ($request->hasFile('file_ijazah_sma')) {
                 $file_ijazah_sma = $this->_uploadFileIjazah($request->file('file_ijazah_sma'));
-                if (Storage::disk('local')->exists('/upload_ijazah/' . $data->file) && $data->file_ijazah_sma != null) {
+                if (Storage::disk('local')->exists('/upload_ijazah/' . $data->file_ijazah_sma) && $data->file_ijazah_sma != null) {
                     unlink(storage_path('app/upload_ijazah/' . $data->file_ijazah_sma));
+                } else {
+                    $file_ijazah_sma = $file_ijazah_sma;
                 }
             } else {
                 $file_ijazah_sma = $data->file_ijazah_sma;
@@ -275,8 +277,10 @@ class PendidikanSmaController extends Controller
 
             if ($request->hasFile('file_nilai_sma')) {
                 $file_nilai_sma = $this->_uploadFileTranskrip($request->file('file_nilai_sma'));
-                if (Storage::disk('local')->exists('/upload_transkrip/' . $data->file) && $data->file_nilai_sma != null) {
+                if (Storage::disk('local')->exists('/upload_transkrip/' . $data->file_nilai_sma) && $data->file_nilai_sma != null) {
                     unlink(storage_path('app/upload_transkrip/' . $data->file_nilai_sma));
+                } else {
+                    $file_nilai_sma = $file_nilai_sma;
                 }
             } else {
                 $file_nilai_sma = $data->file_nilai_sma;
@@ -411,9 +415,23 @@ class PendidikanSmaController extends Controller
                 }
             }
 
-            if ($data->file_ijazah_sma) unlink(storage_path('app/upload_ijazah/' . $data->file_ijazah_sma));
-            if ($data->file_nilai_sma) unlink(storage_path('app/upload_transkrip/' . $data->file_nilai_sma));
-            $data->delete();
+            // if ($data->file_ijazah_sma) unlink(storage_path('app/upload_ijazah/' . $data->file_ijazah_sma));
+            // if ($data->file_nilai_sma) unlink(storage_path('app/upload_transkrip/' . $data->file_nilai_sma));
+            // $data->delete();
+
+            if ($data->file_ijazah_sma && Storage::disk('local')->exists('/upload_ijazah/' . $data->file_ijazah_sma)) {
+                unlink(storage_path('app/upload_ijazah/' . $data->file_ijazah_sma));
+                $data->delete();
+            } else {
+                $data->delete();
+            }
+
+            if ($data->file_nilai_sma && Storage::disk('local')->exists('/upload_transkrip/' . $data->file_nilai_sma)) {
+                unlink(storage_path('app/upload_transkrip/' . $data->file_nilai_sma));
+                $data->delete();
+            } else {
+                $data->delete();
+            } 
 
             DB::commit();
 
