@@ -31,7 +31,7 @@ class NonasnJabatanController extends Controller
 
     public function treeview()
     {
-        $jabatan = RefJabatan::orderBy('id_jabatan')->get();
+        $jabatan = RefJabatan::where('id_jabatan', 'like', '15%')->orWhere('id_jabatan', 'like', '16%')->orderBy('id_jabatan')->get();
         $tree = [];
         foreach ($jabatan as $jab) {
             $array = [
