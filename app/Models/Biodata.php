@@ -9,6 +9,7 @@ use App\Models\RefAgama;
 use App\Models\RefJenisPtt;
 use App\Models\RefKawin;
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class Biodata extends Model
 {
@@ -23,10 +24,16 @@ class Biodata extends Model
         return 'idSkpd';
     }
 
-    protected function setNamaAttribute($value)
+    public function getAge()
     {
-        $this->attributes['nama'] = strtoupper($value);
+        [$thn, $bln, $tgl] = explode('-', $this->attributes['thn_lahir']);
+        return Carbon::createFromDate($thn, $bln, $tgl)->diff(Carbon::now())->format('%y tahun %m bulan %d hari');
     }
+
+    // protected function setNamaAttribute($value)
+    // {
+    //     $this->attributes['nama'] = strtoupper($value);
+    // }
     
     protected function setThnLahirAttribute($value)
     {

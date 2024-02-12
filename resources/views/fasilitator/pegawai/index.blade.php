@@ -84,7 +84,7 @@
             <div class="col-md-12 col-lg-6 col-xl-3">
                 <div class="card-shadow-primary card-border mb-3 card">
                     <div class="dropdown-menu-header">
-                        <div class="dropdown-menu-header-inner bg-success">
+                        <div class="dropdown-menu-header-inner bg-primary">
                             {{-- <div class="menu-header-image" style="background-image: url({{ asset('assets/images/dropdown-header/abstract2.jpg'); }})"></div> --}}
                             <div class="menu-header-content">
                                 <div class="avatar-icon-wrapper avatar-icon-xl">
@@ -130,6 +130,11 @@
                                 <div>
                                     <small class="opacity-7">
                                         {{ $item->jenisPtt->jenis_ptt ?? '' }}
+                                    </small>
+                                </div>
+                                <div>
+                                    <small class="opacity-7">
+                                        {{ $item->getAge() }}
                                     </small>
                                 </div>
                             </div>
