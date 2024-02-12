@@ -222,7 +222,7 @@
         <label for="kelas" class="font-weight-bold">Akreditasi</label>
         <select class="form-control form-control-sm @error('akreditasi_pt') is-invalid @enderror" name="akreditasi_pt">
             @foreach ($akreditasi as $id => $item)
-                <option value="{{ $item }}" {{ $data->akreditasi == $item ? 'selected' : '' }}>{{ $item }}</option>
+                <option value="{{ $item }}" {{ $data->akreditasi_pt == $item ? 'selected' : '' }}>{{ $item }}</option>
             @endforeach
         </select>
         @error('akreditasi_pt')
