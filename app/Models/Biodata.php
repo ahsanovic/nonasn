@@ -26,8 +26,10 @@ class Biodata extends Model
 
     public function getAge()
     {
-        [$thn, $bln, $tgl] = explode('-', $this->attributes['thn_lahir']);
-        return Carbon::createFromDate($thn, $bln, $tgl)->diff(Carbon::now())->format('%y tahun %m bulan %d hari');
+        if ($this->attributes['thn_lahir'] != null) {
+            [$thn, $bln, $tgl] = explode('-', $this->attributes['thn_lahir']);
+            return Carbon::createFromDate($thn, $bln, $tgl)->diff(Carbon::now())->format('%y tahun %m bulan %d hari');
+        }
     }
 
     // protected function setNamaAttribute($value)
