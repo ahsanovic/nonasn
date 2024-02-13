@@ -84,7 +84,8 @@ class PegawaiController extends Controller
                     // ->where('id_skpd', 'like', $this->hashidSkpd->decode($request->segment(3))[0] . '%')
                     ->when($request->nama, function($query) use ($request) {
                         $query->where('nama', 'like', '%' . $request->nama . '%')
-                                ->orWhere('niptt', 'like', $request->nama . '%');
+                                ->orWhere('niptt', 'like', $request->nama . '%')
+                                ->where('aktif', 'Y');
                     })
                     ->orderBy('id_ptt')
                     ->paginate(12);
@@ -256,7 +257,7 @@ class PegawaiController extends Controller
 
             return back()->with(["type" => "success", "message" => "berhasil diupdate!"]);
         } catch (\Throwable $th) {
-            throw $th;
+            //throw $th;
             DB::rollback();
             return back()->with(["type" => "error", "message" => "terjadi kesalahan!"]);
         }
