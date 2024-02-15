@@ -147,7 +147,7 @@ Route::prefix('fasilitator')->group(function() {
         Route::get('pegawai/{idSkpd}/dok-pribadi/{id}', [DokumenPribadiController::class, 'index'])->name('fasilitator.dok-pribadi');
         Route::get('pegawai/{idSkpd}/dok-pribadi/{id}/edit/{idDokumen}/{field}', [DokumenPribadiController::class, 'edit'])->name('fasilitator.dok-pribadi.edit');
         Route::put('pegawai/{idSkpd}/dok-pribadi/{id}', [DokumenPribadiController::class, 'update'])->name('fasilitator.dok-pribadi.update');
-        // Route::delete('dok-pribadi/{id}', [DokumenPribadiController::class, 'destroy'])->name('fasilitator.dok-pribadi.destroy');
+        Route::delete('dok-pribadi/{idPtt}/{field}', [DokumenPribadiController::class, 'destroy'])->name('fasilitator.dok-pribadi.destroy');
         Route::get('dok-pribadi/{file}', [DokumenPribadiController::class, 'viewFile'])->name('dok-pribadi.file');
 
         // unit kerja

@@ -225,4 +225,41 @@ class DokumenPribadiController extends Controller
             ->route('fasilitator.dok-pribadi', ['idSkpd' => $request->segment(3), 'id' => $request->segment(5)])
             ->with(["type" => "success", "message" => "berhasil diubah!"]);
     }
+
+    public function destroy(Request $request, $id)
+    {
+        try {
+            $data = DokumenPribadi::whereId_ptt($this->hashid->decode($id)[0])->first();
+   
+            if ($request->field == 'file_ktp') {
+                if ($data->file_ktp == null) return back()->with(["type" => "error", "message" => "tidak ada data yang dihapus"]);
+                if (Storage::disk('local')->exists('/upload_dok_pribadi/' . $data->file_ktp) && $data->file_ktp != null) {
+                    unlink(storage_path('app/upload_dok_pribadi/' . $data->file_ktp));
+                    $data->file_ktp = null;
+                    $data->updated_at_file_ktp = date('Y-m-d H:i:s');
+                    $data->save();
+                }
+            } else if ($request->field == 'file_bpjs') {
+                if ($data->file_bpjs == null) return back()->with(["type" => "error", "message" => "tidak ada data yang dihapus"]);
+                if (Storage::disk('local')->exists('/upload_dok_pribadi/' . $data->file_bpjs) && $data->file_bpjs != null) {
+                    unlink(storage_path('app/upload_dok_pribadi/' . $data->file_bpjs));
+                    $data->file_bpjs = null;
+                    $data->updated_at_file_bpjs = date('Y-m-d H:i:s');
+                    $data->save();
+                }
+            } else if ($request->field == 'file_bpjs_naker') {
+                if ($data->file_bpjs_naker == null) return back()->with(["type" => "error", "message" => "tidak ada data yang dihapus"]);
+                if (Storage::disk('local')->exists('/upload_dok_pribadi/' . $data->file_bpjs_naker) && $data->file_bpjs_naker != null) {
+                    unlink(storage_path('app/upload_dok_pribadi/' . $data->file_bpjs_naker));
+                    $data->file_bpjs_naker = null;
+                    $data->updated_at_file_bpjs_naker = date('Y-m-d H:i:s');
+                    $data->save();
+                }
+            }
+
+            return back()->with(["type" => "success", "message" => "berhasil dihapus!"]);
+        } catch (\Throwable $th) {
+            return back()->with(["type" => "error", "message" => "terjadi kesalahan!"]);
+        }
+    }
 }

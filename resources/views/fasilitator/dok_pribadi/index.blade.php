@@ -1,3 +1,22 @@
+@push('scripts')
+<script>
+    function deleteRow(field) {
+        Swal.fire({
+            title: 'Yakin akan menghapus data?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Hapus'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $('#form-delete-' + field).submit();
+            }
+        })
+    }
+</script>
+@endpush
+
 <x-app-layout>
     <x-page-header>
         <div>
@@ -88,6 +107,22 @@
                                                     >
                                                         <i class="fa fa-edit"></i>
                                                     </a>
+                                                    <form
+                                                        id="form-delete-{{ $item->field }}"
+                                                        method="post"
+                                                        action="{{ route('fasilitator.dok-pribadi.destroy', ['idPtt' => $hashid->encode($pegawai->id_ptt), 'field' => $item->field]) }}"
+                                                    >
+                                                        @csrf
+                                                        @method('delete')
+                                                    </form>
+                                                    <button
+                                                        class="btn btn-sm btn-outline-danger"
+                                                        onclick="deleteRow('{{ $item->field }}')"
+                                                        tabindex="0"
+                                                        class="dropdown-item"
+                                                    >
+                                                        <i class="fa fa-trash"></i>
+                                                    </button>
                                                 </div>
                                             </td>
                                         </tr>
