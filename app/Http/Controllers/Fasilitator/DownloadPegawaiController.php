@@ -42,7 +42,7 @@ class DownloadPegawaiController extends Controller
                         ->get()->makeHidden(['tahun_penilaian', 'rekomendasi']);
                 } else {
                     $pegawai = DownloadPegawai::whereAktif('Y')
-                            ->where('nama', $request->query('nama'))
+                            ->where('nama', 'like', '%' . $request->query('nama') . '%')
                             ->orWhere('niptt', $request->query('nama'))
                             ->get()->makeHidden(['tahun_penilaian', 'rekomendasi']);
                 }                
