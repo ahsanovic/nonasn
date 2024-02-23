@@ -28,7 +28,8 @@ class NonasnLoginController extends Controller
         $credentials = [
             'niptt' => $request->niptt,
             'password' => $request->password,
-            'blokir' => 'N'
+            'blokir' => 'N',
+            'aktif' => 'Y',
         ];
 
         if (!Auth::guard('nonasn')->attempt($credentials)) {

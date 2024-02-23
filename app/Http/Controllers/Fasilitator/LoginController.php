@@ -28,7 +28,8 @@ class LoginController extends Controller
         $credentials = [
             'username' => $request->username,
             'password' => $request->password,
-            'blokir' => 'N'
+            'blokir' => 'N',
+            'aktif' => 'Y',
         ];
 
         if (!Auth::guard('fasilitator')->attempt($credentials)) {
