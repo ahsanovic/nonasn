@@ -57,11 +57,6 @@ class PegawaiNonAktifController extends Controller
             // update table download
             $update = DownloadPegawai::whereNiptt($request->niptt)->first();
 
-            // if (!$update) return back()->with(["type" => "error", "message" => "terjadi kesalahan!"]);
-
-            // $update->aktif = 'Y';
-            // $update->save();
-
             if ($update) {
                 $update->aktif = 'Y';
                 $update->save();
@@ -76,11 +71,27 @@ class PegawaiNonAktifController extends Controller
                     $skpd = $unor->name;
                 }
 
+                // not sure if its working, not tested yet
+                switch ($data->jenis_ptt_id) {
+                    case '1':
+                        $jenis_ptt = 'PTT-PK';
+                        break;
+                    case '2':
+                        $jenis_ptt = 'PTT CABDIN';
+                        break;
+                    case '3':
+                        $jenis_ptt = 'PTT-SEKOLAH';
+                        break;
+                    case '4':
+                        $jenis_ptt = 'GTT';
+                        break;
+                }
+
                 DownloadPegawai::create([
                     'id_ptt' => $data->id_ptt,
                     'niptt' => $data->niptt,
                     'nama' => $data->nama,
-                    'jenis_ptt' => 'PTT-PK',
+                    'jenis_ptt' => $jenis_ptt,
                     'alamat' => $data->alamat,
                     'id_skpd' => $data->id_skpd,
                     'unit_kerja' => $unit_kerja,
