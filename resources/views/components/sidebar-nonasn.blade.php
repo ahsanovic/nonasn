@@ -102,6 +102,12 @@
                             </i>Penilaian
                         </a>
                     </li>
+                    <li>
+                        <a href="{{ route('nonasn.dok-narkoba') }}" class="{{ Request::segment(1) == 'dok-narkoba' ? 'mm-active' : '' }}">
+                            <i class="metismenu-icon pe-7s-check">
+                            </i>Dokumen Tes Narkoba
+                        </a>
+                    </li>
                     <li class="app-sidebar__heading">Simulasi</li>
                     <li>
                         <a href="{{ route('nonasn.simulasi.cpns') }}" class="{{ Request::is('simulasi-cpns') ? 'mm-active' : '' }}">

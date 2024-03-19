@@ -25,6 +25,7 @@ use App\Http\Controllers\Fasilitator\{
     UnitKerjaController,
     LogFasilitatorController,
     LogNonAsnController,
+    StatsGuruMapelController,
     UpdatePasswordController
 };
 use App\Http\Controllers\NonAsn\{
@@ -40,6 +41,7 @@ use App\Http\Controllers\NonAsn\{
     NonasnPenilaianController,
     NonasnPendidikanSmaController,
     NonasnDokumenPribadiController,
+    NonasnDokumenTesNarkobaController,
     NonasnSimulasiCpnsController,
     NonasnSimulasiPppkController,
     NonasnUpdatePasswordController,
@@ -166,6 +168,8 @@ Route::prefix('fasilitator')->group(function() {
         Route::get('stats-agama/unor', [StatsAgamaController::class, 'unor'])->name('stats-agama.unor');
         Route::get('stats-pendidikan', [StatsPendidikanController::class, 'index'])->name('stats.pendidikan');
         Route::get('stats-pendidikan/unor', [StatsPendidikanController::class, 'unor'])->name('stats-pendidikan.unor');
+        Route::get('stats-gurumapel', [StatsGuruMapelController::class, 'index'])->name('stats.gurumapel');
+        Route::get('stats-gurumapel/unor', [StatsGuruMapelController::class, 'unor'])->name('stats-gurumapel.unor');
 
         // aktivasi/deaktivasi
         Route::get('pegawai-nonaktif', [PegawaiNonAktifController::class, 'index'])->name('fasilitator.pegawai-nonaktif')->middleware('role:admin');
@@ -278,6 +282,16 @@ Route::middleware(['auth:nonasn', 'revalidate'])->group(function() {
     Route::get('dok-pribadi/{id}/edit/{field}', [NonasnDokumenPribadiController::class, 'edit'])->name('nonasn.dok-pribadi.edit');
     Route::put('dok-pribadi/{id}', [NonasnDokumenPribadiController::class, 'update'])->name('nonasn.dok-pribadi.update');
     Route::get('dok-pribadi/{file}', [NonasnDokumenPribadiController::class, 'viewFile'])->name('nonasn.dok-pribadi.file');
+
+    // dokumen tes narkoba
+    Route::get('dok-narkoba', [NonasnDokumenTesNarkobaController::class, 'index'])->name('nonasn.dok-narkoba');
+    Route::get('dok-narkoba/create', [NonasnDokumenTesNarkobaController::class, 'create'])->name('nonasn.dok-narkoba.create');
+    Route::post('dok-narkoba', [NonasnDokumenTesNarkobaController::class, 'store'])->name('nonasn.dok-narkoba.store');
+    Route::get('dok-narkoba/{id}/edit', [NonasnDokumenTesNarkobaController::class, 'edit'])->name('nonasn.dok-narkoba.edit');
+    Route::put('dok-narkoba/{id}', [NonasnDokumenTesNarkobaController::class, 'update'])->name('nonasn.dok-narkoba.update');
+    Route::put('dok-narkoba/{id}/activate', [NonasnDokumenTesNarkobaController::class, 'activate'])->name('nonasn.dok-narkoba.activate');
+    Route::delete('dok-narkoba/{id}', [NonasnDokumenTesNarkobaController::class, 'destroy'])->name('nonasn.dok-narkoba.destroy');
+    Route::get('dok-narkoba/{file}', [NonasnDokumenTesNarkobaController::class, 'viewFile'])->name('nonasn.dok-narkoba.file');
 
     // simulasi tes cpns
     Route::prefix('simulasi-cpns')->group(function() {
