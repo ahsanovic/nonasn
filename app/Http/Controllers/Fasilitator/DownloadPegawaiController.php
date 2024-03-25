@@ -49,14 +49,35 @@ class DownloadPegawaiController extends Controller
                 }
             } else {
                 if (!$request->query('nama')) {
-                    $pegawai = DownloadPegawai::whereAktif('Y')
+                    // $pegawai = DownloadPegawai::whereAktif('Y')
+                    //     ->where('id_skpd', 'like', $hashid->decode($request->segment(3))[0] . '%')
+                    //     ->get()->makeHidden(['tahun_penilaian', 'rekomendasi']);
+                    $pegawai = DB::table('download')
+                        ->select('*', DB::raw('timestampdiff(year, tgl_lahir, curdate()) as usia'))
                         ->where('id_skpd', 'like', $hashid->decode($request->segment(3))[0] . '%')
-                        ->get()->makeHidden(['tahun_penilaian', 'rekomendasi']);
+                        ->where('aktif', 'Y')
+                        ->get()
+                        ->map(function($peg) {
+                            unset($peg->tahun_penilaian);
+                            unset($peg->rekomendasi);
+                            return $peg;
+                        });
                 } else {
-                    $pegawai = DownloadPegawai::whereAktif('Y')
+                    // $pegawai = DownloadPegawai::whereAktif('Y')
+                    //         ->where('nama', 'like', '%' . $request->query('nama') . '%')
+                    //         ->orWhere('niptt', $request->query('nama'))
+                    //         ->get()->makeHidden(['tahun_penilaian', 'rekomendasi']);
+                    $pegawai = DB::table('download')
+                            ->select('*', DB::raw('timestampdiff(year, tgl_lahir, curdate()) as usia'))
+                            ->where('aktif', 'Y')
                             ->where('nama', 'like', '%' . $request->query('nama') . '%')
                             ->orWhere('niptt', $request->query('nama'))
-                            ->get()->makeHidden(['tahun_penilaian', 'rekomendasi']);
+                            ->get()
+                            ->map(function($peg) {
+                                unset($peg->tahun_penilaian);
+                                unset($peg->rekomendasi);
+                                return $peg;
+                            });
                 }                
             }
             return (new FastExcel($pegawai))->download('data-pegawai.xlsx');
