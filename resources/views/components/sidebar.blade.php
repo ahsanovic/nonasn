@@ -63,12 +63,22 @@
                         </a>
                         <a href="{{ route('stats.agama') }}" class="{{ Request::is('fasilitator/stats-agama') ? 'mm-active' : '' }}">
                             <i class="metismenu-icon pe-7s-graph">
-                            </i>Pegawai by Agama
+                            </i>Agama
                         </a>
                         <a href="{{ route('stats.pendidikan') }}" class="{{ Request::is('fasilitator/stats-pendidikan') ? 'mm-active' : '' }}">
                             <i class="metismenu-icon pe-7s-graph">
-                            </i>Pegawai by Pendidikan
+                            </i>Pendidikan
                         </a>
+                        <a href="{{ route('stats.usia') }}" class="{{ Request::is('fasilitator/stats-usia') ? 'mm-active' : '' }}">
+                            <i class="metismenu-icon pe-7s-graph">
+                            </i>Usia
+                        </a>
+                        @if (auth()->user()->level == 'admin')
+                        <a href="{{ route('stats.gurumapel') }}" class="{{ Request::is('fasilitator/stats-gurumapel') ? 'mm-active' : '' }}">
+                            <i class="metismenu-icon pe-7s-graph">
+                            </i>Guru Mapel
+                        </a>
+                        @endif
                     </li>
 
                     @if (auth()->user()->level == 'admin')

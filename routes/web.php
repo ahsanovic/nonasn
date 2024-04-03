@@ -26,7 +26,8 @@ use App\Http\Controllers\Fasilitator\{
     LogFasilitatorController,
     LogNonAsnController,
     StatsGuruMapelController,
-    UpdatePasswordController
+    UpdatePasswordController,
+    StatsUsiaController,
 };
 use App\Http\Controllers\NonAsn\{
     NonasnKunciCpnsController,
@@ -169,7 +170,8 @@ Route::prefix('fasilitator')->group(function() {
         Route::get('stats-pendidikan', [StatsPendidikanController::class, 'index'])->name('stats.pendidikan');
         Route::get('stats-pendidikan/unor', [StatsPendidikanController::class, 'unor'])->name('stats-pendidikan.unor');
         Route::get('stats-gurumapel', [StatsGuruMapelController::class, 'index'])->name('stats.gurumapel');
-        Route::get('stats-gurumapel/unor', [StatsGuruMapelController::class, 'unor'])->name('stats-gurumapel.unor');
+        Route::get('stats-gurumapel/unor', [StatsGuruMapelController::class, 'unor'])->name('stats-gurumapel.unor');        
+        Route::get('stats-usia', StatsUsiaController::class)->name('stats.usia');
 
         // aktivasi/deaktivasi
         Route::get('pegawai-nonaktif', [PegawaiNonAktifController::class, 'index'])->name('fasilitator.pegawai-nonaktif')->middleware('role:admin');
@@ -185,7 +187,7 @@ Route::prefix('fasilitator')->group(function() {
 
         // download
         Route::post('download-pegawai/{idSkpd}', [DownloadPegawaiController::class, 'download'])->name('fasilitator.download-pegawai');
-        Route::post('download/{idSkpd?}', [DownloadPegawaiController::class, 'download'])->name('fasilitator.download-pegawai-stats');
+        Route::post('download/{idSkpd?}', [DownloadPegawaiController::class, 'downloadPegawai'])->name('fasilitator.download-pegawai-stats');
         Route::post('download-person/{idPegawai}', [DownloadPegawaiController::class, 'downloadPerson'])->name('fasilitator.download-person');
         Route::post('download-pttpk/{idSkpd?}', [DownloadPegawaiController::class, 'downloadPttpk'])->name('fasilitator.download-pttpk');
         Route::post('download-pttc/{idSkpd?}', [DownloadPegawaiController::class, 'downloadPttCabdin'])->name('fasilitator.download-pttcabdin');

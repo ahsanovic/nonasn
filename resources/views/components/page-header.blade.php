@@ -33,6 +33,12 @@
                             case 'stats-pendidikan':
                                 echo "<i class='pe-7s-graph2 icon-gradient bg-premium-dark'></i>";
                                 break;
+                            case 'stats-gurumapel':
+                                echo "<i class='pe-7s-graph2 icon-gradient bg-premium-dark'></i>";
+                                break;
+                            case 'stats-usia':
+                                echo "<i class='pe-7s-graph2 icon-gradient bg-premium-dark'></i>";
+                                break;
                             case 'rekap-log-fasilitator':
                                 echo "<i class='pe-7s-monitor icon-gradient bg-premium-dark'></i>";
                                 break;
