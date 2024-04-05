@@ -481,7 +481,7 @@ class DownloadPegawaiController extends Controller
             return back()->with(["type" => "error", "message" => "terjadi kesalahan!"]);
         }
     }
-
+    
     public function downloadPttpk(Request $request)
     {
         try {
