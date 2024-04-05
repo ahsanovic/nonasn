@@ -29,6 +29,13 @@
             <div class="main-card mb-3 card card-hover-shadow-2x">
                 <div class="card-body">
                     <h5 class="card-title">Riwayat Jabatan</h5>
+                    <div class="row mt-4">
+                        <div class="col-md-12">
+                            <div class="alert alert-danger fade show" role="alert">
+                                Pastikan data jabatan terakhir diaktifkan dengan menekan tombol aksi kemudian "Aktifkan"
+                            </div>    
+                        </div>    
+                    </div>
                     <a href="{{ route('nonasn.jabatan.create') }}" class="btn-square btn btn-sm btn-hover-shine btn-primary mt-3">Tambah</a>
                     <div class="mt-4">
                         <div class="table-responsive">

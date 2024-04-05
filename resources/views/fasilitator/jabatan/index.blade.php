@@ -32,6 +32,13 @@
             <div class="main-card mb-3 card card-hover-shadow-2x">
                 <div class="card-body">
                     <h5 class="card-title">Riwayat Jabatan</h5>
+                    <div class="row mt-4">
+                        <div class="col-md-12">
+                            <div class="alert alert-danger fade show" role="alert">
+                                Pastikan data jabatan terakhir diaktifkan dengan menekan tombol aksi kemudian "Aktifkan"
+                            </div>    
+                        </div>    
+                    </div>
                     <a href="{{
                         route('fasilitator.jabatan.create', [
                             'idSkpd' => $hashidSkpd->encode($skpd->id),

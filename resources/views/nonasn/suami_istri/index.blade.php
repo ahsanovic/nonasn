@@ -29,6 +29,13 @@
             <div class="main-card mb-3 card card-hover-shadow-2x">
                 <div class="card-body">
                     <h5 class="card-title">Riwayat Suami/Istri</h5>
+                    <div class="row mt-4">
+                        <div class="col-md-12">
+                            <div class="alert alert-danger fade show" role="alert">
+                                Pastikan data pasangan diaktifkan dengan menekan tombol aksi kemudian "Aktifkan"
+                            </div>    
+                        </div>    
+                    </div>
                     <a
                         href="{{ route('nonasn.suami-istri.create') }}"
                         class="btn-square btn btn-sm btn-hover-shine btn-primary mt-3"
