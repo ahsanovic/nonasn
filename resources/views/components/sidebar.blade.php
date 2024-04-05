@@ -221,13 +221,9 @@
                     @endif
                     <li class="app-sidebar__heading">Download</li>
                     <li>
-                        <a href="{{ route('fasilitator.download-data-anak') }}" class="{{ Request::is('fasilitator/data-anak') ? 'mm-active' : '' }}">
+                        <a href="{{ route('fasilitator.download-data-keluarga') }}" class="{{ Request::is('fasilitator/data-keluarga') ? 'mm-active' : '' }}">
                             <i class="metismenu-icon pe-7s-cloud-download">
-                            </i>Data Anak
-                        </a>
-                        <a href="{{ route('fasilitator.download-data-pasangan') }}" class="{{ Request::is('fasilitator/data-pasangan') ? 'mm-active' : '' }}">
-                            <i class="metismenu-icon pe-7s-cloud-download">
-                            </i>Data Pasangan
+                            </i>Data Keluarga
                         </a>
                     </li>
                 </ul>

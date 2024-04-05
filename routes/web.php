@@ -18,6 +18,7 @@ use App\Http\Controllers\Fasilitator\{
     PendidikanSmaController,
     PenilaianController,
     DokumenPribadiController,
+    DownloadDataKeluargaController,
     DownloadPegawaiController,
     StatsPegawaiController,
     StatsAgamaController,
@@ -194,8 +195,9 @@ Route::prefix('fasilitator')->group(function() {
         Route::post('download-ptts/{idSkpd?}', [DownloadPegawaiController::class, 'downloadPttSekolah'])->name('fasilitator.download-pttsekolah');
         Route::post('download-gtt/{idSkpd?}', [DownloadPegawaiController::class, 'downloadGtt'])->name('fasilitator.download-gtt');
         Route::post('download-by-agama/{idSkpd?}', [DownloadPegawaiController::class, 'downloadByAgama'])->name('fasilitator.download-by-agama');
-        Route::get('download-data-anak', [DownloadPegawaiController::class, 'downloadDataAnak'])->name('fasilitator.download-data-anak');
-        Route::get('download-data-pasangan', [DownloadPegawaiController::class, 'downloadDataPasangan'])->name('fasilitator.download-data-pasangan');
+        Route::get('download-data-keluarga', [DownloadDataKeluargaController::class, 'index'])->name('fasilitator.download-data-keluarga');
+        Route::post('download-data-pasangan/{idSkpd?}', [DownloadDataKeluargaController::class, 'downloadPasangan'])->name('fasilitator.download-data-pasangan');
+        Route::post('download-data-keluarga/{idSkpd?}', [DownloadDataKeluargaController::class, 'downloadKeluarga'])->name('fasilitator.download-data-keluarga');
 
         // update password
         Route::get('update-password', [UpdatePasswordController::class, 'index'])->name('fasilitator.password');
