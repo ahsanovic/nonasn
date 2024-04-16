@@ -28,7 +28,13 @@
                                 echo "<i class='pe-7s-medal icon-gradient bg-premium-dark'></i>";
                                 break;
                             case 'penilaian':
+                                echo "<i class='pe-7s-display1 icon-gradient bg-premium-dark'></i>";
+                                break;
+                            case 'dok-narkoba':
                                 echo "<i class='pe-7s-check icon-gradient bg-premium-dark'></i>";
+                                break;
+                            case 'hukdis':
+                                echo "<i class='pe-7s-culture icon-gradient bg-premium-dark'></i>";
                                 break;
                             case 'simulasi-cpns':
                                 echo "<i class='pe-7s-note icon-gradient bg-premium-dark'></i>";

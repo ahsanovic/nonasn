@@ -90,7 +90,12 @@
                 </a>
             </div>
             <div class="col-md-6">
-                
+                <a
+                    href="{{ route('fasilitator.hukdis', ['idSkpd' => $hashidSkpd->encode($skpd->id), 'id' => $hashidPegawai->encode($pegawai->id_ptt)]) }}"
+                    class="btn-square border-0 btn-transition btn btn-outline-primary"
+                >
+                    <i class="fa fa-balance-scale"></i> Hukuman Disiplin
+                </a>
             </div>
         </div>
     </div>

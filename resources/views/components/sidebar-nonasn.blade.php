@@ -98,7 +98,7 @@
                     </li>
                     <li>
                         <a href="{{ route('nonasn.penilaian') }}" class="{{ Request::segment(1) == 'penilaian' ? 'mm-active' : '' }}">
-                            <i class="metismenu-icon pe-7s-check">
+                            <i class="metismenu-icon pe-7s-display1">
                             </i>Penilaian
                         </a>
                     </li>
@@ -106,6 +106,12 @@
                         <a href="{{ route('nonasn.dok-narkoba') }}" class="{{ Request::segment(1) == 'dok-narkoba' ? 'mm-active' : '' }}">
                             <i class="metismenu-icon pe-7s-check">
                             </i>Dokumen Tes Narkoba
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('nonasn.hukdis') }}" class="{{ Request::segment(1) == 'hukdis' ? 'mm-active' : '' }}">
+                            <i class="metismenu-icon pe-7s-culture">
+                            </i>Hukuman Disiplin
                         </a>
                     </li>
                     <li class="app-sidebar__heading">Simulasi</li>

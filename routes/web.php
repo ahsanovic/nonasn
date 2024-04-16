@@ -20,6 +20,7 @@ use App\Http\Controllers\Fasilitator\{
     DokumenPribadiController,
     DownloadDataKeluargaController,
     DownloadPegawaiController,
+    HukdisController,
     StatsPegawaiController,
     StatsAgamaController,
     StatsPendidikanController,
@@ -47,6 +48,7 @@ use App\Http\Controllers\NonAsn\{
     NonasnSimulasiCpnsController,
     NonasnSimulasiPppkController,
     NonasnUpdatePasswordController,
+    NonasnHukdisController
 };
 
 /* Fasilitator */
@@ -153,6 +155,16 @@ Route::prefix('fasilitator')->group(function() {
         Route::put('pegawai/{idSkpd}/dok-pribadi/{id}', [DokumenPribadiController::class, 'update'])->name('fasilitator.dok-pribadi.update');
         Route::delete('dok-pribadi/{idPtt}/{field}', [DokumenPribadiController::class, 'destroy'])->name('fasilitator.dok-pribadi.destroy');
         Route::get('dok-pribadi/{file}', [DokumenPribadiController::class, 'viewFile'])->name('dok-pribadi.file');
+
+        // hukuman disiplin
+        Route::get('pegawai/{idSkpd}/hukdis/{id}', [HukdisController::class, 'index'])->name('fasilitator.hukdis');
+        Route::get('pegawai/{idSkpd}/hukdis/{id}/create', [HukdisController::class, 'create'])->name('fasilitator.hukdis.create');
+        Route::post('pegawai/{idSkpd}/hukdis/{id}/create', [HukdisController::class, 'store'])->name('fasilitator.hukdis.store');
+        Route::get('pegawai/{idSkpd}/hukdis/{id}/edit/{idHukdis}', [HukdisController::class, 'edit'])->name('fasilitator.hukdis.edit');
+        Route::put('pegawai/{idSkpd}/hukdis/{id}', [HukdisController::class, 'update'])->name('fasilitator.hukdis.update');
+        Route::put('hukdis/{id}', [HukdisController::class, 'activate'])->name('fasilitator.hukdis.activate');
+        Route::delete('hukdis/{id}', [HukdisController::class, 'destroy'])->name('fasilitator.hukdis.destroy');
+        Route::get('hukdis/{file}', [HukdisController::class, 'viewFile'])->name('fasilitator.hukdis.file');
 
         // unit kerja
         Route::get('unit-kerja', [UnitKerjaController::class, 'index'])->name('fasilitator.unit-kerja')->middleware('role:admin');
@@ -286,6 +298,10 @@ Route::middleware(['auth:nonasn', 'revalidate'])->group(function() {
     Route::get('dok-pribadi/{id}/edit/{field}', [NonasnDokumenPribadiController::class, 'edit'])->name('nonasn.dok-pribadi.edit');
     Route::put('dok-pribadi/{id}', [NonasnDokumenPribadiController::class, 'update'])->name('nonasn.dok-pribadi.update');
     Route::get('dok-pribadi/{file}', [NonasnDokumenPribadiController::class, 'viewFile'])->name('nonasn.dok-pribadi.file');
+
+    // hukuman disiplin
+    Route::get('hukdis', [NonasnHukdisController::class, 'index'])->name('nonasn.hukdis');
+    Route::get('hukdis/{file}', [NonasnHukdisController::class, 'viewFile'])->name('nonasn.hukdis.file');
 
     // dokumen tes narkoba
     Route::get('dok-narkoba', [NonasnDokumenTesNarkobaController::class, 'index'])->name('nonasn.dok-narkoba');
