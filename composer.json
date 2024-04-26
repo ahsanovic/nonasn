@@ -11,7 +11,6 @@
         "hashids/hashids": "^4.1",
         "laravel/framework": "^8.75",
         "laravel/passport": "10.0",
-        "laravel/sanctum": "^2.11",
         "laravel/tinker": "^2.5",
         "lcobucci/jwt": "3.3.3",
         "rap2hpoutre/fast-excel": "^4.1"
