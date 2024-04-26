@@ -370,7 +370,10 @@ class JabatanController extends Controller
                 }
             }
 
-            if ($data->file) unlink(storage_path('app/upload_jabatan/' . $data->file));
+            if (Storage::disk('local')->exists('/upload_jabatan/' . $data->file) && $data->file != null) {
+                unlink(storage_path('app/upload_jabatan/' . $data->file));
+            }
+
             $data->delete();
 
             DB::commit();

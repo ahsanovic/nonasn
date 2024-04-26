@@ -109,6 +109,12 @@
                         </a>
                     </li>
                     <li>
+                        <a href="{{ route('nonasn.diklat') }}" class="{{ Request::segment(1) == 'diklat' ? 'mm-active' : '' }}">
+                            <i class="metismenu-icon pe-7s-portfolio">
+                            </i>Diklat
+                        </a>
+                    </li>
+                    <li>
                         <a href="{{ route('nonasn.hukdis') }}" class="{{ Request::segment(1) == 'hukdis' ? 'mm-active' : '' }}">
                             <i class="metismenu-icon pe-7s-culture">
                             </i>Hukuman Disiplin

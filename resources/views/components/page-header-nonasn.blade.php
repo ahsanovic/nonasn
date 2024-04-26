@@ -33,6 +33,9 @@
                             case 'dok-narkoba':
                                 echo "<i class='pe-7s-check icon-gradient bg-premium-dark'></i>";
                                 break;
+                            case 'diklat':
+                                echo "<i class='pe-7s-portfolio icon-gradient bg-premium-dark'></i>";
+                                break;
                             case 'hukdis':
                                 echo "<i class='pe-7s-culture icon-gradient bg-premium-dark'></i>";
                                 break;

@@ -27,9 +27,11 @@ use App\Http\Controllers\Fasilitator\{
     UnitKerjaController,
     LogFasilitatorController,
     LogNonAsnController,
+    SearchController,
     StatsGuruMapelController,
     UpdatePasswordController,
     StatsUsiaController,
+    DiklatController
 };
 use App\Http\Controllers\NonAsn\{
     NonasnKunciCpnsController,
@@ -39,6 +41,7 @@ use App\Http\Controllers\NonAsn\{
     NonasnPegawaiController,
     NonasnSuamiIstriController,
     NonasnAnakController,
+    NonasnDiklatController,
     NonasnJabatanController,
     NonasnPendidikanPtController,
     NonasnPenilaianController,
@@ -59,6 +62,9 @@ Route::prefix('fasilitator')->group(function() {
     Route::middleware(['auth:fasilitator', 'revalidate'])->group(function() {
         // dashboard
         Route::get('dashboard', [DashboardController::class, 'index'])->name('fasilitator.dashboard');
+
+        // search
+        Route::post('search', [SearchController::class, 'index'])->name('fasilitator.search-pegawai');
         
         // data pegawai
         Route::get('pegawai-baru', [PegawaiBaruController::class, 'index'])->name('pegawaibaru')->middleware('role:admin');
@@ -156,10 +162,19 @@ Route::prefix('fasilitator')->group(function() {
         Route::delete('dok-pribadi/{idPtt}/{field}', [DokumenPribadiController::class, 'destroy'])->name('fasilitator.dok-pribadi.destroy');
         Route::get('dok-pribadi/{file}', [DokumenPribadiController::class, 'viewFile'])->name('dok-pribadi.file');
 
+        // diklat
+        Route::get('pegawai/{idSkpd}/diklat/{id}', [DiklatController::class, 'index'])->name('fasilitator.diklat');
+        Route::get('pegawai/{idSkpd}/diklat/{id}/create', [DiklatController::class, 'create'])->name('fasilitator.diklat.create');
+        Route::post('pegawai/{idSkpd}/diklat/{id}', [DiklatController::class, 'store'])->name('fasilitator.diklat.store');
+        Route::get('pegawai/{idSkpd}/diklat/{id}/edit/{idDiklat}', [DiklatController::class, 'edit'])->name('fasilitator.diklat.edit');
+        Route::put('pegawai/{idSkpd}/diklat/{id}', [DiklatController::class, 'update'])->name('fasilitator.diklat.update');
+        Route::delete('diklat/{id}', [DiklatController::class, 'destroy'])->name('fasilitator.diklat.destroy');
+        Route::get('diklat/{file}', [DiklatController::class, 'viewFile'])->name('fasilitator.diklat.file');
+
         // hukuman disiplin
         Route::get('pegawai/{idSkpd}/hukdis/{id}', [HukdisController::class, 'index'])->name('fasilitator.hukdis');
         Route::get('pegawai/{idSkpd}/hukdis/{id}/create', [HukdisController::class, 'create'])->name('fasilitator.hukdis.create');
-        Route::post('pegawai/{idSkpd}/hukdis/{id}/create', [HukdisController::class, 'store'])->name('fasilitator.hukdis.store');
+        Route::post('pegawai/{idSkpd}/hukdis/{id}', [HukdisController::class, 'store'])->name('fasilitator.hukdis.store');
         Route::get('pegawai/{idSkpd}/hukdis/{id}/edit/{idHukdis}', [HukdisController::class, 'edit'])->name('fasilitator.hukdis.edit');
         Route::put('pegawai/{idSkpd}/hukdis/{id}', [HukdisController::class, 'update'])->name('fasilitator.hukdis.update');
         Route::put('hukdis/{id}', [HukdisController::class, 'activate'])->name('fasilitator.hukdis.activate');
@@ -298,6 +313,15 @@ Route::middleware(['auth:nonasn', 'revalidate'])->group(function() {
     Route::get('dok-pribadi/{id}/edit/{field}', [NonasnDokumenPribadiController::class, 'edit'])->name('nonasn.dok-pribadi.edit');
     Route::put('dok-pribadi/{id}', [NonasnDokumenPribadiController::class, 'update'])->name('nonasn.dok-pribadi.update');
     Route::get('dok-pribadi/{file}', [NonasnDokumenPribadiController::class, 'viewFile'])->name('nonasn.dok-pribadi.file');
+
+    // diklat
+    Route::get('diklat', [NonasnDiklatController::class, 'index'])->name('nonasn.diklat');
+    Route::get('diklat/create', [NonasnDiklatController::class, 'create'])->name('nonasn.diklat.create');
+    Route::post('diklat', [NonasnDiklatController::class, 'store'])->name('nonasn.diklat.store');
+    Route::get('diklat/{id}/edit', [NonasnDiklatController::class, 'edit'])->name('nonasn.diklat.edit');
+    Route::put('diklat/{id}', [NonasnDiklatController::class, 'update'])->name('nonasn.diklat.update');
+    Route::delete('diklat/{id}', [NonasnDiklatController::class, 'destroy'])->name('nonasn.diklat.destroy');
+    Route::get('diklat/{file}', [NonasnDiklatController::class, 'viewFile'])->name('nonasn.diklat.file');
 
     // hukuman disiplin
     Route::get('hukdis', [NonasnHukdisController::class, 'index'])->name('nonasn.hukdis');

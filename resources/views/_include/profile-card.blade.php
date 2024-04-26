@@ -97,6 +97,16 @@
                     <i class="fa fa-balance-scale"></i> Hukuman Disiplin
                 </a>
             </div>
+        </div>        
+        <div class="row mt-3">
+            <div class="col-md-6">
+                <a
+                    href="{{ route('fasilitator.diklat', ['idSkpd' => $hashidSkpd->encode($skpd->id), 'id' => $hashidPegawai->encode($pegawai->id_ptt)]) }}"
+                    class="btn-square border-0 btn-transition btn btn-outline-primary"
+                >
+                    <i class="fa fa-briefcase"></i> Diklat
+                </a>
+            </div>
         </div>
     </div>
 </div>
