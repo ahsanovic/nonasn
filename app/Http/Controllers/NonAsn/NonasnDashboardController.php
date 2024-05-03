@@ -2,10 +2,14 @@
 
 namespace App\Http\Controllers\NonAsn;
 
-use App\Http\Controllers\Controller;
 use App\Models\DokumenPribadi;
-use App\Models\Fasilitator\DownloadPegawai;
+use App\Models\HasilSimulasiCpns;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Http;
+use App\Models\HasilSimulasiPppkTeknis;
+use App\Models\HasilSimulasiPppkWawancara;
+use App\Models\Fasilitator\DownloadPegawai;
+use App\Models\HasilSimulasiPppkManajerial;
 
 class NonasnDashboardController extends Controller
 {
@@ -20,6 +24,39 @@ class NonasnDashboardController extends Controller
         $notif = DownloadPegawai::whereId_ptt(auth()->user()->id_ptt)->firstOrFail();
         $notif_doc = DokumenPribadi::whereId_ptt(auth()->user()->id_ptt)->firstOrFail();
 
-        return view('nonasn.dashboard.index', compact('response', 'web_url', 'notif', 'notif_doc'));
+        // leaderboard simulasi cpns
+        $hasil_simulasi_cpns = HasilSimulasiCpns::with('pegawai')
+                            ->orderByDesc('nilai_total')
+                            ->limit(10)
+                            ->get();
+
+        // leaderboard simulasi pppk teknis
+        $hasil_simulasi_teknis = HasilSimulasiPppkTeknis::with('pegawai')
+                            ->orderByDesc('nilai_total')
+                            ->limit(10)
+                            ->get();
+        
+        // leaderboard simulasi pppk manajerial
+        $hasil_simulasi_manajerial = HasilSimulasiPppkManajerial::with('pegawai')
+                            ->orderByDesc('nilai_total')
+                            ->limit(10)
+                            ->get();
+        
+        // leaderboard simulasi pppk wawancara
+        $hasil_simulasi_wawancara = HasilSimulasiPppkWawancara::with('pegawai')
+                            ->orderByDesc('nilai_total')
+                            ->limit(10)
+                            ->get();
+
+        return view('nonasn.dashboard.index', compact(
+            'response',
+            'web_url',
+            'notif',
+            'notif_doc',
+            'hasil_simulasi_cpns',
+            'hasil_simulasi_teknis',
+            'hasil_simulasi_manajerial',
+            'hasil_simulasi_wawancara'
+        ));
     }
 }

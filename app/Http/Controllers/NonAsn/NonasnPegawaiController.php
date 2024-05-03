@@ -23,6 +23,16 @@ class NonasnPegawaiController extends Controller
         return new Hashids(env('SECRET_SALT_KEY'),10);
     }
     
+    public function viewImage($image)
+    {
+        try {
+            $file = storage_path('app/upload_foto/' . $image);
+            return response()->file($file);
+        } catch (\Throwable $th) {
+            abort(404);
+        }
+    }
+    
     public function index()
     {
         $id_ptt = auth()->user()->id_ptt;
