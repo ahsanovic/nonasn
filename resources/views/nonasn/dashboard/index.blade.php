@@ -14,6 +14,7 @@
             </div>    
         </div>    
     </div>
+    @if (!$notif || !$notif_doc)
     <div class="row">
         <div class="col-md-12 col-lg-12">
             <div class="main-card mb-3 card">
@@ -42,6 +43,7 @@
             </div>
         </div>
     </div>
+    @endif
     <div class="row">
         <div class="col-md-12 col-lg-6 col-xl-5">
             <div class="main-card mb-3 card">
