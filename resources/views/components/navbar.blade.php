@@ -36,7 +36,10 @@
                 @if (auth()->guard('fasilitator')->check())
                 <div class="search-wrapper">
                     <div class="input-holder">
-                        <input type="text" class="search-input" placeholder="Type to search">
+                        <form method="post" action="{{ route('fasilitator.search-pegawai') }}">
+                            @csrf
+                            <input type="text" name="search" class="search-input" placeholder="Type to search">
+                        </form>
                         <button class="search-icon"><span></span></button>
                     </div>
                     <button class="close"></button>
@@ -53,7 +56,7 @@
                                         @if (auth()->guard('fasilitator')->check())
                                         <img width="42" class="rounded-circle" src="{{ asset('assets/images/avatars/default.png') }}" alt="">
                                         @else
-                                        <img width="42" class="rounded" src="{{ route('nonasn.image', ['iamge' => rtrim(auth()->user()->foto)]) }}" alt="">
+                                        <img width="42" class="rounded" src="{{ route('nonasn.image', ['image' => rtrim(auth()->user()->foto)]) }}" alt="">
                                         @endif
                                         <i class="fa fa-angle-down ml-2 opacity-8"></i>
                                     </a>

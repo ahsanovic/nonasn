@@ -60,7 +60,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-6 col-sm-12">
+        <div class="col-md-8 col-sm-12">
             <form method="get" action="{{ url()->current() }}" class="mb-4">
                 <div class="row">
                     <div class="col-md-8">
@@ -76,14 +76,14 @@
                 </div>
             </form>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-4">
             <div class="d-flex justify-content-end">
                 <span class="font-weight-bold">Jumlah Pegawai: {{ $pegawai->total() }}</span>
             </div>
         </div>
     </div>
     <div class="row mb-2">
-        <div class="col d-flex justify-content-end">
+        <div class="col d-flex justify-content-end mb-2">
             {{ $pegawai->withQueryString()->links() }}
         </div>
     </div>
