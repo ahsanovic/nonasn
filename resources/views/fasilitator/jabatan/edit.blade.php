@@ -6,9 +6,9 @@
 <!--Tree View-->
 <script src="{{ asset('zTree/js/jquery.ztree.core-3.5.js') }}"></script>
 <!--Datepickers-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 <script src="{{ asset('assets/js/vendors/form-components/datepicker.js') }}"></script>
 <script src="{{ asset('assets/js/scripts-init/form-components/datepicker.js') }}"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 <script>
     var url = "{{ route('jabatan.autocomplete') }}";
     $("#guru-mapel").autocomplete({
