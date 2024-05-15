@@ -32,6 +32,9 @@
             timeout({{ $id_ujian }})
             $('#btn-save').remove()
             $('#btn-skip').remove()
+            setTimeout(() => {
+                $('#form-finish').submit()
+            }, 3000);
         }
     }, 1000);
 </script>
