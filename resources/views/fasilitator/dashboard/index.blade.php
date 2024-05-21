@@ -76,7 +76,7 @@
                                     <div class="widget-content p-0">
                                         <div class="widget-content-wrapper">
                                             <div class="widget-content-left mr-3">
-                                                <img width="38" class="rounded-circle" src="{{ route('nonasn.image', ['image' => rtrim($item->pegawai->foto)]) }}" alt="">
+                                                <img width="38" class="rounded" src="{{ route('nonasn.image', ['image' => rtrim($item->pegawai->foto)]) }}" alt="">
                                             </div>
                                             <div class="widget-content-left">
                                                 <div class="widget-heading">{{ $item->pegawai->nama }}</div>
@@ -114,7 +114,7 @@
                                     <div class="widget-content p-0">
                                         <div class="widget-content-wrapper">
                                             <div class="widget-content-left mr-3">
-                                                <img width="38" class="rounded-circle" src="{{ route('nonasn.image', ['image' => rtrim($item->pegawai->foto)]) }}" alt="">
+                                                <img width="38" class="rounded" src="{{ route('nonasn.image', ['image' => rtrim($item->pegawai->foto)]) }}" alt="">
                                             </div>
                                             <div class="widget-content-left">
                                                 <div class="widget-heading">{{ $item->pegawai->nama }}</div>
@@ -152,7 +152,7 @@
                                     <div class="widget-content p-0">
                                         <div class="widget-content-wrapper">
                                             <div class="widget-content-left mr-3">
-                                                <img width="38" class="rounded-circle" src="{{ route('nonasn.image', ['image' => rtrim($item->pegawai->foto)]) }}" alt="">
+                                                <img width="38" class="rounded" src="{{ route('nonasn.image', ['image' => rtrim($item->pegawai->foto)]) }}" alt="">
                                             </div>
                                             <div class="widget-content-left">
                                                 <div class="widget-heading">{{ $item->pegawai->nama }}</div>
