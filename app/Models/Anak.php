@@ -47,4 +47,14 @@ class Anak extends Model
     {
         $this->attributes['nama'] = strtoupper($value);
     }
+
+    protected function getTglLahirAttribute($value)
+    {
+        return date('d/m/Y', strtotime($value));
+    }
+
+    public function anak()
+    {
+        return $this->belongsTo(Biodata::class, 'id_ptt', 'id_ptt');
+    }
 }

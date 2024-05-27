@@ -2,14 +2,16 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
+use App\Models\Anak;
 use App\Models\Skpd;
 use App\Models\Jabatan;
-use App\Models\Pendidikan;
 use App\Models\RefAgama;
-use App\Models\RefJenisPtt;
 use App\Models\RefKawin;
+use App\Models\Pendidikan;
+use App\Models\SuamiIstri;
+use App\Models\RefJenisPtt;
 use Illuminate\Database\Eloquent\Model;
-use Carbon\Carbon;
 
 class Biodata extends Model
 {
@@ -76,5 +78,15 @@ class Biodata extends Model
     public function kawin()
     {
         return $this->belongsTo(RefKawin::class, 'id_kawin');
+    }
+
+    public function suamiIstri()
+    {
+        return $this->belongsTo(SuamiIstri::class, 'id_ptt', 'id_ptt')->where('aktif', 'Y');
+    }
+
+    public function anak()
+    {
+        return $this->hasMany(Anak::class, 'id_ptt', 'id_ptt');
     }
 }

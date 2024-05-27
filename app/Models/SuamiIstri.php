@@ -51,4 +51,9 @@ class SuamiIstri extends Model
     {
         $this->attributes['nama_suami_istri'] = strtoupper($value);
     }
+
+    protected function getTglLahirAttribute($value)
+    {
+        return date('d/m/Y', strtotime($value));
+    }
 }
