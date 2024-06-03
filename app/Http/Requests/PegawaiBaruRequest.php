@@ -24,6 +24,7 @@ class PegawaiBaruRequest extends FormRequest
     public function rules()
     {
         return [
+            'jenis_ptt' => ['required'],
             'niptt' => ['required', 'numeric'],
             'nama' => ['required', 'string'],
             'skpd' => ['required']
@@ -33,6 +34,7 @@ class PegawaiBaruRequest extends FormRequest
     public function messages()
     {
         return [
+            'jenis_ptt.required' => 'jenis ptt harus dipilih',
             'niptt.required' => 'niptt harus diisi',
             'niptt.numeric' => 'niptt hanya boleh diisi angka',
             'nama.required' => 'nama lengkap harus diisi',
