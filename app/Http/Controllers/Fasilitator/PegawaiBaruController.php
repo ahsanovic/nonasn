@@ -10,12 +10,14 @@ use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\PegawaiBaruRequest;
 use App\Models\DokumenPribadi;
 use App\Models\Fasilitator\DownloadPegawai;
+use App\Models\RefJenisPtt;
 
 class PegawaiBaruController extends Controller
 {
     public function index()
     {
-        return view('fasilitator.pegawai_baru.index');
+        $jenis_ptt = RefJenisPtt::pluck('jenis_ptt', 'id');
+        return view('fasilitator.pegawai_baru.index', compact('jenis_ptt'));
     }
 
     public function unor()
@@ -46,7 +48,7 @@ class PegawaiBaruController extends Controller
             list($id_skpd, $unit_kerja) = explode(" - ", $request->skpd);
             $pegawai = Biodata::create([
                 'id_skpd' => $id_skpd,
-                'jenis_ptt_id' => 1, // default is 'ptt-pk'
+                'jenis_ptt_id' => $request->jenis_ptt,
                 'niptt' => $request->niptt,
                 'nama' => $request->nama,
                 'alamat' => '||||||',
@@ -67,11 +69,18 @@ class PegawaiBaruController extends Controller
 
                 $data = Biodata::whereNiptt($request->niptt)->first(['id_ptt']);
 
+                $jenis_ptt = RefJenisPtt::all();
+                foreach ($jenis_ptt as $value) {
+                    if ($value->id == $request->jenis_ptt) {
+                        $jenis_ptt = $value->jenis_ptt;
+                    }
+                }
+
                 DownloadPegawai::create([
                     'id_ptt' => $data->id_ptt,
                     'niptt' => $request->niptt,
                     'nama' => $request->nama,
-                    'jenis_ptt' => 'PTT-PK',
+                    'jenis_ptt' => $jenis_ptt,
                     'alamat' => '||||||',
                     'id_skpd' => $id_skpd,
                     'unit_kerja' => $unit_kerja,

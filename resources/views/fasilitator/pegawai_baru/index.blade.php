@@ -23,6 +23,20 @@
                     <form id="form" method="post" action="{{ route('pegawaibaru.store') }}">
                         @csrf
                         <div class="position-relative form-group">
+                            <label for="nama" class="font-weight-bold">Jenis PTT</label>
+                            <select class="form-control form-control-sm @error('jenis_ptt') is-invalid @enderror" name="jenis_ptt">
+                                <option value="0" selected disabled>- pilih jenis ptt -</option>
+                                @foreach ($jenis_ptt as $id => $item)
+                                    <option value="{{ $id }}" {{ old('jenis_ptt') == $id ? 'selected' : '' }}>{{ $item }}</option>
+                                @endforeach
+                            </select>
+                            @error('jenis_ptt')
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+                            @enderror
+                        </div>
+                        <div class="position-relative form-group">
                             <label for="niptt" class="font-weight-bold">NIPTT-PK (tanpa tanda "." dan "-")</label>
                             <input name="niptt" id="niptt" type="text" class="form-control form-control-sm @error('niptt') is-invalid @enderror" value="{{ old('niptt') }}">
                             @error('niptt')
