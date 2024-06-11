@@ -43,6 +43,8 @@ class Kernel extends HttpKernel
             // \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
             'throttle:api',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
+            \App\Http\Middleware\ForceJsonResponse::class,
+            \App\Http\Middleware\Cors::class,
         ],
     ];
 
@@ -66,5 +68,11 @@ class Kernel extends HttpKernel
         'revalidate' => \App\Http\Middleware\RevalidateBackHistory::class,
         'role' => \App\Http\Middleware\CheckRole::class,
         'strip.empty.params' => \App\Http\Middleware\StripEmptyParamsFromQueryString::class,
+        'cors' => \App\Http\Middleware\Cors::class,
+        'json.response' => \App\Http\Middleware\ForceJsonResponse::class,
+        'client.credentials' => \Laravel\Passport\Http\Middleware\CheckClientCredentials::class, // if grant type is client_credentials, use this for middleware in route
+        // 'scopes' => \Laravel\Passport\Http\Middleware\CheckScopes::class,
+        // 'scope' => \Laravel\Passport\Http\Middleware\CheckForAnyScope::class,
+        'check.scope.org' => \App\Http\Middleware\CheckScopeAndOrganization::class,
     ];
 }

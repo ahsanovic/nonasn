@@ -43,7 +43,7 @@ return [
 
         'api' => [
             'driver' => 'passport',
-            'provider' => 'fasilitator',
+            'provider' => 'users',
             'hash' => false,
         ],
 
@@ -78,7 +78,6 @@ return [
     'providers' => [
         'users' => [
             'driver' => 'eloquent',
-            // 'model' => App\Models\User::class,
             'model' => App\Models\Fasilitator\UserFasilitator::class,
         ],
 

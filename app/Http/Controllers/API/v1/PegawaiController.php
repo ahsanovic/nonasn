@@ -80,6 +80,10 @@ class PegawaiController extends Controller
                     )
                     ->whereAktif('Y')
                     ->with(['skpd', 'jenisPtt', 'agama', 'kawin'])
+                    ->whereHas('skpd', function($query) use($request) {
+                        $organizationId = $request->attributes->get('organization_id');
+                        $query->where('id_skpd', 'like', $organizationId . '%');
+                    })
                     ->paginate(10);
         
         $validator = Validator::make($request->all(), [
@@ -121,7 +125,7 @@ class PegawaiController extends Controller
                 'kelas_bpjs' => $item->kelas_id,
                 'no_bpjs_naker' => $item->no_bpjs_naker,
                 'foto' => $this->_urlImage() . $item->foto,
-                'unit_kerja' => $item->skpd->name,
+                'unit_kerja' => $item->skpd->name ?? null,
                 'skpd' => $this->_getSkpd($item->id_skpd),
             ];
         }
@@ -145,7 +149,7 @@ class PegawaiController extends Controller
         ], 200);
     }
 
-    public function pegawaiByNip($niptt)
+    public function pegawaiByNip(Request $request, $niptt)
     {
         $biodata = Biodata::select(
                         'id_ptt',
@@ -165,9 +169,20 @@ class PegawaiController extends Controller
                         'kelas_id',
                         'no_bpjs_naker'
                     )
+                    ->with(['pendidikan.jenjang', 'jabatan.refJabatan', 'jenisPtt'])
                     ->whereNiptt($niptt)
                     ->whereAktif('Y')
                     ->first();
+
+        $organizationId = $request->attributes->get('organization_id');
+        
+        if (!in_array($biodata->id_skpd, getScopeIdSkpdApi($organizationId))) {
+            return response()->json([
+                "status" => "error",
+                "code" => 401,
+                "message" => "unauthorized. employee not in the organization scope"
+            ], 401);
+        }
 
         if (!$biodata) {
             return response()->json([
@@ -175,6 +190,18 @@ class PegawaiController extends Controller
                 "code" => 404,
                 "message" => "nip not found"
             ], 404);
+        }
+
+        if (isset($biodata->pendidikan->jenjang->id_jenjang)) {
+            if ($biodata->pendidikan->jenjang->id_jenjang == 1 or
+                $biodata->pendidikan->jenjang->id_jenjang == 2 or
+                $biodata->pendidikan->jenjang->id_jenjang == 3) {
+                $jurusan = $biodata->pendidikan->jurusan_sma;
+            } else {
+                $jurusan = $biodata->pendidikan->jurusan_prodi_pt;
+            }
+        } else {
+            $jurusan = null;
         }
 
         $data = [
@@ -194,7 +221,12 @@ class PegawaiController extends Controller
             'kelas_bpjs' => $biodata->kelas_id,
             'no_bpjs_naker' => $biodata->no_bpjs_naker,
             'foto' => $this->_urlImage() . $biodata->foto,
-            'unit_kerja' => $biodata->skpd->name,
+            'pendidikan' => [
+                'jenjang' => $biodata->pendidikan->jenjang->nama_jenjang ?? null,
+                'jurusan' => $jurusan,
+            ],
+            'jabatan' => $biodata->jabatan->refJabatan->name ?? null,
+            'unit_kerja' => $biodata->skpd->name ?? null,
             'skpd' => $this->_getSkpd($biodata->id_skpd),
         ];
 

@@ -2,19 +2,14 @@
 
 namespace App\Http\Controllers\API\v1;
 
-use App\Http\Controllers\Controller;
 use App\Models\Biodata;
 use App\Models\Jabatan;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class JabatanController extends Controller
 {
-    private function _urlFile()
-    {
-        return 'https://bkd.jatimprov.go.id/nonasn/fasilitator/jabatan/';
-    }
-
-    public function index($niptt, $idJabatan = null)
+    public function index(Request $request, $niptt, $idJabatan = null)
     {
         if (!is_numeric($niptt)) {
             return response()->json([
@@ -24,7 +19,20 @@ class JabatanController extends Controller
             ], 400);
         }
 
-        $pegawai = Biodata::whereNiptt($niptt)->first(['id_ptt']);
+        $pegawai = Biodata::whereNiptt($niptt)
+                            ->whereAktif('Y')
+                            ->first(['id_ptt', 'id_skpd']);
+        
+        $organizationId = $request->attributes->get('organization_id');
+
+        if (!in_array($pegawai->id_skpd, getScopeIdSkpdApi($organizationId))) {
+            return response()->json([
+                "status" => "error",
+                "code" => 401,
+                "message" => "unauthorized. employee not in the organization scope"
+            ], 401);
+        }
+
         if (!$pegawai) {
             return response()->json([
                 "status" => "error",
@@ -66,7 +74,7 @@ class JabatanController extends Controller
                 'tgl_mulai_kontrak' => $jabatan->tgl_mulai,
                 'tgl_akhir_kontrak' => $jabatan->tgl_akhir,
                 'pejabat_penetap' => $jabatan->pejabat_penetap,
-                'file' => !empty($jabatan->file) ? $this->_urlFile() . $jabatan->file : null,
+                'file' => !empty($jabatan->file) ? $jabatan->file : null,
                 'status' => $jabatan->aktif
             ];
             
@@ -88,7 +96,7 @@ class JabatanController extends Controller
                 'tgl_mulai_kontrak' => $item->tgl_mulai,
                 'tgl_akhir_kontrak' => $item->tgl_akhir,
                 'pejabat_penetap' => $item->pejabat_penetap,
-                'file' => !empty($item->file) ? $this->_urlFile() . $item->file : null,
+                'file' => !empty($item->file) ? $item->file : null,
                 'status' => $item->aktif
             ];
         }        

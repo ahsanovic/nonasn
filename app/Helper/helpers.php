@@ -16,6 +16,12 @@ function getScopeIdSkpd()
 	return $getScopeIdSkpd;
 }
 
+function getScopeIdSkpdApi($organization_id)
+{
+	$getScopeIdSkpd = Skpd::where('id', 'like', $organization_id . '%')->pluck('id')->toArray();
+	return $getScopeIdSkpd;
+}
+
 function logPtt($idPtt, $modul, $aksi)
 {
 	LogNonAsn::create([

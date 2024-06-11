@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API\v1;
 
 use App\Models\Skpd;
 use App\Models\Biodata;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class DataKeluargaController extends Controller
@@ -42,7 +43,7 @@ class DataKeluargaController extends Controller
         return $skpd;
     }
     
-    public function getAll()
+    public function getAll(Request $request)
     {
         $biodata = Biodata::select(
                         'id_ptt',
@@ -66,6 +67,10 @@ class DataKeluargaController extends Controller
                         'suamiIstri',
                         'anak'
                     ])
+                    ->whereHas('skpd', function($query) use($request) {
+                        $organizationId = $request->attributes->get('organization_id');
+                        $query->where('id_skpd', 'like', $organizationId . '%');
+                    })
                     ->paginate(10);
         
         $data = [];
@@ -128,7 +133,7 @@ class DataKeluargaController extends Controller
         ], 200);
     }
 
-    public function getByNip($niptt)
+    public function getByNip(Request $request, $niptt)
     {
         $biodata = Biodata::select(
                         'id_ptt',
@@ -155,6 +160,16 @@ class DataKeluargaController extends Controller
                     ])
                     ->first();
         
+        $organizationId = $request->attributes->get('organization_id');
+
+        if (!in_array($biodata->id_skpd, getScopeIdSkpdApi($organizationId))) {
+            return response()->json([
+                "status" => "error",
+                "code" => 401,
+                "message" => "unauthorized. employee not in the organization scope"
+            ], 401);
+        }
+
         $anak = [];
         foreach ($biodata->anak as $child) {
             $anak[] = [
