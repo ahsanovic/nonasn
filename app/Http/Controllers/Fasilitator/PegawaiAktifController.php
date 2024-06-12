@@ -17,7 +17,8 @@ class PegawaiAktifController extends Controller
                     ->with(['skpd', 'pendidikan.jenjang', 'jabatan.refJabatan'])
                     ->when($request->nama, function($query) use ($request) {
                         $query->where('nama', 'like', '%' . $request->nama . '%')
-                                ->orWhere('niptt', 'like', $request->nama . '%');
+                                ->orWhere('niptt', 'like', $request->nama . '%')
+                                ->whereAktif('Y');
                     })
                     ->orderBy('id_ptt')
                     ->paginate(12);
