@@ -73,6 +73,7 @@ Route::prefix('fasilitator')->group(function() {
         Route::get('treeview', [TreeviewController::class, 'index'])->name('treeview');
         Route::get('treeview/unor', [TreeviewController::class, 'unor'])->name('treeview.skpd');
         Route::get('treeview/unor-skpd', [TreeviewController::class, 'unorNoLink'])->name('treeview.skpd.nolink');
+        Route::get('available-nip', [PegawaiBaruController::class, 'getAvailableNip'])->name('available-nip')->middleware('role:admin');
         
         // user fasilitator
         Route::get('user-fasilitator', [UserFasilitatorController::class, 'index'])->name('fasilitator.user')->middleware('role:admin');

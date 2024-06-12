@@ -4,16 +4,48 @@ namespace App\Http\Controllers\Fasilitator;
 
 use App\Models\Skpd;
 use App\Models\Biodata;
+use App\Models\RefJenisPtt;
+use Illuminate\Http\Request;
+use App\Models\DokumenPribadi;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\PegawaiBaruRequest;
-use App\Models\DokumenPribadi;
 use App\Models\Fasilitator\DownloadPegawai;
-use App\Models\RefJenisPtt;
 
 class PegawaiBaruController extends Controller
 {
+    public function getAvailableNip(Request $request)
+    {
+        $jenis_ptt = $request->query('jenis_ptt');
+        $usedNip = Biodata::whereAktif('Y')
+            ->where('jenis_ptt_id', $jenis_ptt)
+            ->pluck('niptt')->map(function($number) use ($jenis_ptt) {
+                if ($jenis_ptt == 2) return (int)substr($number, -3);
+                return (int)substr($number, -4);
+            })
+            ->toArray();
+        
+        switch ($jenis_ptt) {
+            case 1:
+                $allNip = range(1, 10500);
+                break;
+            case 2:
+                $allNip = range(1, 100);
+                break;
+            case 3:
+                $allNip = range(1, 11500);
+                break;
+            case 4:
+                $allNip = range(1, 9000);
+                break;
+        }
+        
+        $availableNip = array_diff($allNip, $usedNip);
+
+        return response()->json(array_values($availableNip));
+    }
+
     public function index()
     {
         $jenis_ptt = RefJenisPtt::pluck('jenis_ptt', 'id');

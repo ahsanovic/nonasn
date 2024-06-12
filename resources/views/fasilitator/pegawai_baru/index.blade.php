@@ -5,7 +5,44 @@
     $('#form').submit(function() {
         $('#btn-submit').hide();
         $('.loader').show();
-    })
+    });
+
+    $('#jenis-ptt').change(function() {
+        $('#load-numbers').attr('disabled', false);
+        $('#reset').attr('disabled', false);
+        $('#jenis-ptt').attr('disabled', true);
+    });
+
+    $('#reset').on('click', function() {
+        $('#load-numbers').attr('disabled', true);
+        $('#jenis-ptt').attr('disabled', false);
+        $("#jenis-ptt").prop("selectedIndex", 0);
+        $('#reset').attr('disabled', true);
+        $('#number-list').empty();
+    });
+
+    document.getElementById('load-numbers').addEventListener('click', function(e) {
+        e.preventDefault();
+        let jenisPtt = document.getElementById('jenis-ptt').value;
+        const url = `{{ route('available-nip') }}?jenis_ptt=${jenisPtt}`;
+        let numberList = document.getElementById('number-list');
+        numberList.innerHtml = "";
+        fetch(url)
+            .then(res => res.json())
+            .then(data => {
+                data.forEach(function(number) {
+                    let listItem = document.createElement('li');
+                    listItem.classList.add('list-group-item');
+                    if (jenisPtt == 2) {
+                        listItem.textContent = number.toString().padStart(3, '0');
+                    } else {
+                        listItem.textContent = number.toString().padStart(4, '0');
+                    }
+                    numberList.appendChild(listItem);
+                })
+            })
+            .catch(error => console.log(error));
+    });
 </script>
 @endpush
 
@@ -76,6 +113,25 @@
                             Simpan
                         </button>
                     </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="main-card mb-3 card">
+                <div class="card-body">
+                    <h5 class="card-title">Cari Nomor Induk yang Masih Avail</h5>
+                    <div class="position-relative form-group">
+                        <label for="jenis-ptt" class="font-weight-bold">Jenis PTT</label>
+                        <select class="form-control form-control-sm" name="jenis_ptt" id="jenis-ptt">
+                            <option value="0" selected>- pilih jenis ptt -</option>
+                            @foreach ($jenis_ptt as $id => $item)
+                                <option value="{{ $id }}" {{ old('jenis_ptt') == $id ? 'selected' : '' }}>{{ $item }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <button id="load-numbers" class="mb-4 mt-2 btn btn-shadow btn-outline-warning" disabled>Hunting yuk!</button>
+                    <button id="reset" class="mb-4 mt-2 ml-2 btn btn-shadow btn-outline-danger" disabled>Reset</button>
+                    <ul class="list-group list-group-flush" id="number-list"></ul>
                 </div>
             </div>
         </div>
