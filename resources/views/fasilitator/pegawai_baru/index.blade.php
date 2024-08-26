@@ -132,7 +132,7 @@
                     <button id="load-numbers" class="mb-4 mt-2 btn btn-shadow btn-outline-warning" disabled>Hunting yuk!</button>
                     <button id="reset" class="mb-4 mt-2 ml-2 btn btn-shadow btn-outline-danger" disabled>Reset</button>
                     <div class="scroll-area-md">
-                        <div class="scrollbar-container ps--active-y ps">
+                        <div class="scrollbar-container">
                             <ul class="list-group list-group-flush" id="number-list"></ul>
                         </div>
                     </div>

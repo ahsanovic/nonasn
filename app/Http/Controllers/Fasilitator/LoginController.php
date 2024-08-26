@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
+use App\Models\Fasilitator\UserFasilitator;
 use Illuminate\Validation\ValidationException;
 
 class LoginController extends Controller

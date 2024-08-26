@@ -166,7 +166,7 @@
                 </div>
                 <div class="icon-wrapper rounded-circle">
                     <div class="icon-wrapper-bg bg-primary"></div>
-                    <i class="lnr-cog text-primary"></i></div>
+                    <i class="lnr-users text-primary"></i></div>
                 <div class="widget-chart-content">
                     <div class="widget-subheading">Total Pegawai</div>
                     <div class="widget-numbers">{{ $total }}</div>
@@ -190,7 +190,7 @@
                 </div>
                 <div class="icon-wrapper rounded-circle">
                     <div class="icon-wrapper-bg bg-primary"></div>
-                    <i class="lnr-cog text-primary"></i></div>
+                    <i class="lnr-users text-primary"></i></div>
                 <div class="widget-chart-content">
                     <div class="widget-subheading">PTT-PK</div>
                     <div class="widget-numbers">{{ $pttpk }}</div>
@@ -210,7 +210,7 @@
                 </div>
                 <div class="icon-wrapper rounded-circle">
                     <div class="icon-wrapper-bg bg-primary"></div>
-                    <i class="lnr-cog text-primary"></i></div>
+                    <i class="lnr-users text-primary"></i></div>
                 <div class="widget-chart-content">
                     <div class="widget-subheading">PTT Cabdin</div>
                     <div class="widget-numbers">{{ $ptt_cabdin }}</div>
@@ -230,7 +230,7 @@
                 </div>
                 <div class="icon-wrapper rounded-circle">
                     <div class="icon-wrapper-bg bg-primary"></div>
-                    <i class="lnr-cog text-primary"></i></div>
+                    <i class="lnr-users text-primary"></i></div>
                 <div class="widget-chart-content">
                     <div class="widget-subheading">PTT Sekolah</div>
                     <div class="widget-numbers">{{ $ptt_sekolah }}</div>
@@ -250,7 +250,7 @@
                 </div>
                 <div class="icon-wrapper rounded-circle">
                     <div class="icon-wrapper-bg bg-primary"></div>
-                    <i class="lnr-cog text-primary"></i></div>
+                    <i class="lnr-users text-primary"></i></div>
                 <div class="widget-chart-content">
                     <div class="widget-subheading">GTT</div>
                     <div class="widget-numbers">{{ $gtt }}</div>

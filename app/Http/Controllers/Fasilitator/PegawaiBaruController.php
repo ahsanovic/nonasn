@@ -78,7 +78,7 @@ class PegawaiBaruController extends Controller
         DB::beginTransaction();
         try {
             list($id_skpd, $unit_kerja) = explode(" - ", $request->skpd);
-            $pegawai = Biodata::create([
+            Biodata::create([
                 'id_skpd' => $id_skpd,
                 'jenis_ptt_id' => $request->jenis_ptt,
                 'niptt' => $request->niptt,

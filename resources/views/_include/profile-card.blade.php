@@ -83,12 +83,12 @@
         <div class="row mt-3">
             <div class="col-md-6">
                 <a
-                    href="{{ route('fasilitator.dok-pribadi', ['idSkpd' => $hashidSkpd->encode($skpd->id), 'id' => $hashidPegawai->encode($pegawai->id_ptt)]) }}"
+                    href="#"
                     class="btn-square border-0 btn-transition btn btn-outline-primary"
                 >
-                    <i class="fa fa-file"></i> Dokumen Pribadi
+                    <i class="fa fa-user"></i> Orang Tua
                 </a>
-            </div>
+            </div>            
             <div class="col-md-6">
                 <a
                     href="{{ route('fasilitator.hukdis', ['idSkpd' => $hashidSkpd->encode($skpd->id), 'id' => $hashidPegawai->encode($pegawai->id_ptt)]) }}"
@@ -99,6 +99,14 @@
             </div>
         </div>        
         <div class="row mt-3">
+            <div class="col-md-6">
+                <a
+                    href="{{ route('fasilitator.dok-pribadi', ['idSkpd' => $hashidSkpd->encode($skpd->id), 'id' => $hashidPegawai->encode($pegawai->id_ptt)]) }}"
+                    class="btn-square border-0 btn-transition btn btn-outline-primary"
+                >
+                    <i class="fa fa-file"></i> Dokumen Pribadi
+                </a>
+            </div>
             <div class="col-md-6">
                 <a
                     href="{{ route('fasilitator.diklat', ['idSkpd' => $hashidSkpd->encode($skpd->id), 'id' => $hashidPegawai->encode($pegawai->id_ptt)]) }}"
