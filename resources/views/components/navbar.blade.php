@@ -36,9 +36,8 @@
                 @if (auth()->guard('fasilitator')->check())
                 <div class="search-wrapper">
                     <div class="input-holder">
-                        <form method="post" action="{{ route('fasilitator.search-pegawai') }}">
-                            @csrf
-                            <input type="text" name="search" class="search-input" placeholder="Type to search">
+                        <form method="get" action="{{ route('fasilitator.search-pegawai') }}">
+                            <input type="text" name="nama" class="search-input" placeholder="cari pegawai" value="{{ request('nama', '') }}">
                         </form>
                         <button class="search-icon"><span></span></button>
                     </div>

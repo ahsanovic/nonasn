@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\File;
 use App\Http\Requests\BiodataRequest;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Fasilitator\DownloadPegawai;
 
@@ -63,6 +64,31 @@ class PegawaiController extends Controller
         } catch (\Throwable $th) {
             abort(404);
         }
+    }
+
+    public function search(Request $request)
+    {
+        $hashidSkpd = $this->hashidSkpd;
+        $hashidPegawai = $this->hashidPegawai;
+        
+        $pegawai = Biodata::select('id_ptt','id_skpd','jenis_ptt_id','nama','niptt','tempat_lahir','thn_lahir','jk','foto')
+                    ->whereAktif('Y')
+                    ->with(['skpd', 'pendidikan.jenjang', 'jabatan.refJabatan', 'jenisPtt'])
+                    ->whereHas('skpd', function($query) {
+                        $query->where('id_skpd', 'like', auth()->user()->id_skpd . '%');
+                    })
+                    ->when($request->nama, function($query) use ($request) {
+                        $query->where('nama', 'like', '%' . $request->nama . '%')
+                                ->orWhere('niptt', 'like', $request->nama . '%')
+                                ->where('aktif', 'Y');
+                    })
+                    ->orderBy('id_ptt')
+                    ->paginate(12);
+
+        $skpd = Skpd::whereId(auth()->user()->id_skpd)->first(['id', 'name']);
+        if (!$skpd) return back()->with(["type" => "error", "message" => "terjadi kesalahan!"]);
+                
+        return view('fasilitator.search.index', compact('pegawai', 'skpd', 'hashidSkpd', 'hashidPegawai'));
     }
 
     public function index(Request $request)

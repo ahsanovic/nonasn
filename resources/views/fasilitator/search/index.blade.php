@@ -1,342 +1,217 @@
-@push('scripts')
-<script>
-    $(document).ready(function() {
-        $.ajax({
-            url: "{{ route('treeview.skpd.nolink') }}",
-            type: "GET",
-            dataType: "JSON",
-            success: function(data) {
-                var setting = {
-                    data: {
-                        simpleData: {
-                            enable: true
-                        }
-                    },
-                    callback: {
-                        beforeClick: beforeClick,
-                        onClick: onClick
-                    }
-                };
-
-                var zNodes = data;
-
-                $.fn.zTree.init($("#treeUnit"), setting, zNodes);
-            },
-            error: function(err) {
-                console.log(err);
-            }
-        })
-    });
-
-    function beforeClick(treeId, treeNode) {
-        var check = (treeNode && !treeNode.isParent);
-    }
-
-    function onClick(e, treeId, treeNode) {
-        var zTree = $.fn.zTree.getZTreeObj("treeUnit"),
-            nodes = zTree.getSelectedNodes(),
-            v = "";
-        nodes.sort(function compare(a, b) {
-            return a.id - b.id;
-        });
-        for (var i = 0, l = nodes.length; i < l; i++) {
-            v += nodes[i].name + ",";
-        }
-        if (v.length > 0) v = v.substring(0, v.length - 1);
-        var cityObj = $("#citySel");
-        cityObj.attr("value", v);
-    }   
-
-    function showMenu() {
-        var cityObj = $("#citySel");
-        var cityOffset = $("#citySel").offset();
-        $("#menuContent").css({
-            left: cityOffset.left + "px",
-            top: cityOffset.top + cityObj.outerHeight() + "px"
-        }).slideDown("fast");
-
-        $("body").bind("mousedown", onBodyDown);
-    }
-
-    function hideMenu() {
-        $("#menuContent").fadeOut("fast");
-        $("body").unbind("mousedown", onBodyDown);
-    }
-
-    function onBodyDown(event) {
-        if (!(event.target.id == "menuBtn" || event.target.id == "menuContent" || $(event.target).parents("#menuContent").length > 0)) {
-            hideMenu();
-        }
-    }
-</script>
-<!--Tree View-->
-<script src="{{ asset('zTree/js/jquery.ztree.core-3.5.js') }}"></script>
-<!--Datepickers-->
-<script src="{{ asset('assets/js/vendors/form-components/datepicker.js') }}"></script>
-<script src="{{ asset('assets/js/scripts-init/form-components/datepicker.js') }}"></script>
-<script>
-    $('#form').submit(function() {
-        $('#btn-submit').hide();
-        $('.loader').show();
-    })
-</script>
-@endpush
-
 <x-app-layout>
-    <x-page-header>
-        <div>
-            Profil Pegawai
-            <div class="page-title-subheading">{{ $pegawai->nama . ' - ' . $skpd->name }}</div>
+    <div class="app-page-title">
+        <div class="page-title-wrapper">
+            <div class="page-title-heading">
+                <div class="page-title-icon">
+                    <i class="pe-7s-id icon-gradient bg-premium-dark"></i>
+                </div>
+                <div>
+                    Pegawai Non ASN
+                    <div class="page-title-subheading">Pegawai Non ASN - {{ $skpd->name }}</div>
+                </div>
+            </div>
         </div>
-    </x-page-header>
+    </div>
     <div class="row">
-        <div class="col-md-3">
-            @include('_include.profile-card')
+        <div class="col-md-12">
+            <div class="d-flex justify-content-end mb-2">
+                <span class="font-weight-bold">Jumlah Pegawai: {{ $pegawai->total() }}</span>
+            </div>
+            <div class="d-flex justify-content-end">
+                <form method="post" action="{{ route('fasilitator.download-pegawai', ['idSkpd' => $hashidSkpd->encode($skpd->id), 'nama' => request()->nama]) }}">
+                    @csrf
+                    <button class="btn btn-dark btn-sm btn-square btn-hover-shine mr-2"><i class="pe-7s-cloud-download"></i> Download Excel</button>
+                </form>
+            </div>
         </div>
-        <div class="col-md-9">
-            <div class="main-card mb-3 card card-hover-shadow-2x">
-                <div class="card-body">
-                    <h5 class="card-title">Biodata</h5>
-                    <div class="mt-4">
-                        <form id="form" method="post" action="{{ route('fasilitator.pegawai.update', ['id' => $hashidPegawai->encode($pegawai->id_ptt)]) }}" enctype="multipart/form-data">
-                            @csrf
-                            @method("put")
-                            {{-- <div class="position-relative form-group">
-                                <img src="{{ asset('upload_foto/' . $pegawai->foto) }}" class="rounded d-block" alt="foto" width="150" height="200">
-                            </div> --}}
-                            <div class="position-relative form-group">
-                                <label for="nama" class="font-weight-bold">Nama Lengkap</label>
-                                <input name="nama" id="nama" type="text" class="form-control form-control-sm @error('nama') is-invalid @enderror" value="{{ $pegawai->nama }}">
-                                @error('nama')
-                                <div class="invalid-feedback">
-                                    {{ $message }}
-                                </div>
-                                @enderror
-                            </div>
-                            <div class="position-relative form-group">
-                                <label for="niptt" class="font-weight-bold">NIPTT-PK (tanpa tanda "." dan "-")</label>
-                                <input name="niptt" id="niptt" type="text" class="form-control form-control-sm @error('niptt') is-invalid @enderror" value="{{ $pegawai->niptt }}" {{ auth()->user()->level != 'admin' ? 'disabled' : '' }}>
-                                @error('niptt')
-                                <div class="invalid-feedback">
-                                    {{ $message }}
-                                </div>
-                                @enderror
-                            </div>
-                            <div class="position-relative form-group">
-                                <label for="skpd" class="font-weight-bold">Unit Kerja</label>
-                                <input id="citySel" name="skpd" class="form-control form-control-sm" type="text" readonly value="{{ $pegawai->id_skpd . ' - ' . $pegawai->skpd->name }}"/>
-                                <a id="menuBtn" href="#" onclick="showMenu(); return false;">select</a>
-                                <div id="menuContent" class="menuContent" style="display:none;">
-                                    <ul id="treeUnit" class="ztree" style="margin-top:0;"></ul>
-                                </div>
-                            </div>
-                            <div class="position-relative form-group">
-                                <label for="jenis-ptt" class="font-weight-bold">Jenis Pegawai</label>
-                                <select class="form-control form-control-sm @error('jenis_ptt') is-invalid @enderror" name="jenis_ptt" id="jenis-ptt" {{ auth()->user()->level != 'admin' ? 'disabled' : ''}}>
-                                    @foreach ($ref_jenis_ptt as $id => $item)
-                                        <option value="{{ $id }}" {{ ($id == $pegawai->jenis_ptt_id) ? 'selected' : '' }}>{{ $id . ' - ' . $item }}</option>
-                                    @endforeach
-                                </select>
-                                @error('jenis_ptt')
-                                <div class="invalid-feedback">
-                                    {{ $message }}
-                                </div>
-                                @enderror
-                            </div>
-                            <div class="position-relative form-group">
-                                <label for="nik" class="font-weight-bold">NIK</label>
-                                <input name="nik" id="nik" type="text" class="form-control form-control-sm @error('nik') is-invalid @enderror" value="{{ $pegawai->nik }}">
-                                @error('nik')
-                                <div class="invalid-feedback">
-                                    {{ $message }}
-                                </div>
-                                @enderror
-                            </div>
-                            <div class="position-relative form-group">
-                                <label for="kk" class="font-weight-bold">Nomor KK</label>
-                                <input name="kk" id="kk" type="text" class="form-control form-control-sm @error('kk') is-invalid @enderror" value="{{ $pegawai->kk }}">
-                                @error('kk')
-                                <div class="invalid-feedback">
-                                    {{ $message }}
-                                </div>
-                                @enderror
-                            </div>
-                            <div class="position-relative form-group">
-                                <label for="no-bpjs" class="font-weight-bold">Nomor BPJS / KIS</label>
-                                <input name="no_bpjs" id="no-bpjs" type="text" class="form-control form-control-sm @error('no_bpjs') is-invalid @enderror" value="{{ $pegawai->no_bpjs }}">
-                                @error('no_bpjs')
-                                <div class="invalid-feedback">
-                                    {{ $message }}
-                                </div>
-                                @enderror
-                            </div>
-                            <div class="position-relative form-group">
-                                <label for="kelas" class="font-weight-bold">Kelas BPJS</label>
-                                <select class="form-control form-control-sm @error('kelas') is-invalid @enderror" name="kelas">
-                                    @if ($pegawai->kelas_id == null)
-                                        <option value="" selected disabled>- pilih kelas bpjs -</option>
-                                    @endif
-                                    @foreach ($kelas as $id => $item)
-                                        <option value="{{ $id }}" {{ ($id == $pegawai->kelas_id) ? 'selected' : '' }}>{{ $item }}</option>
-                                    @endforeach
-                                </select>
-                                @error('kelas')
-                                <div class="invalid-feedback">
-                                    {{ $message }}
-                                </div>
-                                @enderror
-                            </div>
-                            <div class="position-relative form-group">
-                                <label for="no-bpjs-naker" class="font-weight-bold">Nomor BPJS Ketenagakerjaan</label>
-                                <input name="no_bpjs_naker" id="no_bpjs_naker" type="text" class="form-control form-control-sm" value="{{ $pegawai->no_bpjs_naker }}">
-                            </div>
-                            <div class="position-relative form-group">
-                                <label for="tempat-lahir" class="font-weight-bold">Tempat Lahir</label>
-                                <input
-                                    name="tempat_lahir"
-                                    id="tempat-lahir"
-                                    type="text"
-                                    class="form-control form-control-sm @error('tempat_lahir') is-invalid @enderror"
-                                    value="{{ $pegawai->tempat_lahir }}"
-                                >
-                                @error('tempat_lahir')
-                                <div class="invalid-feedback">
-                                    {{ $message }}
-                                </div>
-                                @enderror
-                            </div>
-                            <div class="position-relative form-group">
-                                <label for="tgl-lahir" class="font-weight-bold">Tanggal Lahir</label>
-                                <input
-                                    name="thn_lahir"
-                                    id="tgl-lahir"
-                                    data-toggle="datepicker"
-                                    type="text"
-                                    class="form-control form-control-sm @error('thn_lahir') is-invalid @enderror"
-                                    value="{{ $pegawai->thn_lahir }}"
-                                >
-                                @error('thn_lahir')
-                                <div class="invalid-feedback">
-                                    {{ $message }}
-                                </div>
-                                @enderror
-                            </div>
-                            <div class="position-relative form-group">
-                                <label class="font-weight-bold">Jenis Kelamin</label>
-                                <div class="d-flex inline">
-                                    <div class="custom-radio custom-control mr-3">
-                                        <input type="radio" id="exampleCustomRadio" name="jk" value="L" class="custom-control-input" {{ $pegawai->jk == 'L' ? 'checked' : '' }}>
-                                        <label class="custom-control-label" for="exampleCustomRadio">Laki-Laki</label>
-                                    </div>
-                                    <div class="custom-radio custom-control">
-                                        <input type="radio" id="exampleCustomRadio2" name="jk" value="P" class="custom-control-input" {{ $pegawai->jk == 'P' ? 'checked' : '' }}>
-                                        <label class="custom-control-label" for="exampleCustomRadio2">Perempuan</label>
+    </div>
+    <div class="row mt-4 mb-2">
+        <div class="col">
+            {{ $pegawai->withQueryString()->links() }}
+        </div>
+    </div>
+    <div class="row">
+        @foreach ($pegawai as $item)
+            <div class="col-md-12 col-lg-6 col-xl-3">
+                <div class="card-shadow-primary card-border mb-3 card">
+                    <div class="dropdown-menu-header">
+                        <div class="dropdown-menu-header-inner bg-primary">
+                            {{-- <div class="menu-header-image" style="background-image: url({{ asset('assets/images/dropdown-header/abstract2.jpg'); }})"></div> --}}
+                            <div class="menu-header-content">
+                                <div class="avatar-icon-wrapper avatar-icon-xl">
+                                    <div class="avatar-icon rounded btn-hover-shine">
+                                        @if ($item->foto)
+                                        <img src="{{ route('pegawai.image', ['image' => rtrim($item->foto)]) }}" alt="foto">
+                                        @endif
                                     </div>
                                 </div>
+                                <div><h5 class="menu-header-title">{{ $item->nama }}</h5></div>
+                                <div>
+                                     <h6 class="menu-header-subtitle">
+                                        @php
+                                            $panjang_nip = strlen($item->niptt);
+                                            if ($item->jenis_ptt_id == 1) {
+                                                if ($panjang_nip > 21) {
+                                                    if (strpos($item->id_skpd, '145') !== false  OR strpos($item->id_skpd, '146') !== false OR strpos($item->id_skpd, '149') !== false OR strpos($item->id_skpd, '147') !== false){
+                                                    $niptt = substr($item->niptt, 0,3).".".substr($item->niptt, 3,1)."-".substr($item->niptt, 4,8)."-".substr($item->niptt, 12,6)."-".substr($item->niptt, 18,5);
+                                                    } else if (strpos($item->id_skpd, '148') !== false OR strpos($item->id_skpd, '10316') !== false OR strpos($item->id_skpd, '10310') !== false OR strpos($item->id_skpd, '10309') !== false OR strpos($item->id_skpd, '10313') !== false OR strpos($item->id_skpd, '10308') !== false OR strpos($item->id_skpd, '10314') !== false OR strpos($item->id_skpd, '10312') !== false OR strpos($item->id_skpd, '10311') !== false OR strpos($item->id_skpd, '10320') !== false OR strpos($item->id_skpd, '10315') !== false OR strpos($item->id_skpd, '10318') !== false OR strpos($item->id_skpd, '10317') !== false OR strpos($item->id_skpd, '11513') !== false) {
+                                                        $niptt = substr($item->niptt, 0,3).".".substr($item->niptt, 3,2)."-".substr($item->niptt, 5,8)."-".substr($item->niptt, 13,6)."-".substr($item->niptt, 19,5);
+                                                    } else {
+                                                        $niptt = substr($item->niptt, 0,3)."-".substr($item->niptt, 3,8)."-".substr($item->niptt, 11,6)."-".substr($item->niptt, 17,5);
+                                                    }
+                                                } else {
+                                                    $niptt = substr($item->niptt, 0,3)."-".substr($item->niptt, 3,8)."-".substr($item->niptt, 11,6)."-".substr($item->niptt, 17,5);
+                                                }
+                                            } else if ($item->jenis_ptt_id == 2) {
+                                                $niptt = substr($item->niptt,0,2) . "-" . substr($item->niptt,2,6) . "-" . substr($item->niptt,8,4) . "-" . substr($item->niptt,12,3);
+                                            } else if ($item->jenis_ptt_id == 3) {
+                                                $niptt = substr($item->niptt,0,8) . "-" . substr($item->niptt,8,6) . "-" . substr($item->niptt,14,4) . "-" . substr($item->niptt,18,5);
+                                            } else {
+                                                $niptt = substr($item->niptt,0,8) . "-" . substr($item->niptt,8,6) . "-" . substr($item->niptt,14,4) . "-" . substr($item->niptt,18,5);
+                                            } 
+                                        @endphp
+                                        {{ $niptt }}
+                                     </h6>
+                                </div>
+                                <div class="mt-1">
+                                    <small class="opacity-7">
+                                        {{ $item->tempat_lahir . ', ' . $item->thn_lahir }}
+                                    </small>
+                                </div>
+                                <div>
+                                    <small class="opacity-7">
+                                        {{ $item->jenisPtt->jenis_ptt ?? '' }}
+                                    </small>
+                                </div>
+                                <div>
+                                    <small class="opacity-7">
+                                        {{ $item->getAge() }}
+                                    </small>
+                                </div>
                             </div>
-                            <div class="position-relative form-group">
-                                <label for="agama" class="font-weight-bold">Agama</label>
-                                <select class="form-control form-control-sm" name="agama">
-                                    @foreach ($ref_agama as $id => $item)
-                                        <option value="{{ $id }}" <?= ($id == $pegawai->id_agama) ? 'selected' : '' ?>>{{ $item }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="position-relative form-group">
-                                <label for="kawin" class="font-weight-bold">Status Pernikahan</label>
-                                <select class="form-control form-control-sm" name="kawin">
-                                    @foreach ($ref_kawin as $id => $item)
-                                        <option value="{{ $id }}" <?= ($id == $pegawai->id_kawin) ? 'selected' : '' ?>>{{ $item }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="position-relative form-group">
-                                <label for="no_hp" class="font-weight-bold">No. HP</label>
-                                <input name="no_hp" id="no_hp" type="text" class="form-control form-control-sm" value="{{ $pegawai->no_hp }}">
-                            </div>
-                            <div class="position-relative form-group">
-                                <label for="email" class="font-weight-bold">Email</label>
-                                <input name="email" id="email" type="text" class="form-control form-control-sm" value="{{ $pegawai->email }}">
-                            </div>
-                            @php
-                                list($alamat,$rt,$rw,$desa,$kec,$kab,$prov) = explode("|", $pegawai->alamat);
-                            @endphp
-                            <div class="position-relative form-group">
-                                <label for="alamat" class="font-weight-bold">Alamat</label>
-                                <input name="alamat" id="alamat" type="text" class="form-control form-control-sm" value="{{ $alamat }}">
-                            </div>
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <div class="position-relative form-group">
-                                        <label for="rt" class="font-weight-bold">RT</label>
-                                        <input name="rt" id="rt" type="text" class="form-control form-control-sm" value="{{ $rt }}">
+                        </div>
+                    </div>
+                    <div class="scroll-area-sm">
+                        <div class="scrollbar-container ps ps--active-y">
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item">
+                                    <div class="widget-content p-0">
+                                        <div class="widget-content-wrapper">
+                                            <div class="widget-content-left center-elem mr-2"><i class="fa fa-venus-mars"></i></div>
+                                            <div class="widget-content-left">
+                                                <div class="widget-heading">{{ $item->jk == 'L' ? 'Laki-Laki' : 'Perempuan' }}</div>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="position-relative form-group">
-                                        <label for="rw" class="font-weight-bold">RW</label>
-                                        <input name="rw" id="rw" type="text" class="form-control form-control-sm" value="{{ $rw }}">
+                                </li>
+                                <li class="list-group-item">
+                                    <div class="widget-content p-0">
+                                        <div class="widget-content-wrapper">
+                                            <div class="widget-content-left center-elem mr-2"><i class="fa fa-graduation-cap"></i></div>
+                                            <div class="widget-content-left">
+                                                <div class="widget-heading">
+                                                    @if (isset($item->pendidikan->jenjang->nama_jenjang))
+                                                        {{ $item->pendidikan->jenjang->nama_jenjang }}
+                                                    @endif
+                                                </div>
+                                                <div class="widget-subheading">
+                                                    @php
+                                                    if (isset($item->pendidikan->jenjang->id_jenjang)) {
+                                                        if ($item->pendidikan->jenjang->id_jenjang == 1 or
+                                                            $item->pendidikan->jenjang->id_jenjang == 2 or
+                                                            $item->pendidikan->jenjang->id_jenjang == 3) {
+                                                            echo $item->pendidikan->nama_sekolah_sma;
+                                                        } else {
+                                                            echo $item->pendidikan->nama_pt;
+                                                        }
+                                                    }
+                                                    @endphp
+                                                </div>
+                                                <div class="widget-subheading">
+                                                    @php
+                                                    if (isset($item->pendidikan->jenjang->id_jenjang)) {
+                                                        if ($item->pendidikan->jenjang->id_jenjang == 1 or
+                                                            $item->pendidikan->jenjang->id_jenjang == 2 or
+                                                            $item->pendidikan->jenjang->id_jenjang == 3) {
+                                                            echo $item->pendidikan->jurusan_sma;
+                                                        } else {
+                                                            echo $item->pendidikan->jurusan_prodi_pt;
+                                                        }
+                                                    }
+                                                    @endphp
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="position-relative form-group">
-                                        <label for="desa" class="font-weight-bold">Desa/Kelurahan</label>
-                                        <input name="desa" id="desa" type="text" class="form-control form-control-sm" value="{{ $desa }}">
+                                </li>
+                                <li class="list-group-item">
+                                    <div class="widget-content p-0">
+                                        <div class="widget-content-wrapper">
+                                            <div class="widget-content-left center-elem mr-2"><i class="fa fa-id-badge"></i></div>
+                                            <div class="widget-content-left">
+                                                <div class="widget-heading">
+                                                    @if (isset($item->jabatan->refJabatan->name))
+                                                        {{ Str::title($item->jabatan->refJabatan->name) }}
+                                                    @endif
+                                                </div>
+                                                <div class="widget-subheading">
+                                                    @if (isset($item->jabatan->tgl_mulai))
+                                                        {{ $item->jabatan->tgl_mulai }}
+                                                    @endif
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="position-relative form-group">
-                                        <label for="kec" class="font-weight-bold">Kecamatan</label>
-                                        <input name="kec" id="kec" type="text" class="form-control form-control-sm" value="{{ $kec }}">
+                                </li>
+                                <li class="list-group-item">
+                                    <div class="widget-content p-0">
+                                        <div class="widget-content-wrapper">
+                                            <div class="widget-content-left center-elem mr-2"><i class="fa fa-sitemap"></i></div>
+                                            <div class="widget-content-left">
+                                                <div class="widget-heading">
+                                                    @php
+                                                    switch (strlen($item->id_skpd)) {
+                                                        case '3':
+                                                            echo $item->skpd->eselon2($item->id_skpd)->name;
+                                                            break;
+                                                        case '5':
+                                                            echo $item->skpd->eselon2($item->id_skpd)->name . ' - ' . $item->skpd->eselon3($item->id_skpd)->name;
+                                                            break;
+                                                        case '7':
+                                                            echo $item->skpd->eselon2($item->id_skpd)->name . ' - ' . $item->skpd->eselon3($item->id_skpd)->name . ' - ' . $item->skpd->eselon4($item->id_skpd)->name;
+                                                            break;
+                                                        case '9':
+                                                            echo $item->skpd->eselon2($item->id_skpd)->name . ' - ' . $item->skpd->eselon3($item->id_skpd)->name . ' - ' . $item->skpd->eselon4($item->id_skpd)->name . ' - ' . $item->skpd->bagian($item->id_skpd)->name;
+                                                            break;
+                                                        case '11':
+                                                            echo $item->skpd->eselon2($item->id_skpd)->name . ' - ' . $item->skpd->eselon3($item->id_skpd)->name . ' - ' . $item->skpd->eselon4($item->id_skpd)->name . ' - ' . $item->skpd->bagian($item->id_skpd)->name . ' - ' . $item->skpd->subbagian($item->id_skpd)->name;
+                                                            break;
+                                                    }
+                                                    @endphp
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="position-relative form-group">
-                                        <label for="kab" class="font-weight-bold">Kabupaten/Kota</label>
-                                        <input name="kab" id="kab" type="text" class="form-control form-control-sm" value="{{ $kab }}">
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="position-relative form-group">
-                                        <label for="prov" class="font-weight-bold">Provinsi</label>
-                                        <input name="prov" id="prov" type="text" class="form-control form-control-sm" value="{{ $prov }}">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <div class="position-relative form-group">
-                                        <label for="kode_pos" class="font-weight-bold">Kode Pos</label>
-                                        <input name="kode_pos" id="kode_pos" type="text" class="form-control form-control-sm" value="{{ $pegawai->kode_pos }}">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="position-relative form-group">
-                                <label for="file" class="font-weight-bold">Ubah Foto <small class="text-primary">*) format file jpg/png</small></label>
-                                <input name="foto" id="file" type="file" class="form-control-file @error('foto') is-invalid @enderror" accept="image/png,image/jpg,image/jpeg" />
-                                @error('foto')
-                                <div class="invalid-feedback">
-                                    {{ $message }}
-                                </div>
-                                @enderror
-                            </div>
-
-                            <x-button-loader />
-                            <button
-                                class="mt-3 btn btn-success btn-sm btn-square btn-hover-shine"
-                                id="btn-submit"
-                                type="submit"
-                            >
-                                Update
-                            </button>
-                        </form>
+                                </li>
+                            </ul>
+                        <div class="ps__rail-x" style="left: 0px; bottom: 0px;"><div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div></div><div class="ps__rail-y" style="top: 0px; height: 200px; right: 0px;"><div class="ps__thumb-y" tabindex="0" style="top: 0px; height: 121px;"></div></div></div>
+                    </div>
+                    <div class="text-center d-block card-footer">
+                        <a
+                            class="btn btn-hover-shine btn-square btn-sm btn-secondary"
+                            href="{{ route('fasilitator.pegawai.show', ['idSkpd' => $hashidSkpd->encode($skpd->id), 'id' => $hashidPegawai->encode($item->id_ptt)]) }}"
+                            target="_blank"
+                        >
+                            Detail
+                        </a>
                     </div>
                 </div>
             </div>
+        @endforeach
+    </div>
+    <div class="row">
+        <div class="col">
+            {{ $pegawai->withQueryString()->links() }}
         </div>
     </div>
 </x-app-layout>

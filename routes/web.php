@@ -27,7 +27,6 @@ use App\Http\Controllers\Fasilitator\{
     UnitKerjaController,
     LogFasilitatorController,
     LogNonAsnController,
-    SearchController,
     StatsGuruMapelController,
     UpdatePasswordController,
     StatsUsiaController,
@@ -62,9 +61,6 @@ Route::prefix('fasilitator')->group(function() {
     Route::middleware(['auth:fasilitator', 'revalidate'])->group(function() {
         // dashboard
         Route::get('dashboard', [DashboardController::class, 'index'])->name('fasilitator.dashboard');
-
-        // search
-        Route::post('search', [SearchController::class, 'index'])->name('fasilitator.search-pegawai');
         
         // data pegawai
         Route::get('pegawai-baru', [PegawaiBaruController::class, 'index'])->name('pegawaibaru')->middleware('role:admin');
@@ -94,6 +90,9 @@ Route::prefix('fasilitator')->group(function() {
         Route::post('pegawai/autocomplete', [PegawaiController::class, 'autocomplete'])->name('autocomplete');
         Route::get('pegawai/{idSkpd}/biodata/{id}', [PegawaiController::class, 'show'])->name('fasilitator.pegawai.show');
         Route::put('pegawai', [PegawaiController::class, 'update'])->name('fasilitator.pegawai.update');
+
+        // search
+        Route::get('search', [PegawaiController::class, 'search'])->name('fasilitator.search-pegawai');
 
         // suami/istri
         Route::get('pegawai/{idSkpd}/suami-istri/{id}', [SuamiIstriController::class, 'index'])->name('fasilitator.suami-istri');
