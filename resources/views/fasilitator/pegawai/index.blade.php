@@ -53,10 +53,24 @@
                         <label class="font-weight-bold">Nama / NIPTT</label>
                         <div class="input-group">
                             <input type="text" name="nama" class="form-control form-control-sm" id="search" value="{{ request('nama', '') }}">
-                            <div class="input-group-append">
-                                <button class="btn btn-success btn-sm btn-square btn-hover-shine mr-2" type="submit">Search</button>
-                                <a type="button" class="btn btn-danger btn-sm btn-square btn-hover-shine" href="{{ route('fasilitator.pegawai', request()->segment(3)) }}">Reset</a>
-                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <label class="font-weight-bold">Jenis PTT</label>
+                        <div class="input-group">
+                            <select class="form-control form-control-sm" name="jenis_ptt">
+                                <option value="" selected>- pilih jenis ptt -</option>
+                                @foreach ($jenis_ptt as $key => $item)
+                                    <option value="{{ $key }}" {{ old('jenis_ptt', $selected_jenis_ptt) == $key ? 'selected' : '' }}>{{ $item }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="font-weight-bold"></label>
+                        <div class="input-group">
+                            <button class="btn btn-success btn-sm btn-square btn-hover-shine mr-2 mt-2" type="submit">Search</button>
+                            <a type="button" class="btn btn-danger btn-sm btn-square btn-hover-shine mt-2" href="{{ route('fasilitator.pegawai', request()->segment(3)) }}">Reset</a>
                         </div>
                     </div>
                 </div>

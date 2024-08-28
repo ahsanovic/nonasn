@@ -109,17 +109,25 @@ class PegawaiController extends Controller
                     })
                     // ->where('id_skpd', 'like', $this->hashidSkpd->decode($request->segment(3))[0] . '%')
                     ->when($request->nama, function($query) use ($request) {
-                        $query->where('nama', 'like', '%' . $request->nama . '%')
-                                ->orWhere('niptt', 'like', $request->nama . '%')
-                                ->where('aktif', 'Y');
+                        $query->where(function($query) use ($request) {
+                            $query->where('nama', 'like', '%' . $request->nama . '%')
+                                    ->orWhere('niptt', 'like', $request->nama . '%')
+                                    ->where('aktif', 'Y');
+                        });
                     })
+                    ->when($request->jenis_ptt, function($query) use ($request) {
+                        $query->where('jenis_ptt_id', $request->jenis_ptt);
+                    })                    
                     ->orderBy('id_ptt')
                     ->paginate(12);
+
+        $jenis_ptt = RefJenisPtt::pluck('jenis_ptt', 'id');
+        $selected_jenis_ptt = $request->jenis_ptt;
                 
         $skpd = Skpd::whereId($idSkpd)->first(['id', 'name']);
         if (!$skpd) return back()->with(["type" => "error", "message" => "terjadi kesalahan!"]);
 
-        return view('fasilitator.pegawai.index', compact('pegawai', 'skpd', 'hashidSkpd', 'hashidPegawai'));
+        return view('fasilitator.pegawai.index', compact('pegawai', 'skpd', 'hashidSkpd', 'hashidPegawai', 'jenis_ptt', 'selected_jenis_ptt'));
     }
 
     public function show(Request $request)
