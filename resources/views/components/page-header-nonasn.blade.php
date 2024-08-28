@@ -27,6 +27,9 @@
                             case 'jabatan':
                                 echo "<i class='pe-7s-medal icon-gradient bg-premium-dark'></i>";
                                 break;
+                            case 'gaji':
+                                echo "<i class='pe-7s-wallet icon-gradient bg-premium-dark'></i>";
+                                break;
                             case 'penilaian':
                                 echo "<i class='pe-7s-display1 icon-gradient bg-premium-dark'></i>";
                                 break;

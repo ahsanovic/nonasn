@@ -30,7 +30,8 @@ use App\Http\Controllers\Fasilitator\{
     StatsGuruMapelController,
     UpdatePasswordController,
     StatsUsiaController,
-    DiklatController
+    DiklatController,
+    GajiNonPttController
 };
 use App\Http\Controllers\NonAsn\{
     NonasnKunciCpnsController,
@@ -50,7 +51,8 @@ use App\Http\Controllers\NonAsn\{
     NonasnSimulasiCpnsController,
     NonasnSimulasiPppkController,
     NonasnUpdatePasswordController,
-    NonasnHukdisController
+    NonasnHukdisController,
+    NonasnGajiNonPttController
 };
 
 /* Fasilitator */
@@ -124,6 +126,16 @@ Route::prefix('fasilitator')->group(function() {
         Route::get('jabatan/treeview', [JabatanController::class, 'treeview'])->name('jabatan.treeview');
         Route::get('jabatan/{file}', [JabatanController::class, 'viewFile'])->name('jabatan.file');
         Route::post('autocomplete', [JabatanController::class, 'autocomplete'])->name('jabatan.autocomplete');
+
+        // gaji non ptt
+        // Route::get('pegawai/{idSkpd}/gaji/{id}', [GajiNonPttController::class, 'index'])->name('fasilitator.gajinonptt');
+        // Route::get('pegawai/{idSkpd}/gaji/{id}/create', [GajiNonPttController::class, 'create'])->name('fasilitator.gajinonptt.create');
+        // Route::post('pegawai/{idSkpd}/gaji/{id}', [GajiNonPttController::class, 'store'])->name('fasilitator.gajinonptt.store');
+        // Route::get('pegawai/{idSkpd}/gaji/{id}/edit/{idGaji}', [GajiNonPttController::class, 'edit'])->name('fasilitator.gajinonptt.edit');
+        // Route::put('pegawai/{idSkpd}/gaji/{id}', [GajiNonPttController::class, 'update'])->name('fasilitator.gajinonptt.update');
+        // Route::delete('gaji/{id}', [GajiNonPttController::class, 'destroy'])->name('fasilitator.gajinonptt.destroy');
+        // Route::get('gaji/dpa/{file}', [GajiNonPttController::class, 'viewFileDpa'])->name('fasilitator.gajinonptt.file-dpa');
+        // Route::get('gaji/gaji/{file}', [GajiNonPttController::class, 'viewFileGaji'])->name('fasilitator.gajinonptt.file-gaji');
 
         // penilaian
         Route::get('pegawai/{idSkpd}/penilaian/{id}', [PenilaianController::class, 'index'])->name('fasilitator.penilaian');
@@ -224,7 +236,7 @@ Route::prefix('fasilitator')->group(function() {
         Route::post('download-by-agama/{idSkpd?}', [DownloadPegawaiController::class, 'downloadByAgama'])->name('fasilitator.download-by-agama');
         Route::get('download-data-keluarga', [DownloadDataKeluargaController::class, 'index'])->name('fasilitator.download-data-keluarga');
         Route::post('download-data-pasangan/{idSkpd?}', [DownloadDataKeluargaController::class, 'downloadPasangan'])->name('fasilitator.download-data-pasangan');
-        Route::post('download-data-keluarga/{idSkpd?}', [DownloadDataKeluargaController::class, 'downloadKeluarga'])->name('fasilitator.download-data-keluarga');
+        Route::post('download-data-keluarga/{idSkpd?}', [DownloadDataKeluargaController::class, 'downloadKeluarga'])->name('fasilitator.download-data-keluarga-by-opd');
 
         // update password
         Route::get('update-password', [UpdatePasswordController::class, 'index'])->name('fasilitator.password');
@@ -286,6 +298,16 @@ Route::middleware(['auth:nonasn', 'revalidate'])->group(function() {
     Route::put('penilaian/{id}', [NonasnPenilaianController::class, 'update'])->name('nonasn.penilaian.update');
     Route::delete('penilaian/{id}', [NonasnPenilaianController::class, 'destroy'])->name('nonasn.penilaian.destroy');
     Route::get('penilaian/{file}', [NonasnPenilaianController::class, 'viewFile'])->name('nonasn.penilaian.file');
+
+    // gaji non ptt
+    Route::get('gaji', [NonasnGajiNonPttController::class, 'index'])->name('nonasn.gajinonptt');
+    Route::get('gaji/create', [NonasnGajiNonPttController::class, 'create'])->name('nonasn.gajinonptt.create');
+    Route::post('gaji', [NonasnGajiNonPttController::class, 'store'])->name('nonasn.gajinonptt.store');
+    Route::get('gaji/{id}/edit', [NonasnGajiNonPttController::class, 'edit'])->name('nonasn.gajinonptt.edit');
+    Route::put('gaji/{id}', [NonasnGajiNonPttController::class, 'update'])->name('nonasn.gajinonptt.update');
+    Route::delete('gaji/{id}', [NonasnGajiNonPttController::class, 'destroy'])->name('nonasn.gajinonptt.destroy');
+    Route::get('gaji/dpa/{file}', [NonasnGajiNonPttController::class, 'viewFileDpa'])->name('nonasn.gajinonptt.file-dpa');
+    Route::get('gaji/gaji/{file}', [NonasnGajiNonPttController::class, 'viewFileGaji'])->name('nonasn.gajinonptt.file-gaji');
 
     // pendidikan
     /* SD-SMA */
