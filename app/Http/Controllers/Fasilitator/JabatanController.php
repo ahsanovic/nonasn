@@ -65,7 +65,7 @@ class JabatanController extends Controller
 
         $pegawai = Biodata::whereId_ptt($idPegawai)
                     ->whereAktif('Y')
-                    ->first(['id_ptt', 'id_skpd', 'nama', 'foto']);
+                    ->first(['id_ptt', 'jenis_ptt_id', 'id_skpd', 'nama', 'foto']);
         if (!$pegawai) return back()->with(["type" => "error", "message" => "terjadi kesalahan!"]);
 
         $skpd = Skpd::whereId($idSkpd)->first(['id', 'name']);

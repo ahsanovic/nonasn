@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\RefJabatan;
+use App\Models\RefGuruMapel;
 use Illuminate\Database\Eloquent\Model;
 
 class Jabatan extends Model
@@ -50,5 +51,10 @@ class Jabatan extends Model
     protected function getTglSuratAttribute($value)
     {
         return date('d/m/Y', strtotime($value));
+    }
+
+    protected function refGuruMapel()
+    {
+        return $this->belongsTo(RefGuruMapel::class, 'id_guru_mapel', 'id');
     }
 }

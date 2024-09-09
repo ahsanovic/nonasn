@@ -58,7 +58,7 @@ class DokumenPribadiController extends Controller
 
         $data = DokumenPribadi::whereId_ptt($idPegawai)->first();
 
-        $pegawai = Biodata::select('id_ptt', 'id_skpd', 'nama', 'foto')
+        $pegawai = Biodata::select('id_ptt', 'jenis_ptt_id', 'id_skpd', 'nama', 'foto')
                     ->whereId_ptt($idPegawai)
                     ->whereAktif('Y')
                     ->first();
@@ -121,7 +121,7 @@ class DokumenPribadiController extends Controller
         $data = DokumenPribadi::whereId_ptt($idPegawai)->first();
         if (!$data) return back()->with(["type" => "error", "message" => "terjadi kesalahan!"]);
 
-        $pegawai = Biodata::select('id_ptt', 'id_skpd', 'nama', 'foto')
+        $pegawai = Biodata::select('id_ptt', 'jenis_ptt_id', 'id_skpd', 'nama', 'foto')
                     ->whereId_ptt($idPegawai)
                     ->whereAktif('Y')
                     ->first();
