@@ -31,7 +31,7 @@ use App\Http\Controllers\Fasilitator\{
     UpdatePasswordController,
     StatsUsiaController,
     DiklatController,
-    GajiNonPttController
+    DpaNonPttController
 };
 use App\Http\Controllers\NonAsn\{
     NonasnKunciCpnsController,
@@ -127,15 +127,14 @@ Route::prefix('fasilitator')->group(function() {
         Route::get('jabatan/{file}', [JabatanController::class, 'viewFile'])->name('jabatan.file');
         Route::post('autocomplete', [JabatanController::class, 'autocomplete'])->name('jabatan.autocomplete');
 
-        // gaji non ptt
-        // Route::get('pegawai/{idSkpd}/gaji/{id}', [GajiNonPttController::class, 'index'])->name('fasilitator.gajinonptt');
-        // Route::get('pegawai/{idSkpd}/gaji/{id}/create', [GajiNonPttController::class, 'create'])->name('fasilitator.gajinonptt.create');
-        // Route::post('pegawai/{idSkpd}/gaji/{id}', [GajiNonPttController::class, 'store'])->name('fasilitator.gajinonptt.store');
-        // Route::get('pegawai/{idSkpd}/gaji/{id}/edit/{idGaji}', [GajiNonPttController::class, 'edit'])->name('fasilitator.gajinonptt.edit');
-        // Route::put('pegawai/{idSkpd}/gaji/{id}', [GajiNonPttController::class, 'update'])->name('fasilitator.gajinonptt.update');
-        // Route::delete('gaji/{id}', [GajiNonPttController::class, 'destroy'])->name('fasilitator.gajinonptt.destroy');
-        // Route::get('gaji/dpa/{file}', [GajiNonPttController::class, 'viewFileDpa'])->name('fasilitator.gajinonptt.file-dpa');
-        // Route::get('gaji/gaji/{file}', [GajiNonPttController::class, 'viewFileGaji'])->name('fasilitator.gajinonptt.file-gaji');
+        // dpa non ptt
+        Route::get('dpa', [DpaNonPttController::class, 'index'])->name('fasilitator.dpanonptt');
+        Route::get('dpa/create', [DpaNonPttController::class, 'create'])->name('fasilitator.dpanonptt.create');
+        Route::post('dpa', [DpaNonPttController::class, 'store'])->name('fasilitator.dpanonptt.store');
+        Route::get('dpa/edit/{id}', [DpaNonPttController::class, 'edit'])->name('fasilitator.dpanonptt.edit');
+        Route::put('dpa/{id}', [DpaNonPttController::class, 'update'])->name('fasilitator.dpanonptt.update');
+        Route::delete('dpa/{id}', [DpaNonPttController::class, 'destroy'])->name('fasilitator.dpanonptt.destroy');
+        Route::get('dpa/{file}', [DpaNonPttController::class, 'viewFile'])->name('fasilitator.dpanonptt.file');
 
         // penilaian
         Route::get('pegawai/{idSkpd}/penilaian/{id}', [PenilaianController::class, 'index'])->name('fasilitator.penilaian');
@@ -306,7 +305,6 @@ Route::middleware(['auth:nonasn', 'revalidate'])->group(function() {
     Route::get('gaji/{id}/edit', [NonasnGajiNonPttController::class, 'edit'])->name('nonasn.gajinonptt.edit');
     Route::put('gaji/{id}', [NonasnGajiNonPttController::class, 'update'])->name('nonasn.gajinonptt.update');
     Route::delete('gaji/{id}', [NonasnGajiNonPttController::class, 'destroy'])->name('nonasn.gajinonptt.destroy');
-    Route::get('gaji/dpa/{file}', [NonasnGajiNonPttController::class, 'viewFileDpa'])->name('nonasn.gajinonptt.file-dpa');
     Route::get('gaji/gaji/{file}', [NonasnGajiNonPttController::class, 'viewFileGaji'])->name('nonasn.gajinonptt.file-gaji');
 
     // pendidikan

@@ -45,3 +45,15 @@ function logFasilitator($username, $idSkpd, $idPtt, $modul, $aksi)
 		'jam' => date('H:i:s')
 	]);
 }
+
+function logDpaFasilitator($username, $idSkpd, $modul, $aksi)
+{
+	LogFasilitator::create([
+		'username' => $username,
+		'id_skpd' => $idSkpd,
+		'modul' => $modul,
+		'aksi' => $aksi,
+		'tgl' => date('Y-m-d'),
+		'jam' => date('H:i:s')
+	]);
+}

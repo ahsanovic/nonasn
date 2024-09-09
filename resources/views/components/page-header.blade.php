@@ -48,6 +48,9 @@
                             case 'download-data-keluarga':
                                 echo "<i class='pe-7s-cloud-download icon-gradient bg-premium-dark'></i>";
                                 break;
+                            case 'dpa':
+                                echo "<i class='pe-7s-wallet icon-gradient bg-premium-dark'></i>";
+                                break;
                         }
                     @endphp
                 </div>

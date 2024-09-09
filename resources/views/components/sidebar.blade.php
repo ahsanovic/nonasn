@@ -40,6 +40,7 @@
                             </i>Dashboard
                         </a>
                     </li>
+
                     <li class="app-sidebar__heading">Pegawai</li>
                     @if (auth()->user()->level == 'admin')
                     <li>
@@ -55,6 +56,15 @@
                             </i>Treeview
                         </a>
                     </li>
+
+                    <li class="app-sidebar__heading">Pendataan Non PTT</li>
+                    <li>
+                        <a href="{{ route('fasilitator.dpanonptt') }}" class="{{ Request::is('fasilitator/dpa') ? 'mm-active' : '' }}">
+                            <i class="metismenu-icon pe-7s-wallet">
+                            </i>DPA
+                        </a>
+                    </li>
+
                     <li class="app-sidebar__heading">Statistik</li>
                     <li>
                         <a href="{{ route('stats.jml-pegawai') }}" class="{{ Request::is('fasilitator/jml-pegawai') ? 'mm-active' : '' }}">
