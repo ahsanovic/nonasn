@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class GajiNonPtt extends Model
 {
-    protected $table = 'gaji_non_ptt';
+    protected $table = 'non_ptt_gaji';
     protected $guarded = ['id'];
 
     public function setTmtAwalAttribute($value)

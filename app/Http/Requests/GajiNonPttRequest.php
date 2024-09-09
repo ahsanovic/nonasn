@@ -28,7 +28,6 @@ class GajiNonPttRequest extends FormRequest
             'tmt_awal' => ['required','date_format:d/m/Y'],
             'tmt_akhir' => ['required','date_format:d/m/Y'],
             'nominal_gaji' => ['required', 'numeric'],
-            'file_dpa' => ['required','file','mimes:pdf','max:1024'],
             'file_gaji' => ['required','file','mimes:pdf','max:1024']
         ];
 
@@ -44,7 +43,6 @@ class GajiNonPttRequest extends FormRequest
     {
         // if file field is empty then remove its validation
         if ($this->file == null) {
-            $this->request->remove('file_dpa');
             $this->request->remove('file_gaji');
         }
     }
@@ -60,9 +58,6 @@ class GajiNonPttRequest extends FormRequest
             'tmt_akhir.date_format' => 'tanggal tidak sesuai format (d/m/Y)',
             'nominal_gaji.required' => 'gaji harus diisi',
             'nominal_gaji.numeric' => 'gaji hanya boleh diisi angka',
-            'file_dpa.required' => 'dokumen harus diupload',
-            'file_dpa.mimes' => 'format dokumen harus pdf',
-            'file_dpa.max' => 'file yang diupload maksimal 1 MB',
             'file_gaji.required' => 'dokumen harus diupload',
             'file_gaji.mimes' => 'format dokumen harus pdf',
             'file_gaji.max' => 'file yang diupload maksimal 1 MB'

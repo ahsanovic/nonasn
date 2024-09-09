@@ -64,15 +64,6 @@
         @enderror
     </div>
     <div class="position-relative form-group">
-        <label for="file-dpa" class="font-weight-bold">File DPA <small class="text-primary">*) format file pdf, maksimal 1 MB</small></label>
-        <input name="file_dpa" id="file-dpa" accept="application/pdf" type="file" class="form-control-file @error('file_dpa') is-invalid @enderror">
-        @error('file_dpa')
-        <div class="invalid-feedback">
-            {{ $message }}
-        </div>
-        @enderror
-    </div>
-    <div class="position-relative form-group">
         <label for="file-gaji" class="font-weight-bold">File Gaji <small class="text-primary">*) format file pdf, maksimal 1 MB</small></label>
         <input name="file_gaji" id="file-gaji" accept="application/pdf" type="file" class="form-control-file @error('file_gaji') is-invalid @enderror">
         @error('file_gaji')
@@ -163,48 +154,6 @@
         </div>
         @enderror
     </div>
-    <div class="position-relative form-group">
-        <label for="file-dpa" class="font-weight-bold">File DPA <small class="text-primary">*) format file pdf, maksimal 1 MB</small></label>
-        <input name="file_dpa" id="file-dpa" accept="application/pdf" type="file" class="form-control-file @error('file_dpa') is-invalid @enderror">
-        @error('file_dpa')
-        <div class="invalid-feedback">
-            {{ $message }}
-        </div>
-        @enderror
-    </div>
-    <div class="row">
-        <div class="col-md-12">
-            <div id="accordion" class="accordion-wrapper mb-3">
-                <div class="card">
-                    <div id="headingTwo" class="b-radius-0 card-header">
-                        <button
-                            type="button"
-                            data-toggle="collapse"
-                            data-target="#collapseOne"
-                            aria-expanded="false"
-                            aria-controls="collapseTwo"
-                            class="text-left m-0 p-0 btn btn-link btn-block"
-                        >
-                            <h5 class="m-0 p-0">Lihat Dokumen</h5>
-                        </button>
-                    </div>
-                    <div data-parent="#accordion" id="collapseOne" class="collapse">
-                        <div class="card-body">
-                            <iframe
-                                src="{{ route('nonasn.gajinonptt.file-dpa', ['file' => $data->file_dpa]) }}"
-                                align="top"
-                                height="800"
-                                width="100%"
-                                frameborder="0"
-                                scrolling="auto">
-                            </iframe>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <div class="position-relative form-group">
         <label for="file-gaji" class="font-weight-bold">File Gaji <small class="text-primary">*) format file pdf, maksimal 1 MB</small></label>
         <input name="file_gaji" id="file-gaji" accept="application/pdf" type="file" class="form-control-file @error('file_gaji') is-invalid @enderror">

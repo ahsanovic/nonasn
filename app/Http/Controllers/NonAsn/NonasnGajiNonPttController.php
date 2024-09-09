@@ -33,16 +33,6 @@ class NonasnGajiNonPttController extends Controller
         return view('nonasn.gaji_non_ptt.create', compact('submit'));
     }
 
-    public function viewFileDpa($file)
-    {
-        try {
-            $file = storage_path('app/upload_dpa/' . $file);
-            return response()->file($file);
-        } catch (\Throwable $th) {
-            abort(404);
-        }
-    }
-
     public function viewFileGaji($file)
     {
         try {
@@ -51,22 +41,6 @@ class NonasnGajiNonPttController extends Controller
         } catch (\Throwable $th) {
             abort(404);
         }
-    }
-
-    private function _uploadFileDpa($file)
-    {
-        $filenameWithExt = $file->getClientOriginalName();
-        // Get only filename without extension
-        $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
-        // Get extension
-        $extension = $file->getClientOriginalExtension();
-        // Give a new name
-        $time = date('YmdHis', time());
-        $filenameToStore = $time . '-' . uniqid() . '.' . $extension;
-        // Upload file
-        Storage::disk('local')->put('/upload_dpa/' . $filenameToStore, File::get($file));
-
-        return $filenameToStore;
     }
 
     private function _uploadFileGaji($file)
@@ -98,7 +72,6 @@ class NonasnGajiNonPttController extends Controller
                 'tmt_awal' => $request->tmt_awal,
                 'tmt_akhir' => $request->tmt_akhir,
                 'nominal_gaji' => $request->nominal_gaji,
-                'file_dpa' => $request->hasFile('file_dpa') ? $this->_uploadFileDpa($request->file('file_dpa')) : null,
                 'file_gaji' => $request->hasFile('file_gaji') ? $this->_uploadFileGaji($request->file('file_gaji')) : null
             ]);
 
@@ -135,16 +108,6 @@ class NonasnGajiNonPttController extends Controller
         try {
             $hashId = $this->_hashId();
             $data = GajiNonPtt::whereId($hashId->decode($id)[0])->first();
-            if ($request->hasFile('file_dpa')) {
-                $file_dpa = $this->_uploadFileDpa($request->file('file_dpa'));
-                if (Storage::disk('local')->exists('/upload_dpa/' . $data->file_dpa) && $data->file_dpa != null) {
-                    unlink(storage_path('app/upload_dpa/' . $data->file_dpa));
-                } else {
-                    $file_dpa = $file_dpa;
-                }
-            } else {
-                $file_dpa = $data->file_dpa;
-            }
 
             if ($request->hasFile('file_gaji')) {
                 $file_gaji = $this->_uploadFileGaji($request->file('file_gaji'));
@@ -162,7 +125,6 @@ class NonasnGajiNonPttController extends Controller
                 $data->tmt_awal = $request->tmt_awal;
                 $data->tmt_akhir = $request->tmt_akhir;
                 $data->nominal_gaji = $request->nominal_gaji;
-                $data->file_dpa = $file_dpa;
                 $data->file_gaji = $file_gaji;
                 $data->save();
             }
@@ -180,13 +142,6 @@ class NonasnGajiNonPttController extends Controller
         try {
             $hashId = $this->_hashId();
             $data = GajiNonPtt::find($hashId->decode($id)[0]);
-
-            if ($data->file_dpa && Storage::disk('local')->exists('/upload_dpa/' . $data->file_dpa)) {
-                unlink(storage_path('app/upload_dpa/' . $data->file_dpa));
-                $data->delete();
-            } else {
-                $data->delete();
-            }
 
             if ($data->file_gaji && Storage::disk('local')->exists('/upload_gaji/' . $data->file_gaji)) {
                 unlink(storage_path('app/upload_gaji/' . $data->file_gaji));

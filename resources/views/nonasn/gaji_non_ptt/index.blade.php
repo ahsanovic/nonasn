@@ -48,7 +48,6 @@
                                 <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>File DPA</th>
                                         <th>File Gaji</th>
                                         <th>Tahun</th>
                                         <th>TMT Awal Kontrak</th>
@@ -61,13 +60,6 @@
                                     @foreach ($data as $item)
                                         <tr>
                                             <td scope="row">{{ $loop->iteration }}</td>
-                                            <td>
-                                                @if ($item->file_dpa)
-                                                    <a href="{{ route('nonasn.gajinonptt.file-dpa', ['file' => $item->file_dpa]) }}" target="_blank">
-                                                        <i class="lnr-file-empty icon-gradient bg-love-kiss"></i>
-                                                    </a>
-                                                @endif
-                                            </td>
                                             <td>
                                                 @if ($item->file_gaji)
                                                     <a href="{{ route('nonasn.gajinonptt.file-gaji', ['file' => $item->file_gaji]) }}" target="_blank">
