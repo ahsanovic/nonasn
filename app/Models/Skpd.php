@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Dpa;
 use App\Models\Biodata;
 use Illuminate\Database\Eloquent\Model;
 
@@ -54,5 +55,10 @@ class Skpd extends Model
         $split_unor = substr($id_skpd,0,11);
         $unor_subbagian = Skpd::where('id', $split_unor)->first(['name']);
         return $unor_subbagian;
+    }
+
+    public function dpa()
+    {
+        return $this->hasMany(Dpa::class, 'id_skpd', 'id');
     }
 }

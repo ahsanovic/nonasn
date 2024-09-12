@@ -57,6 +57,19 @@
                         </a>
                     </li>
 
+                    {{-- menu DPA hanya ada di dinas induk dan biro --}}
+                    @if ((auth()->user()->id_skpd == 1 && auth()->user()->level == 'admin') ||
+                        strlen(auth()->user()->id_skpd) == 3 ||
+                        auth()->user()->id_skpd == 1010101 ||
+                        auth()->user()->id_skpd == 1010102 ||
+                        auth()->user()->id_skpd == 1010103 ||
+                        auth()->user()->id_skpd == 1010201 ||
+                        auth()->user()->id_skpd == 1010202 ||
+                        auth()->user()->id_skpd == 1010204 ||
+                        auth()->user()->id_skpd == 1010401 ||
+                        auth()->user()->id_skpd == 1010402 ||
+                        auth()->user()->id_skpd == 1010404
+                    )
                     <li class="app-sidebar__heading">Pendataan Non PTT</li>
                     <li>
                         <a href="{{ route('fasilitator.dpanonptt') }}" class="{{ Request::is('fasilitator/dpa') ? 'mm-active' : '' }}">
@@ -64,6 +77,7 @@
                             </i>DPA
                         </a>
                     </li>
+                    @endif
 
                     <li class="app-sidebar__heading">Statistik</li>
                     <li>

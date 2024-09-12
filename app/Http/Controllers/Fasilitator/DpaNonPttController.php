@@ -3,47 +3,72 @@
 namespace App\Http\Controllers\Fasilitator;
 
 use App\Models\Dpa;
-use App\Models\Skpd;
-use Hashids\Hashids;
-use App\Models\Biodata;
-use App\Models\Penilaian;
-use App\Models\GajiNonPtt;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Models\Skpd;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Validator;
-use App\Models\Fasilitator\DownloadPegawai;
-use Illuminate\Validation\ValidationException;
 
 class DpaNonPttController extends Controller
 {  
     public function index(Request $request)
     {
-        $fetch_data_2022 = Dpa::whereId_skpd(auth()->user()->id_skpd)->whereTahun(2022)->first(['id', 'file_dpa', 'data_dpa']);
-        $data_2022 = $fetch_data_2022 ? json_decode($fetch_data_2022->data_dpa, true) : null;
-        $count_jml_pegawai_2022 = $data_2022 ? array_sum(array_column($data_2022, 'jml_pegawai')) : null;
+        if (auth()->user()->id_skpd == 1 && auth()->user()->level == 'admin') {
+            $tahun = [2022, 2023, 2024];
+            $opd = Skpd::where(function($query) {
+                    $query->whereRaw('LENGTH(id) = ?', [3])
+                            ->orWhere('name', 'like', 'BIRO%');
+                    })   
+                    ->where('id', '!=', '101')
+                    ->with(['dpa' => function($query) use ($tahun) {
+                        $query->whereIn('tahun', $tahun)
+                                ->select('id', 'id_skpd', 'tahun', 'file_dpa', 'data_dpa');
+                    }])
+                    ->get();
 
-        $fetch_data_2023 = Dpa::whereId_skpd(auth()->user()->id_skpd)->whereTahun(2023)->first(['id', 'file_dpa', 'data_dpa']);
-        $data_2023 = $fetch_data_2023 ? json_decode($fetch_data_2023->data_dpa, true) : null;
-        $count_jml_pegawai_2023 = $data_2023 ? array_sum(array_column($data_2023, 'jml_pegawai')) : null;
+            $data_2022 = $opd->map(function($item) {
+                return $item->dpa->where('tahun', 2022);
+            });
 
-        $fetch_data_2024 = Dpa::whereId_skpd(auth()->user()->id_skpd)->whereTahun(2024)->first(['id', 'file_dpa', 'data_dpa']);
-        $data_2024 = $fetch_data_2024 ? json_decode($fetch_data_2024->data_dpa, true) : null;
-        $count_jml_pegawai_2024 = $data_2024 ? array_sum(array_column($data_2024, 'jml_pegawai')) : null;
+            $data_2023 = $opd->map(function($item) {
+                return $item->dpa->where('tahun', 2023);
+            });
 
-        return view('fasilitator.dpa_non_ptt.index', compact(
-            'data_2022',
-            'fetch_data_2022',
-            'count_jml_pegawai_2022',
-            'data_2023',
-            'fetch_data_2023',
-            'count_jml_pegawai_2023',
-            'data_2024',
-            'fetch_data_2024',
-            'count_jml_pegawai_2024',
-        ));
+            $data_2024 = $opd->map(function($item) {
+                return $item->dpa->where('tahun', 2024);
+            });
+
+            return view('fasilitator.dpa_non_ptt.index', compact(
+                'opd',
+                'data_2022',
+                'data_2023',
+                'data_2024'
+            ));
+        } else {
+            $fetch_data_2022 = Dpa::whereId_skpd(auth()->user()->id_skpd)->whereTahun(2022)->first(['id', 'file_dpa', 'data_dpa']);
+            $data_2022 = $fetch_data_2022 ? json_decode($fetch_data_2022->data_dpa, true) : null;
+            $count_jml_pegawai_2022 = $data_2022 ? array_sum(array_column($data_2022, 'jml_pegawai')) : null;
+
+            $fetch_data_2023 = Dpa::whereId_skpd(auth()->user()->id_skpd)->whereTahun(2023)->first(['id', 'file_dpa', 'data_dpa']);
+            $data_2023 = $fetch_data_2023 ? json_decode($fetch_data_2023->data_dpa, true) : null;
+            $count_jml_pegawai_2023 = $data_2023 ? array_sum(array_column($data_2023, 'jml_pegawai')) : null;
+
+            $fetch_data_2024 = Dpa::whereId_skpd(auth()->user()->id_skpd)->whereTahun(2024)->first(['id', 'file_dpa', 'data_dpa']);
+            $data_2024 = $fetch_data_2024 ? json_decode($fetch_data_2024->data_dpa, true) : null;
+            $count_jml_pegawai_2024 = $data_2024 ? array_sum(array_column($data_2024, 'jml_pegawai')) : null;
+
+            return view('fasilitator.dpa_non_ptt.index', compact(
+                'data_2022',
+                'fetch_data_2022',
+                'count_jml_pegawai_2022',
+                'data_2023',
+                'fetch_data_2023',
+                'count_jml_pegawai_2023',
+                'data_2024',
+                'fetch_data_2024',
+                'count_jml_pegawai_2024',
+            ));
+        }
     }
 
     public function create(Request $request)
