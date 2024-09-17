@@ -32,6 +32,13 @@
             <div class="main-card mb-3 card card-hover-shadow-2x">
                 <div class="card-body">
                     <h5 class="card-title">Riwayat Gaji 2022 - 2024</h5>
+                    <div class="row mt-4">
+                        <div class="col-md-12">
+                            <div class="alert alert-danger fade show" role="alert">
+                                Data yang dimasukkan mulai tahun 2022 sampai dengan 2024
+                            </div>    
+                        </div>    
+                    </div>
                     <a
                         href="{{ route('fasilitator.gajinonptt.create', ['idSkpd' => $hashidSkpd->encode($skpd->id), 'id' => $hashidPegawai->encode($pegawai->id_ptt)]) }}"
                         class="btn-square btn btn-sm btn-hover-shine btn-primary mt-3"
