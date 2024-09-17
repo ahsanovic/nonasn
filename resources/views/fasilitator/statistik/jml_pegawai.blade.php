@@ -257,7 +257,29 @@
                 </div>
             </div>
         </div>
-    </div>        
+    </div>
+    <div class="row">
+        <div class="col-md-6 col-lg-3">
+            <div class="card mb-3 widget-chart text-left">
+                <div class="widget-chart-actions">
+                    @php
+                        [$idSkpd] = explode(" - ", request()->input('skpd')) ;
+                    @endphp
+                    <form method="post" action="">
+                        @csrf
+                        <button class="btn-icon btn-icon-only btn btn-link"><i class="pe-7s-cloud-download btn-icon-wrapper"></i></button>
+                    </form>
+                </div>
+                <div class="icon-wrapper rounded-circle">
+                    <div class="icon-wrapper-bg bg-primary"></div>
+                    <i class="lnr-users text-primary"></i></div>
+                <div class="widget-chart-content">
+                    <div class="widget-subheading">Non ASN Non PTT</div>
+                    <div class="widget-numbers">{{ $nonasn_nonptt }}</div>
+                </div>
+            </div>
+        </div>
+    </div>
     @endif
 
     {{-- grafik --}}

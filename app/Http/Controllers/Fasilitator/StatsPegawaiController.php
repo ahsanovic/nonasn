@@ -16,7 +16,8 @@ class StatsPegawaiController extends Controller
             $pttpk = Biodata::where('id_skpd', 'like', auth()->user()->id_skpd . '%')->whereAktif('Y')->whereJenis_ptt_id('1')->count();    
             $ptt_cabdin = Biodata::where('id_skpd', 'like', auth()->user()->id_skpd . '%')->whereAktif('Y')->whereJenis_ptt_id('2')->count();    
             $ptt_sekolah = Biodata::where('id_skpd', 'like', auth()->user()->id_skpd . '%')->whereAktif('Y')->whereJenis_ptt_id('3')->count();    
-            $gtt = Biodata::where('id_skpd', 'like', auth()->user()->id_skpd . '%')->whereAktif('Y')->whereJenis_ptt_id('4')->count();            
+            $gtt = Biodata::where('id_skpd', 'like', auth()->user()->id_skpd . '%')->whereAktif('Y')->whereJenis_ptt_id('4')->count();         
+            $nonasn_nonptt = Biodata::where('id_skpd', 'like', auth()->user()->id_skpd . '%')->whereAktif('Y')->whereJenis_ptt_id('5')->count();         
             $unit_kerja = Skpd::with('biodata')->select('id', 'name')->where('id', 'like', auth()->user()->id_skpd . '%')->paginate(20);
             
         } else {
@@ -26,6 +27,7 @@ class StatsPegawaiController extends Controller
             $ptt_cabdin = Biodata::where('id_skpd', 'like', $id_skpd . '%')->whereAktif('Y')->whereJenis_ptt_id('2')->count();    
             $ptt_sekolah = Biodata::where('id_skpd', 'like', $id_skpd . '%')->whereAktif('Y')->whereJenis_ptt_id('3')->count();    
             $gtt = Biodata::where('id_skpd', 'like', $id_skpd . '%')->whereAktif('Y')->whereJenis_ptt_id('4')->count();
+            $nonasn_nonptt = Biodata::where('id_skpd', 'like', $id_skpd . '%')->whereAktif('Y')->whereJenis_ptt_id('5')->count();
             $unit_kerja = Skpd::with('biodata')->select('id', 'name')->where('id', 'like', $id_skpd . '%')->paginate(20);
         }
 
@@ -37,6 +39,7 @@ class StatsPegawaiController extends Controller
             'ptt_cabdin',
             'ptt_sekolah',
             'gtt',
+            'nonasn_nonptt',
             'skpd',
             'unit_kerja',
         ));
