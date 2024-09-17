@@ -31,7 +31,8 @@ use App\Http\Controllers\Fasilitator\{
     UpdatePasswordController,
     StatsUsiaController,
     DiklatController,
-    DpaNonPttController
+    DpaNonPttController,
+    GajiNonPttController
 };
 use App\Http\Controllers\NonAsn\{
     NonasnKunciCpnsController,
@@ -135,6 +136,15 @@ Route::prefix('fasilitator')->group(function() {
         Route::put('dpa/{id}', [DpaNonPttController::class, 'update'])->name('fasilitator.dpanonptt.update');
         Route::delete('dpa/{id}', [DpaNonPttController::class, 'destroy'])->name('fasilitator.dpanonptt.destroy');
         Route::get('dpa/{file}', [DpaNonPttController::class, 'viewFile'])->name('fasilitator.dpanonptt.file');
+
+        // gaji non ptt
+        Route::get('pegawai/{idSkpd}/gaji/{id}', [GajiNonPttController::class, 'index'])->name('fasilitator.gajinonptt');
+        Route::get('pegawai/{idSkpd}/gaji/{id}/create', [GajiNonPttController::class, 'create'])->name('fasilitator.gajinonptt.create');
+        Route::post('pegawai/{idSkpd}/gaji/{id}', [GajiNonPttController::class, 'store'])->name('fasilitator.gajinonptt.store');
+        Route::get('pegawai/{idSkpd}/gaji/{id}/edit/{idGaji}', [GajiNonPttController::class, 'edit'])->name('fasilitator.gajinonptt.edit');
+        Route::put('pegawai/{idSkpd}/gaji/{id}', [GajiNonPttController::class, 'update'])->name('fasilitator.gajinonptt.update');
+        Route::delete('gaji/{id}', [GajiNonPttController::class, 'destroy'])->name('fasilitator.gajinonptt.destroy');
+        Route::get('gaji/{file}', [GajiNonPttController::class, 'viewFile'])->name('fasilitator.gajinonptt.file');
 
         // penilaian
         Route::get('pegawai/{idSkpd}/penilaian/{id}', [PenilaianController::class, 'index'])->name('fasilitator.penilaian');
