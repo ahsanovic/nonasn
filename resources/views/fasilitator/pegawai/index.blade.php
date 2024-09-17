@@ -28,7 +28,7 @@
            return false;
         },
     });
-</script>
+</script> 
 @endpush
 
 <x-app-layout>
@@ -55,7 +55,7 @@
                             <input type="text" name="nama" class="form-control form-control-sm" id="search" value="{{ request('nama', '') }}">
                         </div>
                     </div>
-                    <div class="col-md-2">
+		    <div class="col-md-2">
                         <label class="font-weight-bold">Jenis PTT</label>
                         <div class="input-group">
                             <select class="form-control form-control-sm" name="jenis_ptt">
@@ -66,7 +66,7 @@
                             </select>
                         </div>
                     </div>
-                    <div class="col-md-4">
+		    <div class="col-md-4">
                         <label class="font-weight-bold"></label>
                         <div class="input-group">
                             <button class="btn btn-success btn-sm btn-square btn-hover-shine mr-2 mt-2" type="submit">Search</button>
@@ -103,14 +103,14 @@
                             <div class="menu-header-content">
                                 <div class="avatar-icon-wrapper avatar-icon-xl">
                                     <div class="avatar-icon rounded btn-hover-shine">
-                                    @if ($item->foto)
-                                        <img src="{{ route('pegawai.image', ['image' => rtrim($item->foto)]) }}" alt="foto"></div>
-                                    @endif
+                                        @if ($item->foto)
+                                        <img src="{{ route('pegawai.image', ['image' => rtrim($item->foto)]) }}" alt="foto">
+                                        @endif
+                                    </div>
                                 </div>
                                 <div><h5 class="menu-header-title">{{ $item->nama }}</h5></div>
-                                {{-- <div><h6 class="menu-header-subtitle">{{ $item->niptt }}</h6></div> --}}
                                 <div>
-                                    <h6 class="menu-header-subtitle">
+                                     <h6 class="menu-header-subtitle">
                                         @php
                                             $panjang_nip = strlen($item->niptt);
                                             if ($item->jenis_ptt_id == 1) {
@@ -129,12 +129,20 @@
                                                 $niptt = substr($item->niptt,0,2) . "-" . substr($item->niptt,2,6) . "-" . substr($item->niptt,8,4) . "-" . substr($item->niptt,12,3);
                                             } else if ($item->jenis_ptt_id == 3) {
                                                 $niptt = substr($item->niptt,0,8) . "-" . substr($item->niptt,8,6) . "-" . substr($item->niptt,14,4) . "-" . substr($item->niptt,18,5);
+                                            } else if ($item->jenis_ptt_id == 5) {
+                                                if ($panjang_nip == 19) {
+                                                    $niptt = substr($item->niptt,0,1) . "." . substr($item->niptt,1,3) . "." . substr($item->niptt,4,1) . "-" . substr($item->niptt,5,6) . "-" . substr($item->niptt,11,4) . "-" . substr($item->niptt,15,4);
+                                                } elseif ($panjang_nip == 20) {
+                                                    $niptt = substr($item->niptt,0,1) . "." . substr($item->niptt,1,3) . "." . substr($item->niptt,4,2) . "-" . substr($item->niptt,6,6) . "-" . substr($item->niptt,12,4) . "-" . substr($item->niptt,16,4);
+                                                } else {
+                                                    $niptt = substr($item->niptt,0,1) . "." . substr($item->niptt,1,3) . "-" . substr($item->niptt,4,6) . "-" . substr($item->niptt,10,4) . "-" . substr($item->niptt,14,4);
+                                                }
                                             } else {
                                                 $niptt = substr($item->niptt,0,8) . "-" . substr($item->niptt,8,6) . "-" . substr($item->niptt,14,4) . "-" . substr($item->niptt,18,5);
-                                            }                                            
+                                            } 
                                         @endphp
                                         {{ $niptt }}
-                                    </h6>
+                                     </h6>
                                 </div>
                                 <div class="mt-1">
                                     <small class="opacity-7">
@@ -145,8 +153,8 @@
                                     <small class="opacity-7">
                                         {{ $item->jenisPtt->jenis_ptt ?? '' }}
                                     </small>
-                                </div>
-                                <div>
+				</div>
+				<div>
                                     <small class="opacity-7">
                                         {{ $item->getAge() }}
                                     </small>
