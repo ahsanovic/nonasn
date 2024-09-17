@@ -57,7 +57,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($data as $item)
+                                    @forelse ($data as $item)
                                         <tr>
                                             <td scope="row">{{ $loop->iteration }}</td>
                                             <td>
@@ -115,7 +115,11 @@
                                                 </div>
                                             </td>
                                         </tr>
-                                    @endforeach
+                                    @empty
+                                        <tr>
+                                            <td colspan="7" class="text-center">- tidak ada data -</td>
+                                        </tr>
+                                    @endforelse
                                 </tbody>
                             </table>
                         </div>
