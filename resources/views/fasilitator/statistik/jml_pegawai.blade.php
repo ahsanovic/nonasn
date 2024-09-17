@@ -265,7 +265,7 @@
                     @php
                         [$idSkpd] = explode(" - ", request()->input('skpd')) ;
                     @endphp
-                    <form method="post" action="">
+                    <form method="post" action="{{ route('fasilitator.download-nonptt', ['idSkpd' => $idSkpd]) }}">
                         @csrf
                         <button class="btn-icon btn-icon-only btn btn-link"><i class="pe-7s-cloud-download btn-icon-wrapper"></i></button>
                     </form>

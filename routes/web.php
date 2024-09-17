@@ -242,6 +242,7 @@ Route::prefix('fasilitator')->group(function() {
         Route::post('download-pttc/{idSkpd?}', [DownloadPegawaiController::class, 'downloadPttCabdin'])->name('fasilitator.download-pttcabdin');
         Route::post('download-ptts/{idSkpd?}', [DownloadPegawaiController::class, 'downloadPttSekolah'])->name('fasilitator.download-pttsekolah');
         Route::post('download-gtt/{idSkpd?}', [DownloadPegawaiController::class, 'downloadGtt'])->name('fasilitator.download-gtt');
+        Route::post('download-nonptt/{idSkpd?}', [DownloadPegawaiController::class, 'downloadNonPtt'])->name('fasilitator.download-nonptt');
         Route::post('download-by-agama/{idSkpd?}', [DownloadPegawaiController::class, 'downloadByAgama'])->name('fasilitator.download-by-agama');
         Route::get('download-data-keluarga', [DownloadDataKeluargaController::class, 'index'])->name('fasilitator.download-data-keluarga');
         Route::post('download-data-pasangan/{idSkpd?}', [DownloadDataKeluargaController::class, 'downloadPasangan'])->name('fasilitator.download-data-pasangan');

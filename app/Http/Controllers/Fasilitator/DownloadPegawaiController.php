@@ -843,4 +843,88 @@ class DownloadPegawaiController extends Controller
             return back()->with(["type" => "error", "message" => "terjadi kesalahan!"]);
         }
     }
+
+    public function downloadNonPtt(Request $request)
+    {
+        try {
+            $idSkpd = $request->idSkpd ?? auth()->user()->id_skpd;
+            $pegawai = DB::table('download')
+                        ->select(
+                            'niptt',
+                            'nama',
+                            'jenis_ptt',
+                            'tempat_lahir',
+                            'tgl_lahir',
+                            'jk',
+                            'nik',
+                            'agama',
+                            'status_kawin',
+                            'alamat',
+                            'kode_pos',
+                            'no_hp',
+                            'no_bpjs',
+                            'kelas',
+                            'no_bpjs_naker',
+                            'jenjang',
+                            'nama_sekolah',
+                            'jurusan',
+                            'akreditasi',
+                            'thn_lulus',
+                            'jabatan',
+                            'no_sk',
+                            'tgl_sk',
+                            'tgl_mulai',
+                            'tgl_akhir',
+                            'id_skpd',
+                            'unit_kerja',
+                            'skpd',
+                            'tes_narkoba',
+                            'tahun_tes_narkoba',
+                            'aktif',
+                            DB::raw('timestampdiff(year, tgl_lahir, curdate()) as usia'))
+                        ->where('jenis_ptt', 'Non ASN Non PTT')
+                        ->where('id_skpd', 'like', $idSkpd . '%')
+                        ->where('aktif', 'Y')
+                        ->get();
+                        
+            return (new FastExcel($pegawai))->download("data-pegawai-nonasn_nonptt.xlsx", function($row) {
+                return [
+                    'NIPTT' => $row->niptt,
+                    'Nama' => $row->nama,
+                    'Jenis PTT' => $row->jenis_ptt,
+                    'Tempat Lahir' => $row->tempat_lahir,
+                    'Tgl Lahir' => $row->tgl_lahir,
+                    'JK' => $row->jk,
+                    'NIK' => $row->nik,
+                    'Agama' => $row->agama,
+                    'Status Pernikahan' => $row->status_kawin,
+                    'Alamat' => $row->alamat,
+                    'Kode Pos' => $row->kode_pos,
+                    'No. HP' => $row->no_hp,
+                    'No. BPJS' => $row->no_bpjs,
+                    'Kelas BPJS' => $row->kelas,
+                    'No. BPJS Ketenagakerjaan' => $row->no_bpjs_naker,
+                    'Jenjang Pendidikan' => $row->jenjang,
+                    'Nama Sekolah' => $row->nama_sekolah,
+                    'Jurusan' => $row->jurusan,
+                    'Akreditasi' => $row->akreditasi,
+                    'Tahun Lulus' => $row->thn_lulus,
+                    'Jabatan' => $row->jabatan,
+                    'No. SK' => $row->no_sk,
+                    'Tgl SK' => $row->tgl_sk,
+                    'Tgl Mulai Kontrak' => $row->tgl_mulai,
+                    'Tgl Akhir Kontrak' => $row->tgl_akhir,
+                    'Kode Unit Kerja' => $row->id_skpd,
+                    'Unit Kerja' => $row->unit_kerja,
+                    'SKPD' => $row->skpd,
+                    'Tes Narkoba' => $row->tes_narkoba,
+                    'Tahun Tes Narkoba' => $row->tahun_tes_narkoba,
+                    'Usia' => $row->usia,
+                    'Aktif' => $row->aktif
+                ];
+            });
+        } catch (\Throwable $th) {
+            return back()->with(["type" => "error", "message" => "terjadi kesalahan!"]);
+        }
+    }
 }
