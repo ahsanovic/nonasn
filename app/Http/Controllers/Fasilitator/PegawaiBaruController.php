@@ -39,6 +39,9 @@ class PegawaiBaruController extends Controller
             case 4:
                 $allNip = range(1, 9000);
                 break;
+            case 5:
+                $allNip = range(1, 5000);
+                break;
         }
         
         $availableNip = array_diff($allNip, $usedNip);
