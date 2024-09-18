@@ -238,10 +238,18 @@ class DpaNonPttController extends Controller
             $data->update([
                 'data_dpa' => $updated_data_dpa
             ]);
+            
+            if (empty($existing_data_dpa)) {
+                if (Storage::disk('local')->exists('/upload_dpa/' . $data->file_dpa) && $data->file_dpa != null) {
+                    Storage::delete('upload_dpa/' . $data->file_dpa);
+                }
+                // hapus record
+                Dpa::whereId($id)->delete();
+            }
 
             logDpaFasilitator(auth()->user()->username, auth()->user()->id_skpd, 'dpa', 'hapus');
 
-            return redirect()->route('fasilitator.dpanonptt')->with(["type" => "success", "message" => "berhasil diubah!"]);
+            return redirect()->route('fasilitator.dpanonptt')->with(["type" => "success", "message" => "berhasil dihapus!"]);
         } catch (\Throwable $th) {
             //throw $th;
             return back()->with(["type" => "error", "message" => "terjadi kesalahan!"]);

@@ -1,6 +1,6 @@
 @push('scripts')
 <script>
-    function deleteRow(id_dpa) {
+    function deleteRow(id_dpa, key) {
         Swal.fire({
             title: 'Yakin akan menghapus data?',
             icon: 'warning',
@@ -10,7 +10,7 @@
             confirmButtonText: 'Hapus'
         }).then((result) => {
             if (result.isConfirmed) {
-                $('#form-delete-' + id_dpa).submit();
+                $('#form-delete-' + id_dpa + '-' + key).submit();
             }
         })
     }
@@ -410,7 +410,7 @@
                                     </div>
                                     <div class="col-2 mt-2">
                                         <form
-                                            id="form-delete-{{ $fetch_data_2022->id }}"
+                                            id="form-delete-{{ $fetch_data_2022->id }}-{{ $key }}"
                                             method="POST"
                                             action="{{ route('fasilitator.dpanonptt.destroy', $fetch_data_2022->id) }}"
                                         >
@@ -418,7 +418,7 @@
                                             @method('delete')
                                             <input type="hidden" name="index" value="{{ $key }}" />
                                         </form>
-                                        <button onclick="deleteRow('{{ $fetch_data_2022->id }}')" class="btn btn-sm btn-danger">Hapus</button>                                            
+                                        <button onclick="deleteRow('{{ $fetch_data_2022->id }}', '{{ $key }}')" class="btn btn-sm btn-danger">Hapus</button>                                            
                                     </div>
                                 </div>
                             @endforeach
@@ -471,7 +471,7 @@
                                     <p class="list-group-item font-weight-bold">Jumlah Pegawai</p>
                                 </div>
                             </div>
-                            @foreach ($data_2023 as $item)
+                            @foreach ($data_2023 as $key => $item)
                                 <div class="row">
                                     <div class="col-6">
                                         <p class="list-group-item">{{ $item['kode_rekening'] }}</p>
@@ -481,7 +481,7 @@
                                     </div>
                                     <div class="col-2 mt-2">
                                         <form
-                                            id="form-delete-{{ $fetch_data_2023->id }}"
+                                            id="form-delete-{{ $fetch_data_2023->id }}-{{ $key }}"
                                             method="POST"
                                             action="{{ route('fasilitator.dpanonptt.destroy', $fetch_data_2023->id) }}"
                                         >
@@ -489,7 +489,7 @@
                                             @method('delete')
                                             <input type="hidden" name="index" value="{{ $key }}" />
                                         </form>
-                                        <button onclick="deleteRow('{{ $fetch_data_2023->id }}')" class="btn btn-sm btn-danger">Hapus</button>                                            
+                                        <button onclick="deleteRow('{{ $fetch_data_2023->id }}', '{{ $key }}')" class="btn btn-sm btn-danger">Hapus</button>                                            
                                     </div>
                                 </div>
                             @endforeach
@@ -554,7 +554,7 @@
                                     </div>
                                     <div class="col-2 mt-2">
                                         <form
-                                            id="form-delete-{{ $fetch_data_2024->id }}"
+                                            id="form-delete-{{ $fetch_data_2024->id }}-{{ $key }}"
                                             method="POST"
                                             action="{{ route('fasilitator.dpanonptt.destroy', $fetch_data_2024->id) }}"
                                         >
@@ -562,7 +562,7 @@
                                             @method('delete')
                                             <input type="hidden" name="index" value="{{ $key }}" />
                                         </form>
-                                        <button onclick="deleteRow('{{ $fetch_data_2024->id }}')" class="btn btn-sm btn-danger">Hapus</button>
+                                        <button onclick="deleteRow('{{ $fetch_data_2024->id }}', '{{ $key }}')" class="btn btn-sm btn-danger">Hapus</button>
                                     </div>
                                 </div>
                             @endforeach
