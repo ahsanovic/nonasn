@@ -15,10 +15,12 @@ class DpaNonPttController extends Controller
     {
         if (auth()->user()->id_skpd == 1 && auth()->user()->level == 'admin') {
             $tahun = [2022, 2023, 2024];
-            $opd = Skpd::where(function($query) {
+            $upt_dinkes = ['10310', '10312', '10314', '10316', '10317', '10320'];
+            $opd = Skpd::where(function($query) use ($upt_dinkes) {
                     $query->whereRaw('LENGTH(id) = ?', [3])
-                            ->orWhere('name', 'like', 'BIRO%');
-                    })   
+                            ->orWhere('name', 'like', 'BIRO%')
+                            ->orWhereIn('id', $upt_dinkes);
+                    })
                     ->where('id', '!=', '101')
                     ->with(['dpa' => function($query) use ($tahun) {
                         $query->whereIn('tahun', $tahun)
