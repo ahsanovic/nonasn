@@ -26,10 +26,7 @@ class DownloadPegawaiController extends Controller
         try {
             $hashid = $this->_hashId();
             if (auth()->user()->level == 'admin') {
-                if (!$request->query('nama')) {
-                    // $pegawai = DownloadPegawai::whereAktif('Y')
-                    //         ->where('id_skpd', 'like', $hashid->decode($request->segment(3))[0] . '%')
-                    //         ->get();
+                if (!$request->query('nama') && !$request->query('jenis_ptt')) {
                     $pegawai = DB::table('download')
                             ->select(
                                 'niptt',
@@ -67,11 +64,7 @@ class DownloadPegawaiController extends Controller
                             ->where('id_skpd', 'like', $hashid->decode($request->segment(3))[0] . '%')
                             ->where('aktif', 'Y')
                             ->get();
-                } else {
-                    // $pegawai = DownloadPegawai::whereAktif('Y')
-                    //         ->where('nama', 'like', '%' . $request->query('nama') . '%')
-                    //         ->orWhere('niptt', $request->query('nama'))
-                    //         ->get();
+                } else if ($request->query('nama') && !$request->query('jenis_ptt')) {
                     $pegawai = DB::table('download')
                             ->select(
                                 'niptt',
@@ -110,9 +103,55 @@ class DownloadPegawaiController extends Controller
                             ->where('nama', 'like', '%' . $request->query('nama') . '%')
                             ->orWhere('niptt', $request->query('nama'))
                             ->get();
+                } else if ($request->query('jenis_ptt') && !$request->query('nama')) {
+                    $ref_jenis_ptt = DB::table('ref_jenis_ptt')->get();
+                    foreach ($ref_jenis_ptt as $item) {
+                        if ($request->jenis_ptt == $item->id) {
+                            $jenis_ptt = $item->jenis_ptt;
+                            break;
+                        }
+                    }
+
+                    $pegawai = DB::table('download')
+                            ->select(
+                                'niptt',
+                                'nama',
+                                'jenis_ptt',
+                                'tempat_lahir',
+                                'tgl_lahir',
+                                'jk',
+                                'nik',
+                                'agama',
+                                'status_kawin',
+                                'alamat',
+                                'kode_pos',
+                                'no_hp',
+                                'no_bpjs',
+                                'kelas',
+                                'no_bpjs_naker',
+                                'jenjang',
+                                'nama_sekolah',
+                                'jurusan',
+                                'akreditasi',
+                                'thn_lulus',
+                                'jabatan',
+                                'no_sk',
+                                'tgl_sk',
+                                'tgl_mulai',
+                                'tgl_akhir',
+                                'id_skpd',
+                                'unit_kerja',
+                                'skpd',
+                                'tes_narkoba',
+                                'tahun_tes_narkoba',
+                                'aktif',
+                                DB::raw('timestampdiff(year, tgl_lahir, curdate()) as usia'))
+                            ->where('aktif', 'Y')
+                            ->where('jenis_ptt', $jenis_ptt)
+                            ->get();
                 }
             } else {
-                if (!$request->query('nama')) {
+                if (!$request->query('nama') && !$request->query('jenis_ptt')) {
                     // $pegawai = DownloadPegawai::whereAktif('Y')
                     //     ->where('id_skpd', 'like', $hashid->decode($request->segment(3))[0] . '%')
                     //     ->get()->makeHidden(['tahun_penilaian', 'rekomendasi']);
@@ -158,11 +197,7 @@ class DownloadPegawaiController extends Controller
                             unset($peg->rekomendasi);
                             return $peg;
                         });
-                } else {
-                    // $pegawai = DownloadPegawai::whereAktif('Y')
-                    //         ->where('nama', 'like', '%' . $request->query('nama') . '%')
-                    //         ->orWhere('niptt', $request->query('nama'))
-                    //         ->get()->makeHidden(['tahun_penilaian', 'rekomendasi']);
+                } else if ($request->query('nama') && !$request->query('jenis_ptt')) {
                     $pegawai = DB::table('download')
                             ->select(
                                 'niptt',
@@ -197,6 +232,7 @@ class DownloadPegawaiController extends Controller
                                 'tahun_tes_narkoba',
                                 'aktif',
                                 DB::raw('timestampdiff(year, tgl_lahir, curdate()) as usia'))
+                            ->where('id_skpd', 'like', $hashid->decode($request->segment(3))[0] . '%')
                             ->where('aktif', 'Y')
                             ->where('nama', 'like', '%' . $request->query('nama') . '%')
                             ->orWhere('niptt', $request->query('nama'))
@@ -206,8 +242,61 @@ class DownloadPegawaiController extends Controller
                                 unset($peg->rekomendasi);
                                 return $peg;
                             });
-                }                
+                } else if ($request->query('jenis_ptt') && !$request->query('nama')) {
+                    $ref_jenis_ptt = DB::table('ref_jenis_ptt')->get();
+                    foreach ($ref_jenis_ptt as $item) {
+                        if ($request->jenis_ptt == $item->id) {
+                            $jenis_ptt = $item->jenis_ptt;
+                            break;
+                        }
+                    }
+
+                    $pegawai = DB::table('download')
+                            ->select(
+                                'niptt',
+                                'nama',
+                                'jenis_ptt',
+                                'tempat_lahir',
+                                'tgl_lahir',
+                                'jk',
+                                'nik',
+                                'agama',
+                                'status_kawin',
+                                'alamat',
+                                'kode_pos',
+                                'no_hp',
+                                'no_bpjs',
+                                'kelas',
+                                'no_bpjs_naker',
+                                'jenjang',
+                                'nama_sekolah',
+                                'jurusan',
+                                'akreditasi',
+                                'thn_lulus',
+                                'jabatan',
+                                'no_sk',
+                                'tgl_sk',
+                                'tgl_mulai',
+                                'tgl_akhir',
+                                'id_skpd',
+                                'unit_kerja',
+                                'skpd',
+                                'tes_narkoba',
+                                'tahun_tes_narkoba',
+                                'aktif',
+                                DB::raw('timestampdiff(year, tgl_lahir, curdate()) as usia'))
+                            ->where('id_skpd', 'like', $hashid->decode($request->segment(3))[0] . '%')
+                            ->where('aktif', 'Y')
+                            ->where('jenis_ptt', $jenis_ptt)
+                            ->get()
+                            ->map(function($peg) {
+                                unset($peg->tahun_penilaian);
+                                unset($peg->rekomendasi);
+                                return $peg;
+                            });
+                }
             }
+
             return (new FastExcel($pegawai))->download('data-pegawai.xlsx', function($row) {
                 return [
                     'NIPTT' => $row->niptt,
