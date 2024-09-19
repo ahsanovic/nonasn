@@ -15,12 +15,17 @@ class DpaNonPttController extends Controller
     {
         if (auth()->user()->id_skpd == 1 && auth()->user()->level == 'admin') {
             $tahun = [2022, 2023, 2024];
-            $upt_dinkes = ['10310', '10312', '10314', '10316', '10317', '10320'];
-            $opd = Skpd::where(function($query) use ($upt_dinkes) {
-                    $query->whereRaw('LENGTH(id) = ?', [3])
-                            ->orWhere('name', 'like', 'BIRO%')
-                            ->orWhereIn('id', $upt_dinkes);
-                    })
+            // $upt_dinkes = ['10310', '10312', '10314', '10316', '10317', '10320'];
+            $opd_array = ['102', '103', '104', '105', '107', '108', '109', '110', '113', '114', '115',
+                            '116', '117', '118', '119', '120', '122', '123', '124', '126', '128', '129', '130',
+                            '136', '137', '145', '147', '149', '150', '10310', '10312', '10314', '10316', '10317', '10320'];
+            // $opd = Skpd::where(function($query) use ($upt_dinkes) {
+            //         $query->whereRaw('LENGTH(id) = ?', [3])
+            //                 ->orWhere('name', 'like', 'BIRO%')
+            //                 ->orWhereIn('id', $upt_dinkes);
+            //         })
+            $opd = Skpd::whereIn('id', $opd_array)
+                    ->orWhere('name', 'like', 'BIRO%')
                     ->where('id', '!=', '101')
                     ->with(['dpa' => function($query) use ($tahun) {
                         $query->whereIn('tahun', $tahun)
