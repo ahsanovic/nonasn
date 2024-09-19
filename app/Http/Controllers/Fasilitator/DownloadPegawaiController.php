@@ -99,6 +99,7 @@ class DownloadPegawaiController extends Controller
                                 'tahun_tes_narkoba',
                                 'aktif',
                                 DB::raw('timestampdiff(year, tgl_lahir, curdate()) as usia'))
+                            ->where('id_skpd', 'like', $hashid->decode($request->segment(3))[0] . '%')
                             ->where('aktif', 'Y')
                             ->where('nama', 'like', '%' . $request->query('nama') . '%')
                             ->orWhere('niptt', $request->query('nama'))
@@ -146,6 +147,7 @@ class DownloadPegawaiController extends Controller
                                 'tahun_tes_narkoba',
                                 'aktif',
                                 DB::raw('timestampdiff(year, tgl_lahir, curdate()) as usia'))
+                            ->where('id_skpd', 'like', $hashid->decode($request->segment(3))[0] . '%')
                             ->where('aktif', 'Y')
                             ->where('jenis_ptt', $jenis_ptt)
                             ->get();
