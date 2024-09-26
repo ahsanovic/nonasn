@@ -72,6 +72,7 @@ class NonasnGajiNonPttController extends Controller
                 'tmt_awal' => $request->tmt_awal,
                 'tmt_akhir' => $request->tmt_akhir,
                 'nominal_gaji' => $request->nominal_gaji,
+                'link_gdrive' => $request->link_gdrive,
                 'file_gaji' => $request->hasFile('file_gaji') ? $this->_uploadFileGaji($request->file('file_gaji')) : null
             ]);
 
@@ -113,21 +114,20 @@ class NonasnGajiNonPttController extends Controller
                 $file_gaji = $this->_uploadFileGaji($request->file('file_gaji'));
                 if (Storage::disk('local')->exists('/upload_gaji/' . $data->file_gaji) && $data->file_gaji != null) {
                     unlink(storage_path('app/upload_gaji/' . $data->file_gaji));
-                } else {
-                    $file_gaji = $file_gaji;
                 }
-            } else {
-                $file_gaji = $data->file_gaji;
+
+                $data->file_gaji = $file_gaji;
             }
 
-            if ($data) {
-                $data->tahun = $request->tahun;
-                $data->tmt_awal = $request->tmt_awal;
-                $data->tmt_akhir = $request->tmt_akhir;
-                $data->nominal_gaji = $request->nominal_gaji;
-                $data->file_gaji = $file_gaji;
-                $data->save();
+            if ($request->link_gdrive) {
+                $data->link_gdrive = $request->link_gdrive;
             }
+
+            $data->tahun = $request->tahun;
+            $data->tmt_awal = $request->tmt_awal;
+            $data->tmt_akhir = $request->tmt_akhir;
+            $data->nominal_gaji = $request->nominal_gaji;
+            $data->save();
 
             logPtt(auth()->user()->id_ptt, request()->segment(1), 'update');
 

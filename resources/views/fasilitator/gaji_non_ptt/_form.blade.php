@@ -63,10 +63,25 @@
         </div>
         @enderror
     </div>
-    <div class="position-relative form-group">
+    {{-- <div class="position-relative form-group">
         <label for="file-gaji" class="font-weight-bold">File Gaji <small class="text-primary">*) format file pdf, maksimal 1 MB</small></label>
         <input name="file_gaji" id="file-gaji" accept="application/pdf" type="file" class="form-control-file @error('file_gaji') is-invalid @enderror">
         @error('file_gaji')
+        <div class="invalid-feedback">
+            {{ $message }}
+        </div>
+        @enderror
+    </div> --}}
+    <div class="position-relative form-group">
+        <label for="link-gdrive" class="font-weight-bold">Link Google Drive <small class="text-danger">*) masukkan link google drive dokumen gaji anda</small></label>
+        <input
+            name="link_gdrive"
+            id="link-gdrive"
+            type="text"
+            class="form-control form-control-sm @error('link_gdrive') is-invalid @enderror"
+            value="{{ old('link_gdrive') }}"
+        >
+        @error('link_gdrive')
         <div class="invalid-feedback">
             {{ $message }}
         </div>
@@ -154,6 +169,23 @@
         </div>
         @enderror
     </div>
+    @if ($data->link_gdrive)
+    <div class="position-relative form-group">
+        <label for="link-gdrive" class="font-weight-bold">Link Google Drive <small class="text-danger">*) masukkan link google drive dokumen gaji anda</small></label>
+        <input
+            name="link_gdrive"
+            id="link-gdrive"
+            type="text"
+            class="form-control form-control-sm @error('link_gdrive') is-invalid @enderror"
+            value="{{ $data->link_gdrive }}"
+        >
+        @error('link_gdrive')
+        <div class="invalid-feedback">
+            {{ $message }}
+        </div>
+        @enderror
+    </div>
+    @else
     <div class="position-relative form-group">
         <label for="file-gaji" class="font-weight-bold">File Gaji <small class="text-primary">*) format file pdf, maksimal 1 MB</small></label>
         <input name="file_gaji" id="file-gaji" accept="application/pdf" type="file" class="form-control-file @error('file_gaji') is-invalid @enderror">
@@ -195,7 +227,7 @@
             </div>
         </div>
     </div>
-    
+    @endif
 
     <x-button-loader />
     <button

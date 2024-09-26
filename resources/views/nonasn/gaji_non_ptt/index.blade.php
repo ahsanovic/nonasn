@@ -48,7 +48,7 @@
                                 <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>File Gaji</th>
+                                        <th>File/Link Gaji</th>
                                         <th>Tahun</th>
                                         <th>TMT Awal Kontrak</th>
                                         <th>TMT Akhir Kontrak</th>
@@ -64,6 +64,10 @@
                                                 @if ($item->file_gaji)
                                                     <a href="{{ route('nonasn.gajinonptt.file-gaji', ['file' => $item->file_gaji]) }}" target="_blank">
                                                         <i class="lnr-file-empty icon-gradient bg-love-kiss"></i>
+                                                    </a>
+                                                @else
+                                                    <a href="{{ $item->link_gdrive }}" target="_blank">
+                                                        <i class="lnr-link icon-gradient bg-arielle-smile"></i>
                                                     </a>
                                                 @endif
                                             </td>

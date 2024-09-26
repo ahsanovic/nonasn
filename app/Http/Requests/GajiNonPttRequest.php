@@ -28,24 +28,38 @@ class GajiNonPttRequest extends FormRequest
             'tmt_awal' => ['required','date_format:d/m/Y'],
             'tmt_akhir' => ['required','date_format:d/m/Y'],
             'nominal_gaji' => ['required', 'numeric'],
-            'file_gaji' => ['required','file','mimes:pdf','max:1024']
+            'link_gdrive' => ['sometimes', 'url'],
+            // 'file_gaji' => ['required','file','mimes:pdf','max:1024']
         ];
+
+        // if ($this->has('link_gdrive')) {
+        //     $rules['link_gdrive'] = ['required', 'url'];
+        // }
+
+        // if (in_array($this->method(), ['PUT', 'PATCH'])) {
+        //     $rules['file_dpa'] = ['file','mimes:pdf','max:1024'];
+        //     $rules['file_gaji'] = ['file','mimes:pdf','max:1024'];
+        // }
 
         if (in_array($this->method(), ['PUT', 'PATCH'])) {
             $rules['file_dpa'] = ['file','mimes:pdf','max:1024'];
-            $rules['file_gaji'] = ['file','mimes:pdf','max:1024'];
+
+            // Validasi file_gaji hanya jika file diupload saat update
+            if ($this->hasFile('file_gaji')) {
+                $rules['file_gaji'] = ['file','mimes:pdf','max:1024'];
+            }
         }
 
         return $rules;
     }
 
-    protected function prepareForValidation()
-    {
-        // if file field is empty then remove its validation
-        if ($this->file == null) {
-            $this->request->remove('file_gaji');
-        }
-    }
+    // protected function prepareForValidation()
+    // {
+    //     // if file field is empty then remove its validation
+    //     if ($this->file_gaji == null) {
+    //         $this->request->remove('file_gaji');
+    //     }
+    // }
 
     public function messages()
     {
@@ -60,7 +74,8 @@ class GajiNonPttRequest extends FormRequest
             'nominal_gaji.numeric' => 'gaji hanya boleh diisi angka',
             'file_gaji.required' => 'dokumen harus diupload',
             'file_gaji.mimes' => 'format dokumen harus pdf',
-            'file_gaji.max' => 'file yang diupload maksimal 1 MB'
+            'file_gaji.max' => 'file yang diupload maksimal 1 MB',
+            'link_gdrive.url' => 'url harus valid',
         ];
     }
 }
