@@ -66,6 +66,14 @@
                                                 $niptt = substr($item->niptt,0,2) . "-" . substr($item->niptt,2,6) . "-" . substr($item->niptt,8,4) . "-" . substr($item->niptt,12,3);
                                             } else if ($item->jenis_ptt_id == 3) {
                                                 $niptt = substr($item->niptt,0,8) . "-" . substr($item->niptt,8,6) . "-" . substr($item->niptt,14,4) . "-" . substr($item->niptt,18,5);
+                                            } else if ($item->jenis_ptt_id == 5) {
+                                                if ($panjang_nip == 18) {
+                                                    $niptt = substr($item->niptt,0,1) . "." . substr($item->niptt,1,3) . "-" . substr($item->niptt,4,6) . "-" . substr($item->niptt,10,4) . "-" . substr($item->niptt,14,4);
+                                                } else if ($panjang_nip == 19) {
+                                                    $niptt = substr($item->niptt,0,1) . "." . substr($item->niptt,1,3) . "." . substr($item->niptt,4,1) . "-" . substr($item->niptt,5,6) . "-" . substr($item->niptt,11,4) . "-" . substr($item->niptt,15,4);
+                                                } else if ($panjang_nip == 20) {
+                                                    $niptt = substr($item->niptt,0,1) . "." . substr($item->niptt,1,3) . "." . substr($item->niptt,4,2) . "-" . substr($item->niptt,6,6) . "-" . substr($item->niptt,12,4) . "-" . substr($item->niptt,16,4);
+                                                }
                                             } else {
                                                 $niptt = substr($item->niptt,0,8) . "-" . substr($item->niptt,8,6) . "-" . substr($item->niptt,14,4) . "-" . substr($item->niptt,18,5);
                                             } 
