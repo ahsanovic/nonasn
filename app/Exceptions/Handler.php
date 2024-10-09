@@ -48,6 +48,13 @@ class Handler extends ExceptionHandler
         if ($request->wantsJson()) {   //add Accept: application/json in request
             return $this->handleApiException($request, $exception);
         } else {
+            // add checking for AuthorizationException
+            if ($exception instanceof \Illuminate\Auth\Access\AuthorizationException) {
+                // send response for unauthorized access
+                // return response()->view('errors.403', [], 403);
+                return back()->with(["type" => "error", "message" => "akses tidak diijinkan!"]);
+            }
+
             $retval = parent::render($request, $exception);
         }
 

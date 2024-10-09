@@ -34,5 +34,9 @@ class AuthServiceProvider extends ServiceProvider
         Passport::tokensCan([
             'view-employees' => 'view employees based organization'
         ]);
+
+        Gate::define('manage-data', function() {
+            return auth()->user()->id_skpd == 1 && auth()->user()->level == 'admin';
+        });
     }
 }

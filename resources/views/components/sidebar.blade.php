@@ -58,7 +58,7 @@
                     </li>
 
                     {{-- menu DPA hanya ada di dinas induk dan biro --}}
-                    @if ((auth()->user()->id_skpd == 1 && auth()->user()->level == 'admin') ||
+                    @if ((auth()->user()->id_skpd == 1 && auth()->user()->level == 'admin') || (auth()->user()->id_skpd == 1 && auth()->user()->level == 'user') ||
                         strlen(auth()->user()->id_skpd) == 3 ||
                         auth()->user()->id_skpd == 1010101 ||
                         auth()->user()->id_skpd == 1010102 ||
@@ -214,7 +214,7 @@
                     </li>
                     @endif
 
-                    @if (auth()->user()->level == 'user')
+                    @if (auth()->user()->level == 'user' && auth()->user()->id_skpd != 1)
                     <li class="app-sidebar__heading">Manajemen</li>
                     <li class="
                         {{ 
@@ -243,6 +243,7 @@
                         </ul>
                     </li>
                     @endif
+                    @if (auth()->user()->level == 'user' && auth()->user()->id_skpd != 1)
                     <li class="app-sidebar__heading">Download</li>
                     <li>
                         <a href="{{ route('fasilitator.download-data-keluarga') }}" class="{{ Request::is('fasilitator/data-keluarga') ? 'mm-active' : '' }}">
@@ -250,6 +251,7 @@
                             </i>Data Keluarga
                         </a>
                     </li>
+                    @endif
                 </ul>
             </div>
         </div>

@@ -5,12 +5,12 @@ namespace App\Http\Controllers\Fasilitator;
 use App\Models\Skpd;
 use Hashids\Hashids;
 use App\Models\Biodata;
+use App\Models\GajiNonPtt;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\GajiNonPttRequest;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
-use App\Models\GajiNonPtt;
+use App\Http\Requests\GajiNonPttRequest;
 
 class GajiNonPttController extends Controller
 {

@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Fasilitator;
 
 use App\Models\Dpa;
+use App\Models\Skpd;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\Skpd;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 
@@ -13,7 +13,7 @@ class DpaNonPttController extends Controller
 {  
     public function index(Request $request)
     {
-        if (auth()->user()->id_skpd == 1 && auth()->user()->level == 'admin') {
+        if ((auth()->user()->id_skpd == 1 && auth()->user()->level == 'admin') || (auth()->user()->id_skpd == 1 && auth()->user()->level == 'user')) {
             $tahun = [2022, 2023, 2024];
             // $upt_dinkes = ['10310', '10312', '10314', '10316', '10317', '10320'];
             $opd_array = ['102', '103', '104', '105', '107', '108', '109', '110', '113', '114', '115',

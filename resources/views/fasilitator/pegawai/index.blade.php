@@ -55,7 +55,7 @@
                             <input type="text" name="nama" class="form-control form-control-sm" id="search" value="{{ request('nama', '') }}">
                         </div>
                     </div>
-		    <div class="col-md-2">
+		            <div class="col-md-2">
                         <label class="font-weight-bold">Jenis PTT</label>
                         <div class="input-group">
                             <select class="form-control form-control-sm" name="jenis_ptt">
@@ -66,7 +66,7 @@
                             </select>
                         </div>
                     </div>
-		    <div class="col-md-4">
+		            <div class="col-md-4">
                         <label class="font-weight-bold"></label>
                         <div class="input-group">
                             <button class="btn btn-success btn-sm btn-square btn-hover-shine mr-2 mt-2" type="submit">Search</button>

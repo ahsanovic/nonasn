@@ -24,7 +24,7 @@
         </div>
     </x-page-header>
 
-    @if (auth()->user()->id_skpd == 1 && auth()->user()->level == 'admin')
+    @if ((auth()->user()->id_skpd == 1 && auth()->user()->level == 'admin') || (auth()->user()->id_skpd == 1 && auth()->user()->level == 'user'))
         <div class="row">
             <div class="col-md-12">
                 <div class="main-card mb-3 card card-hover-shadow-2x">

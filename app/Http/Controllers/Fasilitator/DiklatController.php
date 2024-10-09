@@ -11,6 +11,7 @@ use App\Models\RefJenisDiklat;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\DiklatRequest;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
 
 class DiklatController extends Controller

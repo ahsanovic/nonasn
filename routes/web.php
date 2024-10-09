@@ -92,7 +92,7 @@ Route::prefix('fasilitator')->group(function() {
         Route::get('pegawai/{idSkpd}', [PegawaiController::class, 'index'])->name('fasilitator.pegawai');
         Route::post('pegawai/autocomplete', [PegawaiController::class, 'autocomplete'])->name('autocomplete');
         Route::get('pegawai/{idSkpd}/biodata/{id}', [PegawaiController::class, 'show'])->name('fasilitator.pegawai.show');
-        Route::put('pegawai', [PegawaiController::class, 'update'])->name('fasilitator.pegawai.update');
+        Route::put('pegawai', [PegawaiController::class, 'update'])->name('fasilitator.pegawai.update')->middleware('can:manage-data');
 
         // search
         Route::get('search', [PegawaiController::class, 'search'])->name('fasilitator.search-pegawai');
@@ -101,29 +101,29 @@ Route::prefix('fasilitator')->group(function() {
         Route::get('pegawai/{idSkpd}/suami-istri/{id}', [SuamiIstriController::class, 'index'])->name('fasilitator.suami-istri');
         Route::get('pegawai/{idSkpd}/suami-istri/{id}/create', [SuamiIstriController::class, 'create'])->name('fasilitator.suami-istri.create');
         Route::get('pegawai/{idSkpd}/suami-istri/{id}/edit/{idSuamiIstri}', [SuamiIstriController::class, 'edit'])->name('fasilitator.suami-istri.edit');
-        Route::post('pegawai/{idSkpd}/suami-istri/{id}', [SuamiIstriController::class, 'store'])->name('fasilitator.suami-istri.store');
-        Route::put('pegawai/{idSkpd}/suami-istri/{id}', [SuamiIstriController::class, 'update'])->name('fasilitator.suami-istri.update');
-        Route::put('suami-istri/{id}', [SuamiIstriController::class, 'activate'])->name('fasilitator.suami-istri.activate');
-        Route::delete('suami-istri/{id}', [SuamiIstriController::class, 'destroy'])->name('fasilitator.suami-istri.destroy');
+        Route::post('pegawai/{idSkpd}/suami-istri/{id}', [SuamiIstriController::class, 'store'])->name('fasilitator.suami-istri.store')->middleware('can:manage-data');
+        Route::put('pegawai/{idSkpd}/suami-istri/{id}', [SuamiIstriController::class, 'update'])->name('fasilitator.suami-istri.update')->middleware('can:manage-data');
+        Route::put('suami-istri/{id}', [SuamiIstriController::class, 'activate'])->name('fasilitator.suami-istri.activate')->middleware('can:manage-data');
+        Route::delete('suami-istri/{id}', [SuamiIstriController::class, 'destroy'])->name('fasilitator.suami-istri.destroy')->middleware('can:manage-data');
         Route::get('suami-istri/{file}', [SuamiIstriController::class, 'viewFile'])->name('suami-istri.file');
         
         // anak
         Route::get('pegawai/{idSkpd}/anak/{id}', [AnakController::class, 'index'])->name('fasilitator.anak');
         Route::get('pegawai/{idSkpd}/anak/{id}/create', [AnakController::class, 'create'])->name('fasilitator.anak.create');
-        Route::post('pegawai/{idSkpd}/anak/{id}', [AnakController::class, 'store'])->name('fasilitator.anak.store');
+        Route::post('pegawai/{idSkpd}/anak/{id}', [AnakController::class, 'store'])->name('fasilitator.anak.store')->middleware('can:manage-data');
         Route::get('pegawai/{idSkpd}/anak/{id}/edit/{idAnak}', [AnakController::class, 'edit'])->name('fasilitator.anak.edit');
-        Route::put('pegawai/{idSkpd}/anak/{id}', [AnakController::class, 'update'])->name('fasilitator.anak.update');
-        Route::delete('anak/{id}', [AnakController::class, 'destroy'])->name('fasilitator.anak.destroy');
+        Route::put('pegawai/{idSkpd}/anak/{id}', [AnakController::class, 'update'])->name('fasilitator.anak.update')->middleware('can:manage-data');
+        Route::delete('anak/{id}', [AnakController::class, 'destroy'])->name('fasilitator.anak.destroy')->middleware('can:manage-data');
         Route::get('anak/{file}', [AnakController::class, 'viewFile'])->name('anak.file');
 
         // jabatan
         Route::get('pegawai/{idSkpd}/jabatan/{id}', [JabatanController::class, 'index'])->name('fasilitator.jabatan');
         Route::get('pegawai/{idSkpd}/jabatan/{id}/create', [JabatanController::class, 'create'])->name('fasilitator.jabatan.create');
-        Route::post('pegawai/{idSkpd}/jabatan/{id}', [JabatanController::class, 'store'])->name('fasilitator.jabatan.store');
+        Route::post('pegawai/{idSkpd}/jabatan/{id}', [JabatanController::class, 'store'])->name('fasilitator.jabatan.store')->middleware('can:manage-data');
         Route::get('pegawai/{idSkpd}/jabatan/{id}/edit/{idJabatan}', [JabatanController::class, 'edit'])->name('fasilitator.jabatan.edit');
-        Route::put('pegawai/{idSkpd}/jabatan/{id}', [JabatanController::class, 'update'])->name('fasilitator.jabatan.update');
-        Route::put('jabatan/{id}', [JabatanController::class, 'activate'])->name('fasilitator.jabatan.activate');
-        Route::delete('jabatan/{id}', [JabatanController::class, 'destroy'])->name('fasilitator.jabatan.destroy');
+        Route::put('pegawai/{idSkpd}/jabatan/{id}', [JabatanController::class, 'update'])->name('fasilitator.jabatan.update')->middleware('can:manage-data');
+        Route::put('jabatan/{id}', [JabatanController::class, 'activate'])->name('fasilitator.jabatan.activate')->middleware('can:manage-data');
+        Route::delete('jabatan/{id}', [JabatanController::class, 'destroy'])->name('fasilitator.jabatan.destroy')->middleware('can:manage-data');
         Route::get('jabatan/treeview', [JabatanController::class, 'treeview'])->name('jabatan.treeview');
         Route::get('jabatan/{file}', [JabatanController::class, 'viewFile'])->name('jabatan.file');
         Route::post('autocomplete', [JabatanController::class, 'autocomplete'])->name('jabatan.autocomplete');
@@ -140,66 +140,66 @@ Route::prefix('fasilitator')->group(function() {
         // gaji non ptt
         Route::get('pegawai/{idSkpd}/gaji/{id}', [GajiNonPttController::class, 'index'])->name('fasilitator.gajinonptt');
         Route::get('pegawai/{idSkpd}/gaji/{id}/create', [GajiNonPttController::class, 'create'])->name('fasilitator.gajinonptt.create');
-        Route::post('pegawai/{idSkpd}/gaji/{id}', [GajiNonPttController::class, 'store'])->name('fasilitator.gajinonptt.store');
+        Route::post('pegawai/{idSkpd}/gaji/{id}', [GajiNonPttController::class, 'store'])->name('fasilitator.gajinonptt.store')->middleware('can:manage-data');
         Route::get('pegawai/{idSkpd}/gaji/{id}/edit/{idGaji}', [GajiNonPttController::class, 'edit'])->name('fasilitator.gajinonptt.edit');
-        Route::put('pegawai/{idSkpd}/gaji/{id}', [GajiNonPttController::class, 'update'])->name('fasilitator.gajinonptt.update');
-        Route::delete('gaji/{id}', [GajiNonPttController::class, 'destroy'])->name('fasilitator.gajinonptt.destroy');
+        Route::put('pegawai/{idSkpd}/gaji/{id}', [GajiNonPttController::class, 'update'])->name('fasilitator.gajinonptt.update')->middleware('can:manage-data');
+        Route::delete('gaji/{id}', [GajiNonPttController::class, 'destroy'])->name('fasilitator.gajinonptt.destroy')->middleware('can:manage-data');
         Route::get('gaji/{file}', [GajiNonPttController::class, 'viewFile'])->name('fasilitator.gajinonptt.file');
 
         // penilaian
         Route::get('pegawai/{idSkpd}/penilaian/{id}', [PenilaianController::class, 'index'])->name('fasilitator.penilaian');
         Route::get('pegawai/{idSkpd}/penilaian/{id}/create', [PenilaianController::class, 'create'])->name('fasilitator.penilaian.create');
-        Route::post('pegawai/{idSkpd}/penilaian/{id}', [PenilaianController::class, 'store'])->name('fasilitator.penilaian.store');
+        Route::post('pegawai/{idSkpd}/penilaian/{id}', [PenilaianController::class, 'store'])->name('fasilitator.penilaian.store')->middleware('can:manage-data');
         Route::get('pegawai/{idSkpd}/penilaian/{id}/edit/{idPenilaian}', [PenilaianController::class, 'edit'])->name('fasilitator.penilaian.edit');
-        Route::put('pegawai/{idSkpd}/penilaian/{id}', [PenilaianController::class, 'update'])->name('fasilitator.penilaian.update');
-        Route::delete('penilaian/{id}', [PenilaianController::class, 'destroy'])->name('fasilitator.penilaian.destroy');
+        Route::put('pegawai/{idSkpd}/penilaian/{id}', [PenilaianController::class, 'update'])->name('fasilitator.penilaian.update')->middleware('can:manage-data');
+        Route::delete('penilaian/{id}', [PenilaianController::class, 'destroy'])->name('fasilitator.penilaian.destroy')->middleware('can:manage-data');
         Route::get('penilaian/{file}', [PenilaianController::class, 'viewFile'])->name('penilaian.file');
 
         // pendidikan
         /* SD-SMA */
         Route::get('pegawai/{idSkpd}/pendidikan/{id}', [PendidikanSmaController::class, 'index'])->name('fasilitator.pendidikan-sma');
         Route::get('pegawai/{idSkpd}/pendidikan/{id}/create/sma', [PendidikanSmaController::class, 'create'])->name('fasilitator.pendidikan.create-sma');
-        Route::post('pegawai/{idSkpd}/pendidikan/{id}/sma', [PendidikanSmaController::class, 'store'])->name('fasilitator.pendidikan.store-sma');
+        Route::post('pegawai/{idSkpd}/pendidikan/{id}/sma', [PendidikanSmaController::class, 'store'])->name('fasilitator.pendidikan.store-sma')->middleware('can:manage-data');
         Route::get('pegawai/{idSkpd}/pendidikan/{id}/edit/{idPendidikan}/sma', [PendidikanSmaController::class, 'edit'])->name('fasilitator.pendidikan.edit-sma');
-        Route::put('pegawai/{idSkpd}/pendidikan/{id}/sma', [PendidikanSmaController::class, 'update'])->name('fasilitator.pendidikan.update-sma');
-        Route::put('pendidikan/{id}/sma', [PendidikanSmaController::class, 'activate'])->name('fasilitator.pendidikan.activate-sma');
-        Route::delete('pendidikan/{id}/sma', [PendidikanSmaController::class, 'destroy'])->name('fasilitator.pendidikan.destroy-sma');
+        Route::put('pegawai/{idSkpd}/pendidikan/{id}/sma', [PendidikanSmaController::class, 'update'])->name('fasilitator.pendidikan.update-sma')->middleware('can:manage-data');
+        Route::put('pendidikan/{id}/sma', [PendidikanSmaController::class, 'activate'])->name('fasilitator.pendidikan.activate-sma')->middleware('can:manage-data');
+        Route::delete('pendidikan/{id}/sma', [PendidikanSmaController::class, 'destroy'])->name('fasilitator.pendidikan.destroy-sma')->middleware('can:manage-data');
         Route::get('pendidikan/ijazah-sma/{file}', [PendidikanSmaController::class, 'viewFileIjazah'])->name('pendidikan.file-ijazah-sma');
         Route::get('pendidikan/nilai-sma/{file}', [PendidikanSmaController::class, 'viewFileTranskrip'])->name('pendidikan.file-transkrip-sma');
         /* Perguruan Tinggi */
         Route::get('pegawai/{idSkpd}/pendidikan/{id}/create/pt', [PendidikanPtController::class, 'create'])->name('fasilitator.pendidikan.create-pt');
-        Route::post('pegawai/{idSkpd}/pendidikan/{id}/pt', [PendidikanPtController::class, 'store'])->name('fasilitator.pendidikan.store-pt');
+        Route::post('pegawai/{idSkpd}/pendidikan/{id}/pt', [PendidikanPtController::class, 'store'])->name('fasilitator.pendidikan.store-pt')->middleware('can:manage-data');
         Route::get('pegawai/{idSkpd}/pendidikan/{id}/edit/{idPendidikan}/pt', [PendidikanPtController::class, 'edit'])->name('fasilitator.pendidikan.edit-pt');
-        Route::put('pegawai/{idSkpd}/pendidikan/{id}/pt', [PendidikanPtController::class, 'update'])->name('fasilitator.pendidikan.update-pt');
-        Route::put('pendidikan/{id}/pt', [PendidikanPtController::class, 'activate'])->name('fasilitator.pendidikan.activate-pt');
-        Route::delete('pendidikan/{id}/pt', [PendidikanPtController::class, 'destroy'])->name('fasilitator.pendidikan.destroy-pt');
+        Route::put('pegawai/{idSkpd}/pendidikan/{id}/pt', [PendidikanPtController::class, 'update'])->name('fasilitator.pendidikan.update-pt')->middleware('can:manage-data');
+        Route::put('pendidikan/{id}/pt', [PendidikanPtController::class, 'activate'])->name('fasilitator.pendidikan.activate-pt')->middleware('can:manage-data');
+        Route::delete('pendidikan/{id}/pt', [PendidikanPtController::class, 'destroy'])->name('fasilitator.pendidikan.destroy-pt')->middleware('can:manage-data');
         Route::get('pendidikan/ijazah-pt/{file}', [PendidikanPtController::class, 'viewFileIjazah'])->name('pendidikan.file-ijazah-pt');
         Route::get('pendidikan/nilai-pt/{file}', [PendidikanPtController::class, 'viewFileTranskrip'])->name('pendidikan.file-transkrip-pt');
 
         // dokumen pribadi
         Route::get('pegawai/{idSkpd}/dok-pribadi/{id}', [DokumenPribadiController::class, 'index'])->name('fasilitator.dok-pribadi');
         Route::get('pegawai/{idSkpd}/dok-pribadi/{id}/edit/{idDokumen}/{field}', [DokumenPribadiController::class, 'edit'])->name('fasilitator.dok-pribadi.edit');
-        Route::put('pegawai/{idSkpd}/dok-pribadi/{id}', [DokumenPribadiController::class, 'update'])->name('fasilitator.dok-pribadi.update');
-        Route::delete('dok-pribadi/{idPtt}/{field}', [DokumenPribadiController::class, 'destroy'])->name('fasilitator.dok-pribadi.destroy');
+        Route::put('pegawai/{idSkpd}/dok-pribadi/{id}', [DokumenPribadiController::class, 'update'])->name('fasilitator.dok-pribadi.update')->middleware('can:manage-data');
+        Route::delete('dok-pribadi/{idPtt}/{field}', [DokumenPribadiController::class, 'destroy'])->name('fasilitator.dok-pribadi.destroy')->middleware('can:manage-data');
         Route::get('dok-pribadi/{file}', [DokumenPribadiController::class, 'viewFile'])->name('dok-pribadi.file');
 
         // diklat
         Route::get('pegawai/{idSkpd}/diklat/{id}', [DiklatController::class, 'index'])->name('fasilitator.diklat');
         Route::get('pegawai/{idSkpd}/diklat/{id}/create', [DiklatController::class, 'create'])->name('fasilitator.diklat.create');
-        Route::post('pegawai/{idSkpd}/diklat/{id}', [DiklatController::class, 'store'])->name('fasilitator.diklat.store');
+        Route::post('pegawai/{idSkpd}/diklat/{id}', [DiklatController::class, 'store'])->name('fasilitator.diklat.store')->middleware('can:manage-data');
         Route::get('pegawai/{idSkpd}/diklat/{id}/edit/{idDiklat}', [DiklatController::class, 'edit'])->name('fasilitator.diklat.edit');
-        Route::put('pegawai/{idSkpd}/diklat/{id}', [DiklatController::class, 'update'])->name('fasilitator.diklat.update');
-        Route::delete('diklat/{id}', [DiklatController::class, 'destroy'])->name('fasilitator.diklat.destroy');
+        Route::put('pegawai/{idSkpd}/diklat/{id}', [DiklatController::class, 'update'])->name('fasilitator.diklat.update')->middleware('can:manage-data');
+        Route::delete('diklat/{id}', [DiklatController::class, 'destroy'])->name('fasilitator.diklat.destroy')->middleware('can:manage-data');
         Route::get('diklat/{file}', [DiklatController::class, 'viewFile'])->name('fasilitator.diklat.file');
 
         // hukuman disiplin
         Route::get('pegawai/{idSkpd}/hukdis/{id}', [HukdisController::class, 'index'])->name('fasilitator.hukdis');
         Route::get('pegawai/{idSkpd}/hukdis/{id}/create', [HukdisController::class, 'create'])->name('fasilitator.hukdis.create');
-        Route::post('pegawai/{idSkpd}/hukdis/{id}', [HukdisController::class, 'store'])->name('fasilitator.hukdis.store');
+        Route::post('pegawai/{idSkpd}/hukdis/{id}', [HukdisController::class, 'store'])->name('fasilitator.hukdis.store')->middleware('can:manage-data');
         Route::get('pegawai/{idSkpd}/hukdis/{id}/edit/{idHukdis}', [HukdisController::class, 'edit'])->name('fasilitator.hukdis.edit');
-        Route::put('pegawai/{idSkpd}/hukdis/{id}', [HukdisController::class, 'update'])->name('fasilitator.hukdis.update');
-        Route::put('hukdis/{id}', [HukdisController::class, 'activate'])->name('fasilitator.hukdis.activate');
-        Route::delete('hukdis/{id}', [HukdisController::class, 'destroy'])->name('fasilitator.hukdis.destroy');
+        Route::put('pegawai/{idSkpd}/hukdis/{id}', [HukdisController::class, 'update'])->name('fasilitator.hukdis.update')->middleware('can:manage-data');
+        Route::put('hukdis/{id}', [HukdisController::class, 'activate'])->name('fasilitator.hukdis.activate')->middleware('can:manage-data');
+        Route::delete('hukdis/{id}', [HukdisController::class, 'destroy'])->name('fasilitator.hukdis.destroy')->middleware('can:manage-data');
         Route::get('hukdis/{file}', [HukdisController::class, 'viewFile'])->name('fasilitator.hukdis.file');
 
         // unit kerja
