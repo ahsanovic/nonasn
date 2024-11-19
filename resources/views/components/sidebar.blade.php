@@ -212,6 +212,39 @@
                             </li>
                         </ul>
                     </li>
+                    <li class="
+                        {{ 
+                            (Request::is('fasilitator/rekap-simulasi-cpns') or
+                            Request::is('fasilitator/rekap-simulasi-pppk'))
+                             ? 'mm-active' : ''
+                        }}
+                    ">
+                        <a href="#">
+                            <i class="metismenu-icon pe-7s-monitor"></i>
+                            Rekap Simulasi Tes
+                            <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
+                        </a>
+                        <ul class="mm-collapse 
+                            {{ 
+                                (Request::is('fasilitator/rekap-simulasi-cpns') or 
+                                Request::is('fasilitator/rekap-simulasi-pppk'))
+                                ? 'mm-show' : ''
+                            }}"
+                        >
+                            <li>
+                                <a href="{{ route('fasilitator.rekap-simulasi-cpns') }}" class="{{ Request::is('fasilitator/rekap-simulasi-cpns') ? 'mm-active' : '' }}">
+                                    <i class="metismenu-icon">
+                                    </i>CPNS
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('fasilitator.rekap-simulasi-pppk') }}" class="{{ Request::is('fasilitator/rekap-simulasi-pppk') ? 'mm-active' : '' }}">
+                                    <i class="metismenu-icon">
+                                    </i>PPPK
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
                     @endif
 
                     @if (auth()->user()->level == 'user' && auth()->user()->id_skpd != 1)

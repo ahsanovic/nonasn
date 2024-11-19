@@ -8,7 +8,7 @@ class HasilSimulasiPppkWawancara extends Model
 {
     protected $table = 'simulasi_p3k_hasil_wawancara';
 
-    public function pegawai()
+    public function biodata()
     {
         return $this->belongsTo(Biodata::class, 'id_ptt', 'id_ptt');
     }

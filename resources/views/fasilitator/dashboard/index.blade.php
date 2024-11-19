@@ -21,13 +21,13 @@
                                 <div class="widget-content p-0">
                                     <div class="widget-content-wrapper">
                                         <div class="widget-content-left mr-3">
-                                            <img width="38" class="rounded-circle" src="{{ route('pegawai.image', ['image' => rtrim($item->pegawai->foto)]) }}" alt="">
+                                            <img width="38" class="rounded-circle" src="{{ route('pegawai.image', ['image' => rtrim($item->biodata->foto)]) }}" alt="">
                                         </div>
                                         <div class="widget-content-left">
-                                            <div class="widget-heading">{{ $item->pegawai->nama }}</div>
+                                            <div class="widget-heading">{{ $item->biodata->nama }}</div>
                                             <div class="widget-subheading">
                                                 @php
-                                                    $skpd = substr($item->pegawai->id_skpd, 0, 3);
+                                                    $skpd = substr($item->biodata->id_skpd, 0, 3);
                                                 @endphp
                                                 {{ Str::title(App\Models\Skpd::whereId($skpd)->first()->name) }}
                                             </div>
@@ -76,13 +76,13 @@
                                     <div class="widget-content p-0">
                                         <div class="widget-content-wrapper">
                                             <div class="widget-content-left mr-3">
-                                                <img width="38" class="rounded" src="{{ route('nonasn.image', ['image' => rtrim($item->pegawai->foto)]) }}" alt="">
+                                                <img width="38" class="rounded" src="{{ route('nonasn.image', ['image' => rtrim($item->biodata->foto)]) }}" alt="">
                                             </div>
                                             <div class="widget-content-left">
-                                                <div class="widget-heading">{{ $item->pegawai->nama }}</div>
+                                                <div class="widget-heading">{{ $item->biodata->nama }}</div>
                                                 <div class="widget-subheading">
                                                     @php
-                                                        $skpd = substr($item->pegawai->id_skpd, 0, 3);
+                                                        $skpd = substr($item->biodata->id_skpd, 0, 3);
                                                     @endphp
                                                     {{ Str::title(App\Models\Skpd::whereId($skpd)->first()->name) }}
                                                 </div>
@@ -114,13 +114,13 @@
                                     <div class="widget-content p-0">
                                         <div class="widget-content-wrapper">
                                             <div class="widget-content-left mr-3">
-                                                <img width="38" class="rounded" src="{{ route('nonasn.image', ['image' => rtrim($item->pegawai->foto)]) }}" alt="">
+                                                <img width="38" class="rounded" src="{{ route('nonasn.image', ['image' => rtrim($item->biodata->foto)]) }}" alt="">
                                             </div>
                                             <div class="widget-content-left">
-                                                <div class="widget-heading">{{ $item->pegawai->nama }}</div>
+                                                <div class="widget-heading">{{ $item->biodata->nama }}</div>
                                                 <div class="widget-subheading">
                                                     @php
-                                                        $skpd = substr($item->pegawai->id_skpd, 0, 3);
+                                                        $skpd = substr($item->biodata->id_skpd, 0, 3);
                                                     @endphp
                                                     {{ Str::title(App\Models\Skpd::whereId($skpd)->first()->name) }}
                                                 </div>
@@ -152,13 +152,13 @@
                                     <div class="widget-content p-0">
                                         <div class="widget-content-wrapper">
                                             <div class="widget-content-left mr-3">
-                                                <img width="38" class="rounded" src="{{ route('nonasn.image', ['image' => rtrim($item->pegawai->foto)]) }}" alt="">
+                                                <img width="38" class="rounded" src="{{ route('nonasn.image', ['image' => rtrim($item->biodata->foto)]) }}" alt="">
                                             </div>
                                             <div class="widget-content-left">
-                                                <div class="widget-heading">{{ $item->pegawai->nama }}</div>
+                                                <div class="widget-heading">{{ $item->biodata->nama }}</div>
                                                 <div class="widget-subheading">
                                                     @php
-                                                        $skpd = substr($item->pegawai->id_skpd, 0, 3);
+                                                        $skpd = substr($item->biodata->id_skpd, 0, 3);
                                                     @endphp
                                                     {{ Str::title(App\Models\Skpd::whereId($skpd)->first()->name) }}
                                                 </div>

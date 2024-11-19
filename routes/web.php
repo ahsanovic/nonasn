@@ -32,7 +32,8 @@ use App\Http\Controllers\Fasilitator\{
     StatsUsiaController,
     DiklatController,
     DpaNonPttController,
-    GajiNonPttController
+    GajiNonPttController,
+    RekapSimulasiController
 };
 use App\Http\Controllers\NonAsn\{
     NonasnKunciCpnsController,
@@ -233,6 +234,11 @@ Route::prefix('fasilitator')->group(function() {
         // rekap log
         Route::get('rekap-log-fasilitator', [LogFasilitatorController::class, 'index'])->name('fasilitator.rekap-log-fasilitator')->middleware('role:admin');
         Route::get('rekap-log-nonasn', [LogNonAsnController::class, 'index'])->name('fasilitator.rekap-log-nonasn')->middleware('role:admin');
+
+        // rekap simulasi tes
+        Route::get('rekap-simulasi-cpns', [RekapSimulasiController::class, 'cpns'])->name('fasilitator.rekap-simulasi-cpns');
+        Route::get('rekap-simulasi-pppk', [RekapSimulasiController::class, 'pppk'])->name('fasilitator.rekap-simulasi-pppk');
+        Route::post('download-rekap-simulasi-cpns', [RekapSimulasiController::class, 'downloadExcelSimulasiCpns'])->name('fasilitator.download-rekap-simulasi-cpns');
 
         // download
         Route::post('download-pegawai/{idSkpd}', [DownloadPegawaiController::class, 'download'])->name('fasilitator.download-pegawai');

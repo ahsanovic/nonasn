@@ -20,29 +20,29 @@ class DashboardController extends Controller
         $response = json_decode($fetch->body());
 
         // leaderboard simulasi cpns
-        $hasil_simulasi_cpns = HasilSimulasiCpns::with('pegawai')
-                            ->whereRelation('pegawai', 'id_skpd', 'like', auth()->user()->id_skpd . '%')
+        $hasil_simulasi_cpns = HasilSimulasiCpns::with('biodata')
+                            ->whereRelation('biodata', 'id_skpd', 'like', auth()->user()->id_skpd . '%')
                             ->orderByDesc('nilai_total')
                             ->limit(10)
                             ->get();
 
         // leaderboard simulasi pppk teknis
-        $hasil_simulasi_teknis = HasilSimulasiPppkTeknis::with('pegawai')
-                            ->whereRelation('pegawai', 'id_skpd', 'like', auth()->user()->id_skpd . '%')
+        $hasil_simulasi_teknis = HasilSimulasiPppkTeknis::with('biodata')
+                            ->whereRelation('biodata', 'id_skpd', 'like', auth()->user()->id_skpd . '%')
                             ->orderByDesc('nilai_total')
                             ->limit(10)
                             ->get();
         
         // leaderboard simulasi pppk manajerial
-        $hasil_simulasi_manajerial = HasilSimulasiPppkManajerial::with('pegawai')
-                            ->whereRelation('pegawai', 'id_skpd', 'like', auth()->user()->id_skpd . '%')
+        $hasil_simulasi_manajerial = HasilSimulasiPppkManajerial::with('biodata')
+                            ->whereRelation('biodata', 'id_skpd', 'like', auth()->user()->id_skpd . '%')
                             ->orderByDesc('nilai_total')
                             ->limit(10)
                             ->get();
         
         // leaderboard simulasi pppk wawancara
-        $hasil_simulasi_wawancara = HasilSimulasiPppkWawancara::with('pegawai')
-                            ->whereRelation('pegawai', 'id_skpd', 'like', auth()->user()->id_skpd . '%')
+        $hasil_simulasi_wawancara = HasilSimulasiPppkWawancara::with('biodata')
+                            ->whereRelation('biodata', 'id_skpd', 'like', auth()->user()->id_skpd . '%')
                             ->orderByDesc('nilai_total')
                             ->limit(10)
                             ->get();
