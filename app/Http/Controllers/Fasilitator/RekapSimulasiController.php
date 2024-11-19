@@ -16,7 +16,7 @@ class RekapSimulasiController extends Controller
 {
     public function __construct()
     {
-        $this->middleware(StripEmptyParamsFromQueryString::class)->only('cpns', 'pppk');
+        $this->middleware(StripEmptyParamsFromQueryString::class);
     }
     
     public function cpns(Request $request)
