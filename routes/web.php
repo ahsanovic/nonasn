@@ -237,8 +237,13 @@ Route::prefix('fasilitator')->group(function() {
 
         // rekap simulasi tes
         Route::get('rekap-simulasi-cpns', [RekapSimulasiController::class, 'cpns'])->name('fasilitator.rekap-simulasi-cpns');
-        Route::get('rekap-simulasi-pppk', [RekapSimulasiController::class, 'pppk'])->name('fasilitator.rekap-simulasi-pppk');
+        Route::get('rekap-simulasi-pppk-mansoskul', [RekapSimulasiController::class, 'pppkMansoskul'])->name('fasilitator.rekap-simulasi-pppk-mansoskul');
+        Route::get('rekap-simulasi-pppk-wawancara', [RekapSimulasiController::class, 'pppkWawancara'])->name('fasilitator.rekap-simulasi-pppk-wawancara');
+        Route::get('rekap-simulasi-pppk-teknis', [RekapSimulasiController::class, 'pppkTeknis'])->name('fasilitator.rekap-simulasi-pppk-teknis');
         Route::post('download-rekap-simulasi-cpns', [RekapSimulasiController::class, 'downloadExcelSimulasiCpns'])->name('fasilitator.download-rekap-simulasi-cpns');
+        Route::post('download-rekap-simulasi-pppk-mansoskul', [RekapSimulasiController::class, 'downloadExcelSimulasiPppkMansoskul'])->name('fasilitator.download-rekap-simulasi-pppk-mansoskul');
+        Route::post('download-rekap-simulasi-pppk-wawancara', [RekapSimulasiController::class, 'downloadExcelSimulasiPppkWawancara'])->name('fasilitator.download-rekap-simulasi-pppk-wawancara');
+        Route::post('download-rekap-simulasi-pppk-teknis', [RekapSimulasiController::class, 'downloadExcelSimulasiPppkTeknis'])->name('fasilitator.download-rekap-simulasi-pppk-teknis');
 
         // download
         Route::post('download-pegawai/{idSkpd}', [DownloadPegawaiController::class, 'download'])->name('fasilitator.download-pegawai');

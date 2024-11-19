@@ -215,7 +215,9 @@
                     <li class="
                         {{ 
                             (Request::is('fasilitator/rekap-simulasi-cpns') or
-                            Request::is('fasilitator/rekap-simulasi-pppk'))
+                            Request::is('fasilitator/rekap-simulasi-pppk-mansoskul') or
+                            Request::is('fasilitator/rekap-simulasi-pppk-wawancara') or
+                            Request::is('fasilitator/rekap-simulasi-pppk-teknis'))
                              ? 'mm-active' : ''
                         }}
                     ">
@@ -227,7 +229,9 @@
                         <ul class="mm-collapse 
                             {{ 
                                 (Request::is('fasilitator/rekap-simulasi-cpns') or 
-                                Request::is('fasilitator/rekap-simulasi-pppk'))
+                                Request::is('fasilitator/rekap-simulasi-pppk-mansoskul') or
+                                Request::is('fasilitator/rekap-simulasi-pppk-wawancara') or
+                                Request::is('fasilitator/rekap-simulasi-pppk-teknis'))
                                 ? 'mm-show' : ''
                             }}"
                         >
@@ -238,7 +242,12 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="{{ route('fasilitator.rekap-simulasi-pppk') }}" class="{{ Request::is('fasilitator/rekap-simulasi-pppk') ? 'mm-active' : '' }}">
+                                <a href="{{ route('fasilitator.rekap-simulasi-pppk-mansoskul') }}" class="{{
+                                    Request::is('fasilitator/rekap-simulasi-pppk-mansoskul') or
+                                    Request::is('fasilitator/rekap-simulasi-pppk-wawancara') or
+                                    Request::is('fasilitator/rekap-simulasi-pppk-teknis')
+                                    ? 'mm-active' : '' }}"
+                                >
                                     <i class="metismenu-icon">
                                     </i>PPPK
                                 </a>

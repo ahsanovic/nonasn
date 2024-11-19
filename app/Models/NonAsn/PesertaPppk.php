@@ -2,7 +2,6 @@
 
 namespace App\Models\NonAsn;
 
-use App\Models\NonAsn\UjianTeknis;
 use Illuminate\Database\Eloquent\Model;
 
 class PesertaPppk extends Model

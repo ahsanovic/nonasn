@@ -97,11 +97,12 @@
     <x-page-header>
         <div>
             Rekap Simulasi Tes
-            <div class="page-title-subheading">CPNS</div>
+            <div class="page-title-subheading">PPPK</div>
         </div>
     </x-page-header>
+    <x-tab-button />
     <x-card>
-        <h5 class="card-title">Rekap Simulasi Tes CPNS</h5>
+        <h5 class="card-title">Rekap Simulasi Tes Teknis</h5>
         <div class="row mb-3 justify-content-between">
             <div class="col-md-2 mb-2">
                 <div class="form-inline">
@@ -115,7 +116,7 @@
             </div>
             <div class="col-md-2 mb-2">                
                 <form method="post" action="{{
-                    route('fasilitator.download-rekap-simulasi-cpns', ['daterange' => request()->daterange, 'niptt' => request()->niptt, 'skpd' => request()->skpd])
+                    route('fasilitator.download-rekap-simulasi-pppk-teknis', ['daterange' => request()->daterange, 'niptt' => request()->niptt, 'skpd' => request()->skpd])
                 }}">
                     @csrf
                     <button class="btn btn-dark btn-sm btn-square btn-hover-shine mr-2"><i class="pe-7s-cloud-download"></i> Download Excel</button>
@@ -148,7 +149,7 @@
                 </div>
                 <div class="col-md-2 mt-2">
                     <br />
-                    <a href="{{ route('fasilitator.rekap-simulasi-cpns') }}" class="btn btn-sm btn-hover-shine btn-square btn-danger">Reset</a>
+                    <a href="{{ route('fasilitator.rekap-simulasi-pppk-teknis') }}" class="btn btn-sm btn-hover-shine btn-square btn-danger">Reset</a>
                     <button type="submit" class="btn btn-sm btn-hover-shine btn-square btn-success">Cari</button>
                 </div>
             </div>
@@ -161,10 +162,8 @@
                         <th>Nama</th>
                         <th>NIPTT</th>
                         <th>Unit Kerja</th>
-                        <th>TWK</th>
-                        <th>TIU</th>
-                        <th>TKP</th>
-                        <th>Total</th>
+                        <th>Jabatan</th>
+                        <th>Total Nilai</th>
                         <th>Waktu Simulasi</th>
                     </tr>
                 </thead>
@@ -175,9 +174,7 @@
                             <td>{{ $item->biodata->nama ?? '' }}</td>
                             <td>{{ $item->biodata->niptt ?? '' }}</td>
                             <td>{{ $item->biodata->skpd->name ?? '' }}</td>
-                            <td>{{ $item->nilai_twk }}</td>
-                            <td>{{ $item->nilai_tiu }}</td>
-                            <td>{{ $item->nilai_tkp }}</td>
+                            <td>{{ $item->peserta->jabatan }}</td>
                             <td>{{ $item->nilai_total }}</td>
                             <td>{{ $item->created_at->format('d M Y') . ' / ' . $item->created_at->format('H:i:s') }}</td>
                         </tr>

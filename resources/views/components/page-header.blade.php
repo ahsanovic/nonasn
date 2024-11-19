@@ -45,6 +45,18 @@
                             case 'rekap-log-nonasn':
                                 echo "<i class='pe-7s-monitor icon-gradient bg-premium-dark'></i>";
                                 break;
+                            case 'rekap-simulasi-cpns':
+                                echo "<i class='pe-7s-monitor icon-gradient bg-premium-dark'></i>";
+                                break;
+                            case 'rekap-simulasi-pppk-mansoskul':
+                                echo "<i class='pe-7s-monitor icon-gradient bg-premium-dark'></i>";
+                                break;
+                            case 'rekap-simulasi-pppk-wawancara':
+                                echo "<i class='pe-7s-monitor icon-gradient bg-premium-dark'></i>";
+                                break;
+                            case 'rekap-simulasi-pppk-teknis':
+                                echo "<i class='pe-7s-monitor icon-gradient bg-premium-dark'></i>";
+                                break;
                             case 'download-data-keluarga':
                                 echo "<i class='pe-7s-cloud-download icon-gradient bg-premium-dark'></i>";
                                 break;
