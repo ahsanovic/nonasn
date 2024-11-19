@@ -36,7 +36,10 @@ class AuthServiceProvider extends ServiceProvider
         ]);
 
         Gate::define('manage-data', function() {
-            return auth()->user()->id_skpd == 1 && auth()->user()->level == 'admin';
+            return (
+                auth()->user()->id_skpd == 1 && auth()->user()->level == 'admin') || 
+                (auth()->user()->id_skpd != 1 && auth()->user()->level == 'user'
+            );
         });
     }
 }
