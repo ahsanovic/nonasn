@@ -25,25 +25,25 @@ class NonasnDashboardController extends Controller
         $notif_doc = DokumenPribadi::whereId_ptt(auth()->user()->id_ptt)->firstOrFail();
 
         // leaderboard simulasi cpns
-        $hasil_simulasi_cpns = HasilSimulasiCpns::with('pegawai')
+        $hasil_simulasi_cpns = HasilSimulasiCpns::with('biodata')
                             ->orderByDesc('nilai_total')
                             ->limit(10)
                             ->get();
 
         // leaderboard simulasi pppk teknis
-        $hasil_simulasi_teknis = HasilSimulasiPppkTeknis::with('pegawai')
+        $hasil_simulasi_teknis = HasilSimulasiPppkTeknis::with('biodata')
                             ->orderByDesc('nilai_total')
                             ->limit(10)
                             ->get();
         
         // leaderboard simulasi pppk manajerial
-        $hasil_simulasi_manajerial = HasilSimulasiPppkManajerial::with('pegawai')
+        $hasil_simulasi_manajerial = HasilSimulasiPppkManajerial::with('biodata')
                             ->orderByDesc('nilai_total')
                             ->limit(10)
                             ->get();
         
         // leaderboard simulasi pppk wawancara
-        $hasil_simulasi_wawancara = HasilSimulasiPppkWawancara::with('pegawai')
+        $hasil_simulasi_wawancara = HasilSimulasiPppkWawancara::with('biodata')
                             ->orderByDesc('nilai_total')
                             ->limit(10)
                             ->get();
