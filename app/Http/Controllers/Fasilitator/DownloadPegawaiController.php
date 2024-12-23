@@ -57,6 +57,8 @@ class DownloadPegawaiController extends Controller
                                 'id_skpd',
                                 'unit_kerja',
                                 'skpd',
+                                'tahun_penilaian',
+                                'rekomendasi',
                                 'tes_narkoba',
                                 'tahun_tes_narkoba',
                                 'aktif',
@@ -95,6 +97,8 @@ class DownloadPegawaiController extends Controller
                                 'id_skpd',
                                 'unit_kerja',
                                 'skpd',
+                                'tahun_penilaian',
+                                'rekomendasi',
                                 'tes_narkoba',
                                 'tahun_tes_narkoba',
                                 'aktif',
@@ -143,6 +147,8 @@ class DownloadPegawaiController extends Controller
                                 'id_skpd',
                                 'unit_kerja',
                                 'skpd',
+                                'tahun_penilaian',
+                                'rekomendasi',
                                 'tes_narkoba',
                                 'tahun_tes_narkoba',
                                 'aktif',
@@ -152,6 +158,45 @@ class DownloadPegawaiController extends Controller
                             ->where('jenis_ptt', $jenis_ptt)
                             ->get();
                 }
+
+                return (new FastExcel($pegawai))->download('data-pegawai.xlsx', function($row) {
+                    return [
+                        'NIPTT' => $row->niptt,
+                        'Nama' => $row->nama,
+                        'Jenis PTT' => $row->jenis_ptt,
+                        'Tempat Lahir' => $row->tempat_lahir,
+                        'Tgl Lahir' => $row->tgl_lahir,
+                        'JK' => $row->jk,
+                        'NIK' => $row->nik,
+                        'Agama' => $row->agama,
+                        'Status Pernikahan' => $row->status_kawin,
+                        'Alamat' => $row->alamat,
+                        'Kode Pos' => $row->kode_pos,
+                        'No. HP' => $row->no_hp,
+                        'No. BPJS' => $row->no_bpjs,
+                        'Kelas BPJS' => $row->kelas,
+                        'No. BPJS Ketenagakerjaan' => $row->no_bpjs_naker,
+                        'Jenjang Pendidikan' => $row->jenjang,
+                        'Nama Sekolah' => $row->nama_sekolah,
+                        'Jurusan' => $row->jurusan,
+                        'Akreditasi' => $row->akreditasi,
+                        'Tahun Lulus' => $row->thn_lulus,
+                        'Jabatan' => $row->jabatan,
+                        'No. SK' => $row->no_sk,
+                        'Tgl SK' => $row->tgl_sk,
+                        'Tgl Mulai Kontrak' => $row->tgl_mulai,
+                        'Tgl Akhir Kontrak' => $row->tgl_akhir,
+                        'Kode Unit Kerja' => $row->id_skpd,
+                        'Unit Kerja' => $row->unit_kerja,
+                        'SKPD' => $row->skpd,
+                        'Tahun Penilaian' => $row->tahun_penilaian,
+                        'Rekomendasi' => $row->rekomendasi,
+                        'Tes Narkoba' => $row->tes_narkoba,
+                        'Tahun Tes Narkoba' => $row->tahun_tes_narkoba,
+                        'Usia' => $row->usia,
+                        'Aktif' => $row->aktif
+                    ];
+                });
             } else {
                 if (!$request->query('nama') && !$request->query('jenis_ptt')) {
                     // $pegawai = DownloadPegawai::whereAktif('Y')
@@ -297,46 +342,48 @@ class DownloadPegawaiController extends Controller
                                 return $peg;
                             });
                 }
+
+                return (new FastExcel($pegawai))->download('data-pegawai.xlsx', function($row) {
+                    return [
+                        'NIPTT' => $row->niptt,
+                        'Nama' => $row->nama,
+                        'Jenis PTT' => $row->jenis_ptt,
+                        'Tempat Lahir' => $row->tempat_lahir,
+                        'Tgl Lahir' => $row->tgl_lahir,
+                        'JK' => $row->jk,
+                        'NIK' => $row->nik,
+                        'Agama' => $row->agama,
+                        'Status Pernikahan' => $row->status_kawin,
+                        'Alamat' => $row->alamat,
+                        'Kode Pos' => $row->kode_pos,
+                        'No. HP' => $row->no_hp,
+                        'No. BPJS' => $row->no_bpjs,
+                        'Kelas BPJS' => $row->kelas,
+                        'No. BPJS Ketenagakerjaan' => $row->no_bpjs_naker,
+                        'Jenjang Pendidikan' => $row->jenjang,
+                        'Nama Sekolah' => $row->nama_sekolah,
+                        'Jurusan' => $row->jurusan,
+                        'Akreditasi' => $row->akreditasi,
+                        'Tahun Lulus' => $row->thn_lulus,
+                        'Jabatan' => $row->jabatan,
+                        'No. SK' => $row->no_sk,
+                        'Tgl SK' => $row->tgl_sk,
+                        'Tgl Mulai Kontrak' => $row->tgl_mulai,
+                        'Tgl Akhir Kontrak' => $row->tgl_akhir,
+                        'Kode Unit Kerja' => $row->id_skpd,
+                        'Unit Kerja' => $row->unit_kerja,
+                        'SKPD' => $row->skpd,
+                        'Tes Narkoba' => $row->tes_narkoba,
+                        'Tahun Tes Narkoba' => $row->tahun_tes_narkoba,
+                        'Usia' => $row->usia,
+                        'Aktif' => $row->aktif
+                    ];
+                });
             }
 
-            return (new FastExcel($pegawai))->download('data-pegawai.xlsx', function($row) {
-                return [
-                    'NIPTT' => $row->niptt,
-                    'Nama' => $row->nama,
-                    'Jenis PTT' => $row->jenis_ptt,
-                    'Tempat Lahir' => $row->tempat_lahir,
-                    'Tgl Lahir' => $row->tgl_lahir,
-                    'JK' => $row->jk,
-                    'NIK' => $row->nik,
-                    'Agama' => $row->agama,
-                    'Status Pernikahan' => $row->status_kawin,
-                    'Alamat' => $row->alamat,
-                    'Kode Pos' => $row->kode_pos,
-                    'No. HP' => $row->no_hp,
-                    'No. BPJS' => $row->no_bpjs,
-                    'Kelas BPJS' => $row->kelas,
-                    'No. BPJS Ketenagakerjaan' => $row->no_bpjs_naker,
-                    'Jenjang Pendidikan' => $row->jenjang,
-                    'Nama Sekolah' => $row->nama_sekolah,
-                    'Jurusan' => $row->jurusan,
-                    'Akreditasi' => $row->akreditasi,
-                    'Tahun Lulus' => $row->thn_lulus,
-                    'Jabatan' => $row->jabatan,
-                    'No. SK' => $row->no_sk,
-                    'Tgl SK' => $row->tgl_sk,
-                    'Tgl Mulai Kontrak' => $row->tgl_mulai,
-                    'Tgl Akhir Kontrak' => $row->tgl_akhir,
-                    'Kode Unit Kerja' => $row->id_skpd,
-                    'Unit Kerja' => $row->unit_kerja,
-                    'SKPD' => $row->skpd,
-                    'Tes Narkoba' => $row->tes_narkoba,
-                    'Tahun Tes Narkoba' => $row->tahun_tes_narkoba,
-                    'Usia' => $row->usia,
-                    'Aktif' => $row->aktif
-                ];
-            });
+            
         } catch (\Throwable $th) {
-            throw $th;
+            // throw $th;
             return back()->with(["type" => "error", "message" => "terjadi kesalahan!"]);
         }
     }
