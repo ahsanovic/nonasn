@@ -232,7 +232,38 @@ class PegawaiController extends Controller
 
         return response()->json([
             "status" => "success",
-            "code" => "200",
+            "code" => 200,
+            "data" => $data
+        ], 200);
+    }
+
+    public function pegawaiBkd($idSkpd)
+    {
+        $biodata = Biodata::with(['jabatan.refJabatan'])
+                    ->where('id_skpd', 'like', $idSkpd . '%')
+                    ->whereAktif('Y')
+                    ->get();
+
+        if ($biodata->isEmpty()) {
+            return response()->json([
+                "status" => "error",
+                "code" => 404,
+                "message" => "no data found"
+            ], 404);
+        }
+
+        $data = $biodata->map(function ($item) {
+            return [
+                'id_ptt' => $item->id_ptt,
+                'niptt' => $item->niptt,
+                'nama' => $item->nama,
+                'jabatan' => $item->jabatan->refJabatan->name ?? null,
+            ];
+        });
+
+        return response()->json([
+            "status" => "success",
+            "code" => 200,
             "data" => $data
         ], 200);
     }

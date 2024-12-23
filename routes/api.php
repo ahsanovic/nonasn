@@ -14,7 +14,8 @@ Route::middleware([
     ->prefix('v1')
     ->group(function() {
         Route::get('pegawai', [PegawaiController::class, 'pegawaiAll']);
-        Route::get('pegawai/{niptt}', [PegawaiController::class, 'pegawaiByNip']);
+        Route::get('pegawai/niptt/{niptt}', [PegawaiController::class, 'pegawaiByNip']);
+        Route::get('pegawai/skpd/{idSkpd}', [PegawaiController::class, 'pegawaiBkd'])->withoutMiddleware('check.scope.org:view-employees');
 
         Route::get('data-keluarga', [DataKeluargaController::class, 'getAll']);
         Route::get('data-keluarga/{niptt}', [DataKeluargaController::class, 'getByNip']);
