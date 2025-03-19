@@ -15,42 +15,53 @@ class NonasnDashboardController extends Controller
 {
     public function index()
     {
-        $web_url = "https://bkd.jatimprov.go.id/";
-        $fetch = Http::get('https://siasn.bkd.jatimprov.go.id/pemprov-api/web/berita');
+        $url = "https://bkd.jatimprov.go.id/";
+        $api_key = 'bkd-35XLeFWzT90Efddkp8o1uzpSDZJiNn';
 
-        // if ($fetch->failed()) abort(500);
+        $fetch = Http::withHeaders([
+            'x-api-key' => $api_key,
+            'Accept' => 'application/json'
+        ])
+            ->get($url . 'api/berita');
         $response = json_decode($fetch->body());
+
+        $result = Http::withHeaders([
+            'x-api-key' => $api_key,
+            'Accept' => 'application/json'
+        ])
+            ->get($url . 'api/pengumuman-rekrutmen');
+        $pengumuman = json_decode($result->body());
 
         $notif = DownloadPegawai::whereId_ptt(auth()->user()->id_ptt)->firstOrFail();
         $notif_doc = DokumenPribadi::whereId_ptt(auth()->user()->id_ptt)->firstOrFail();
 
         // leaderboard simulasi cpns
         $hasil_simulasi_cpns = HasilSimulasiCpns::with('biodata')
-                            ->orderByDesc('nilai_total')
-                            ->limit(10)
-                            ->get();
+            ->orderByDesc('nilai_total')
+            ->limit(5)
+            ->get();
 
         // leaderboard simulasi pppk teknis
         $hasil_simulasi_teknis = HasilSimulasiPppkTeknis::with('biodata')
-                            ->orderByDesc('nilai_total')
-                            ->limit(10)
-                            ->get();
-        
+            ->orderByDesc('nilai_total')
+            ->limit(5)
+            ->get();
+
         // leaderboard simulasi pppk manajerial
         $hasil_simulasi_manajerial = HasilSimulasiPppkManajerial::with('biodata')
-                            ->orderByDesc('nilai_total')
-                            ->limit(10)
-                            ->get();
-        
+            ->orderByDesc('nilai_total')
+            ->limit(5)
+            ->get();
+
         // leaderboard simulasi pppk wawancara
         $hasil_simulasi_wawancara = HasilSimulasiPppkWawancara::with('biodata')
-                            ->orderByDesc('nilai_total')
-                            ->limit(10)
-                            ->get();
+            ->orderByDesc('nilai_total')
+            ->limit(5)
+            ->get();
 
         return view('nonasn.dashboard.index', compact(
             'response',
-            'web_url',
+            'pengumuman',
             'notif',
             'notif_doc',
             'hasil_simulasi_cpns',
