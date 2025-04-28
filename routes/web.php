@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Fasilitator\{
     AnakController,
+    ChatController,
     LoginController,
     DashboardController,
     PegawaiBaruController,
@@ -58,14 +59,15 @@ use App\Http\Controllers\NonAsn\{
 };
 
 /* Fasilitator */
-Route::prefix('fasilitator')->group(function() {
+
+Route::prefix('fasilitator')->group(function () {
     Route::get('/', [LoginController::class, 'showLoginForm'])->name('fasilitator.login')->middleware('guest:fasilitator');
     Route::post('/', [LoginController::class, 'login']);
     Route::get('image/{image?}', [PegawaiController::class, 'viewImage'])->name('pegawai.image');
-    Route::middleware(['auth:fasilitator', 'revalidate'])->group(function() {
+    Route::middleware(['auth:fasilitator', 'revalidate'])->group(function () {
         // dashboard
         Route::get('dashboard', [DashboardController::class, 'index'])->name('fasilitator.dashboard');
-        
+
         // data pegawai
         Route::get('pegawai-baru', [PegawaiBaruController::class, 'index'])->name('pegawaibaru')->middleware('role:admin');
         Route::get('pegawai-baru/unor', [PegawaiBaruController::class, 'unor'])->name('unor')->middleware('role:admin');
@@ -74,7 +76,7 @@ Route::prefix('fasilitator')->group(function() {
         Route::get('treeview/unor', [TreeviewController::class, 'unor'])->name('treeview.skpd');
         Route::get('treeview/unor-skpd', [TreeviewController::class, 'unorNoLink'])->name('treeview.skpd.nolink');
         Route::get('available-nip', [PegawaiBaruController::class, 'getAvailableNip'])->name('available-nip')->middleware('role:admin');
-        
+
         // user fasilitator
         Route::get('user-fasilitator', [UserFasilitatorController::class, 'index'])->name('fasilitator.user')->middleware('role:admin');
         Route::get('user-fasilitator/create', [UserFasilitatorController::class, 'create'])->name('fasilitator.user.create')->middleware('role:admin');
@@ -82,7 +84,7 @@ Route::prefix('fasilitator')->group(function() {
         Route::post('user-fasilitator', [UserFasilitatorController::class, 'store'])->name('fasilitator.user.store')->middleware('role:admin');
         Route::put('user-fasilitator', [UserFasilitatorController::class, 'update'])->name('fasilitator.user.update')->middleware('role:admin');
         Route::delete('user-fasilitator/{username}', [UserFasilitatorController::class, 'destroy'])->name('fasilitator.user.destroy')->middleware('role:admin');
-        
+
         // user non asn
         Route::get('user-nonasn', [UserNonAsnController::class, 'index'])->name('fasilitator.user-nonasn');
         Route::get('user-nonasn/{username}/edit', [UserNonAsnController::class, 'edit'])->name('fasilitator.user-nonasn.edit');
@@ -93,7 +95,7 @@ Route::prefix('fasilitator')->group(function() {
         Route::get('pegawai/{idSkpd}', [PegawaiController::class, 'index'])->name('fasilitator.pegawai');
         Route::post('pegawai/autocomplete', [PegawaiController::class, 'autocomplete'])->name('autocomplete');
         Route::get('pegawai/{idSkpd}/biodata/{id}', [PegawaiController::class, 'show'])->name('fasilitator.pegawai.show');
-        Route::put('pegawai', [PegawaiController::class, 'update'])->name('fasilitator.pegawai.update')->middleware('can:manage-data');
+        Route::put('pegawai/{id}', [PegawaiController::class, 'update'])->name('fasilitator.pegawai.update')->middleware('can:manage-data');
 
         // search
         Route::get('search', [PegawaiController::class, 'search'])->name('fasilitator.search-pegawai');
@@ -107,7 +109,7 @@ Route::prefix('fasilitator')->group(function() {
         Route::put('suami-istri/{id}', [SuamiIstriController::class, 'activate'])->name('fasilitator.suami-istri.activate')->middleware('can:manage-data');
         Route::delete('suami-istri/{id}', [SuamiIstriController::class, 'destroy'])->name('fasilitator.suami-istri.destroy')->middleware('can:manage-data');
         Route::get('suami-istri/{file}', [SuamiIstriController::class, 'viewFile'])->name('suami-istri.file');
-        
+
         // anak
         Route::get('pegawai/{idSkpd}/anak/{id}', [AnakController::class, 'index'])->name('fasilitator.anak');
         Route::get('pegawai/{idSkpd}/anak/{id}/create', [AnakController::class, 'create'])->name('fasilitator.anak.create');
@@ -220,7 +222,7 @@ Route::prefix('fasilitator')->group(function() {
         Route::get('stats-pendidikan', [StatsPendidikanController::class, 'index'])->name('stats.pendidikan');
         Route::get('stats-pendidikan/unor', [StatsPendidikanController::class, 'unor'])->name('stats-pendidikan.unor');
         Route::get('stats-gurumapel', [StatsGuruMapelController::class, 'index'])->name('stats.gurumapel');
-        Route::get('stats-gurumapel/unor', [StatsGuruMapelController::class, 'unor'])->name('stats-gurumapel.unor');        
+        Route::get('stats-gurumapel/unor', [StatsGuruMapelController::class, 'unor'])->name('stats-gurumapel.unor');
         Route::get('stats-usia', StatsUsiaController::class)->name('stats.usia');
 
         // aktivasi/deaktivasi
@@ -259,6 +261,9 @@ Route::prefix('fasilitator')->group(function() {
         Route::post('download-data-pasangan/{idSkpd?}', [DownloadDataKeluargaController::class, 'downloadPasangan'])->name('fasilitator.download-data-pasangan');
         Route::post('download-data-keluarga/{idSkpd?}', [DownloadDataKeluargaController::class, 'downloadKeluarga'])->name('fasilitator.download-data-keluarga-by-opd');
 
+        // ai
+        Route::get('/chat', [ChatController::class, 'index'])->name('fasilitator.chat.index');
+
         // update password
         Route::get('update-password', [UpdatePasswordController::class, 'index'])->name('fasilitator.password');
         Route::put('update-password', [UpdatePasswordController::class, 'update'])->name('fasilitator.password.update');
@@ -272,13 +277,13 @@ Route::prefix('fasilitator')->group(function() {
 Route::get('/', [NonasnLoginController::class, 'showLoginForm'])->name('nonasn.login')->middleware('guest:nonasn');
 Route::post('/', [NonasnLoginController::class, 'login']);
 Route::get('image/{image?}', [NonasnPegawaiController::class, 'viewImage'])->name('nonasn.image');
-Route::middleware(['auth:nonasn', 'revalidate'])->group(function() {
+Route::middleware(['auth:nonasn', 'revalidate'])->group(function () {
     // dashboard
     Route::get('dashboard', [NonasnDashboardController::class, 'index'])->name('nonasn.dashboard');
-    
+
     // biodata
     Route::get('biodata', [NonasnPegawaiController::class, 'index'])->name('nonasn.biodata');
-    Route::put('biodata', [NonasnPegawaiController::class, 'update'])->name('nonasn.biodata.update');
+    Route::put('biodata/{id}', [NonasnPegawaiController::class, 'update'])->name('nonasn.biodata.update');
 
     // suami/istri
     Route::get('suami-istri', [NonasnSuamiIstriController::class, 'index'])->name('nonasn.suami-istri');
@@ -289,7 +294,7 @@ Route::middleware(['auth:nonasn', 'revalidate'])->group(function() {
     Route::put('suami-istri/{id}/activate', [NonasnSuamiIstriController::class, 'activate'])->name('nonasn.suami-istri.activate');
     Route::delete('suami-istri/{id}', [NonasnSuamiIstriController::class, 'destroy'])->name('nonasn.suami-istri.destroy');
     Route::get('suami-istri/{file}', [NonasnSuamiIstriController::class, 'viewFile'])->name('nonasn.suami-istri.file');
-    
+
     // anak
     Route::get('anak', [NonasnAnakController::class, 'index'])->name('nonasn.anak');
     Route::get('anak/create', [NonasnAnakController::class, 'create'])->name('nonasn.anak.create');
@@ -380,7 +385,7 @@ Route::middleware(['auth:nonasn', 'revalidate'])->group(function() {
     Route::get('dok-narkoba/{file}', [NonasnDokumenTesNarkobaController::class, 'viewFile'])->name('nonasn.dok-narkoba.file');
 
     // simulasi tes cpns
-    Route::prefix('simulasi-cpns')->group(function() {
+    Route::prefix('simulasi-cpns')->group(function () {
         Route::get('/', [NonasnSimulasiCpnsController::class, 'index'])->name('nonasn.simulasi.cpns');
         Route::get('ujian/{id}', [NonasnSimulasiCpnsController::class, 'show'])->name('nonasn.simulasi.cpns.show');
         Route::post('/', [NonasnSimulasiCpnsController::class, 'store'])->name('nonasn.simulasi.cpns.store');
@@ -388,9 +393,9 @@ Route::middleware(['auth:nonasn', 'revalidate'])->group(function() {
         Route::delete('ujian/{idUjian}', [NonasnSimulasiCpnsController::class, 'destroy'])->name('nonasn.simulasi.cpns.destroy');
         Route::get('kunci/{no}', [NonasnKunciCpnsController::class, 'index'])->name('nonasn.simulasi.cpns.kunci');
     });
-    
+
     // simulasi tes pppk
-    Route::prefix('simulasi-pppk')->group(function() {
+    Route::prefix('simulasi-pppk')->group(function () {
         Route::get('/', [NonasnSimulasiPppkController::class, 'index'])->name('nonasn.simulasi.pppk');
         Route::get('/ujian-teknis/hasil', [NonasnSimulasiPppkController::class, 'hasilTeknis'])->name('nonasn.simulasi.pppk.hasil-teknis');
         Route::patch('/jabatan', [NonasnSimulasiPppkController::class, 'updateJabatan'])->name('nonasn.simulasi.pppk.update-jabatan');

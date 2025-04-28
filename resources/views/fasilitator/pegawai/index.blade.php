@@ -141,7 +141,7 @@
                                                 $niptt = substr($item->niptt,0,8) . "-" . substr($item->niptt,8,6) . "-" . substr($item->niptt,14,4) . "-" . substr($item->niptt,18,5);
                                             } 
                                         @endphp
-                                        {{ $niptt }}
+                                        {{ $niptt ?? ''}}
                                      </h6>
                                 </div>
                                 <div class="mt-1">

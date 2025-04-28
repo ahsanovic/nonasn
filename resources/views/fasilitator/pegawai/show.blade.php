@@ -145,7 +145,7 @@
                             </div>
                             <div class="position-relative form-group">
                                 <label for="nik" class="font-weight-bold">NIK</label>
-                                <input name="nik" id="nik" type="text" class="form-control form-control-sm @error('nik') is-invalid @enderror" value="{{ $pegawai->nik }}">
+                                <input name="nik" id="nik" type="text" class="form-control form-control-sm @error('nik') is-invalid @enderror" value="{{ $pegawai->nik ?? old('nik') }}">
                                 @error('nik')
                                 <div class="invalid-feedback">
                                     {{ $message }}
@@ -154,7 +154,7 @@
                             </div>
                             <div class="position-relative form-group">
                                 <label for="kk" class="font-weight-bold">Nomor KK</label>
-                                <input name="kk" id="kk" type="text" class="form-control form-control-sm @error('kk') is-invalid @enderror" value="{{ $pegawai->kk }}">
+                                <input name="kk" id="kk" type="text" class="form-control form-control-sm @error('kk') is-invalid @enderror" value="{{ $pegawai->kk ?? old('kk') }}">
                                 @error('kk')
                                 <div class="invalid-feedback">
                                     {{ $message }}
@@ -163,7 +163,13 @@
                             </div>
                             <div class="position-relative form-group">
                                 <label for="no-bpjs" class="font-weight-bold">Nomor BPJS / KIS</label>
-                                <input name="no_bpjs" id="no-bpjs" type="text" class="form-control form-control-sm @error('no_bpjs') is-invalid @enderror" value="{{ $pegawai->no_bpjs }}">
+                                <input
+                                    name="no_bpjs"
+                                    id="no-bpjs"
+                                    type="text"
+                                    class="form-control form-control-sm @error('no_bpjs') is-invalid @enderror"
+                                    value="{{ $pegawai->no_bpjs ?? old('no_bpjs') }}"
+                                >
                                 @error('no_bpjs')
                                 <div class="invalid-feedback">
                                     {{ $message }}
@@ -188,7 +194,18 @@
                             </div>
                             <div class="position-relative form-group">
                                 <label for="no-bpjs-naker" class="font-weight-bold">Nomor BPJS Ketenagakerjaan</label>
-                                <input name="no_bpjs_naker" id="no_bpjs_naker" type="text" class="form-control form-control-sm" value="{{ $pegawai->no_bpjs_naker }}">
+                                <input
+                                    name="no_bpjs_naker"
+                                    id="no_bpjs_naker"
+                                    type="text"
+                                    class="form-control form-control-sm @error('no_bpjs_naker') is-invalid @enderror"
+                                    value="{{ $pegawai->no_bpjs_naker ?? old('no_bpjs_naker') }}"
+                                >
+                                @error('no_bpjs_naker')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                                @enderror
                             </div>
                             <div class="position-relative form-group">
                                 <label for="tempat-lahir" class="font-weight-bold">Tempat Lahir</label>
@@ -197,7 +214,7 @@
                                     id="tempat-lahir"
                                     type="text"
                                     class="form-control form-control-sm @error('tempat_lahir') is-invalid @enderror"
-                                    value="{{ $pegawai->tempat_lahir }}"
+                                    value="{{ $pegawai->tempat_lahir ?? old('tempat_lahir') }}"
                                 >
                                 @error('tempat_lahir')
                                 <div class="invalid-feedback">
@@ -213,7 +230,7 @@
                                     data-toggle="datepicker"
                                     type="text"
                                     class="form-control form-control-sm @error('thn_lahir') is-invalid @enderror"
-                                    value="{{ $pegawai->thn_lahir }}"
+                                    value="{{ $pegawai->thn_lahir ?? old('thn_lahir') }}"
                                 >
                                 @error('thn_lahir')
                                 <div class="invalid-feedback">
@@ -233,6 +250,11 @@
                                         <label class="custom-control-label" for="exampleCustomRadio2">Perempuan</label>
                                     </div>
                                 </div>
+                                @error('jk')
+                                <div class="invalid-feedback d-block">
+                                    {{ $message }}
+                                </div>
+                                @enderror
                             </div>
                             <div class="position-relative form-group">
                                 <label for="agama" class="font-weight-bold">Agama</label>
@@ -252,11 +274,27 @@
                             </div>
                             <div class="position-relative form-group">
                                 <label for="no_hp" class="font-weight-bold">No. HP</label>
-                                <input name="no_hp" id="no_hp" type="text" class="form-control form-control-sm" value="{{ $pegawai->no_hp }}">
+                                <input name="no_hp" id="no_hp" type="text" class="form-control form-control-sm @error('no_hp') is-invalid @enderror" value="{{ $pegawai->no_hp ?? old('no_hp') }}">
+                                @error('no_hp')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                                @enderror
                             </div>
                             <div class="position-relative form-group">
                                 <label for="email" class="font-weight-bold">Email</label>
-                                <input name="email" id="email" type="text" class="form-control form-control-sm" value="{{ $pegawai->email }}">
+                                <input
+                                    name="email"
+                                    id="email"
+                                    type="text"
+                                    class="form-control form-control-sm @error('email') is-invalid @enderror"
+                                    value="{{ $pegawai->email ?? old('email') }}"
+                                >
+                                @error('email')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                                @enderror
                             </div>
                             @php
                                 list($alamat,$rt,$rw,$desa,$kec,$kab,$prov) = explode("|", $pegawai->alamat);
