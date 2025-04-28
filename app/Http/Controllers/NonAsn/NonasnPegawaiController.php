@@ -20,9 +20,9 @@ class NonasnPegawaiController extends Controller
 {
     private function _hashId()
     {
-        return new Hashids(env('SECRET_SALT_KEY'),10);
+        return new Hashids(env('SECRET_SALT_KEY'), 10);
     }
-    
+
     public function viewImage($image)
     {
         try {
@@ -32,7 +32,7 @@ class NonasnPegawaiController extends Controller
             abort(404);
         }
     }
-    
+
     public function index()
     {
         $id_ptt = auth()->user()->id_ptt;
@@ -127,6 +127,29 @@ class NonasnPegawaiController extends Controller
                 $data->save();
             }
 
+            if (strlen($data->id_skpd) > 3) {
+                $es2 = Skpd::whereId(substr($data->id_skpd, 0, 3))->first(['name']);
+                $es3 = Skpd::whereId(substr($data->id_skpd, 0, 5))->first(['name']);
+                $biro = Skpd::whereId(substr($data->id_skpd, 0, 7))->first(['name']);
+                $sma = Skpd::whereId(substr($data->id_skpd, 0, 11))->first(['name']);
+
+                if (substr($data->id_skpd, 0, 3) == 101) { // biro
+                    $skpd = $es2->name . ' - ' . $biro->name;
+                } elseif (substr($data->id_skpd, 0, 3) == 105) { // dinas pendidikan
+                    if (strlen($data->id_skpd) == 5) {
+                        $skpd = $es2->name . ' - ' . $es3->name;
+                    } elseif (strlen($data->id_skpd) >= 11) {
+                        $skpd = $es2->name . ' - ' . $es3->name . ' - ' . $sma->name;
+                    } else {
+                        $skpd = $es2->name . ' - ' . $es3->name;
+                    }
+                } else {
+                    $skpd = $es2->name . ' - ' . $es3->name;
+                }
+            } else {
+                $skpd = $data->skpd->name;
+            }
+
             // update table download
             $ref_agama = RefAgama::whereId_agama($request->agama)->first(['agama']);
             $ref_status_kawin = RefKawin::whereId_kawin($request->kawin)->first(['status_kawin']);
@@ -147,6 +170,9 @@ class NonasnPegawaiController extends Controller
             $update->no_bpjs = $request->no_bpjs;
             $update->kelas = $request->kelas;
             $update->no_bpjs_naker = $request->no_bpjs_naker;
+            $update->id_skpd = explode(" - ", $request->skpd)[0];
+            $update->unit_kerja = explode(" - ", $request->skpd)[1];
+            $update->skpd = $skpd;
             $update->save();
 
             DB::commit();
@@ -155,7 +181,7 @@ class NonasnPegawaiController extends Controller
 
             return redirect()->back()->with(["type" => "success", "message" => "berhasil diupdate!"]);
         } catch (\Throwable $th) {
-            // throw $th;
+            throw $th;
             DB::rollback();
             return back()->with(["type" => "error", "message" => "terjadi kesalahan!"]);
         }
