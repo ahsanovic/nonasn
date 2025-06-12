@@ -38,10 +38,10 @@ class Biodata extends Model
     // {
     //     $this->attributes['nama'] = strtoupper($value);
     // }
-    
+
     protected function setThnLahirAttribute($value)
     {
-        list($tgl,$bln,$thn) = explode("/", $value);
+        list($tgl, $bln, $thn) = explode("/", $value);
         $this->attributes['thn_lahir'] = $thn . '-' . $bln . '-' . $tgl;
     }
 
@@ -62,12 +62,12 @@ class Biodata extends Model
 
     public function pendidikan()
     {
-        return $this->belongsTo(Pendidikan::class, 'id_ptt', 'id_ptt')->where('aktif', 'Y');
+        return $this->hasOne(Pendidikan::class, 'id_ptt', 'id_ptt')->where('aktif', 'Y');
     }
 
     public function jabatan()
     {
-        return $this->belongsTo(Jabatan::class, 'id_ptt', 'id_ptt')->where('aktif', 'Y');
+        return $this->hasOne(Jabatan::class, 'id_ptt', 'id_ptt')->where('aktif', 'Y');
     }
 
     public function agama()
