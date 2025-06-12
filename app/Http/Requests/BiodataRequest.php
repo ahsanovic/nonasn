@@ -34,12 +34,14 @@ class BiodataRequest extends FormRequest
         $rules = [
             'nama' => ['required', 'string'],
             'niptt' => ['numeric'],
-            'nik' => ['required', 'numeric', 'digits:16', Rule::unique('ptt_biodata', 'nik')->ignore($decodedId, 'id_ptt')],
+            'nik' => ['required', 'numeric', 'digits:16', Rule::unique('ptt_biodata', 'nik')->ignore($decodedId, 'id_ptt')->where(function ($query) {
+                $query->where('aktif', 'Y');
+            })],
             'kk' => ['numeric'],
             'no_bpjs' => ['required', 'numeric'],
             'kelas' => ['required'],
             'no_bpjs_naker' => ['nullable', 'numeric', 'digits:11'],
-            'no_hp' => ['required', 'numeric', 'digits_between:10,12'],
+            'no_hp' => ['required', 'numeric', 'digits_between:10,13'],
             'tempat_lahir' => ['required'],
             'thn_lahir' => ['required', 'date_format:d/m/Y'],
             'foto' => ['image', 'mimes:jpg,png,jpeg', 'max:200'],
@@ -77,7 +79,7 @@ class BiodataRequest extends FormRequest
             'thn_lahir.date_format' => 'format tanggal lahir tidak sesuai',
             'foto.mimes' => 'format file harus jpg/png',
             'foto.max' => 'foto yang diupload maksimal 200 KB',
-            'no_hp.digits_between' => 'nomor hp minimal 10 digit dan maksimal 12 digit',
+            'no_hp.digits_between' => 'nomor hp minimal 10 digit dan maksimal 13 digit',
             'email.email' => 'format email tidak valid',
             'jk.required' => 'jenis kelamin harus dipilih'
         ];

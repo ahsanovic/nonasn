@@ -32,9 +32,11 @@ class NonasnBiodataRequest extends FormRequest
     {
         $decodedId = $this->_hashId()->decode($this->route('id'))[0] ?? null;
         return [
-            'nik' => ['required', 'numeric', 'digits:16', Rule::unique('ptt_biodata', 'nik')->ignore($decodedId, 'id_ptt')],
+            'nik' => ['required', 'numeric', 'digits:16', Rule::unique('ptt_biodata', 'nik')->ignore($decodedId, 'id_ptt')->where(function ($query) {
+                $query->where('aktif', 'Y');
+            })],
             'kk' => ['numeric'],
-            'no_hp' => ['required', 'numeric', 'digits_between:10,12'],
+            'no_hp' => ['required', 'numeric', 'digits_between:10,13'],
             'no_bpjs' => ['required', 'numeric'],
             'kelas' => ['required'],
             'no_bpjs_naker' => ['nullable', 'numeric', 'digits:11'],
@@ -66,7 +68,7 @@ class NonasnBiodataRequest extends FormRequest
             'no_bpjs_naker.digits' => 'nomor bpjs ketenagakerjaan harus 11 digit',
             'foto.mimes' => 'format file harus jpg/png',
             'foto.max' => 'foto yang diupload maksimal 200 KB',
-            'no_hp.digits_between' => 'nomor hp minimal 10 digit dan maksimal 12 digit',
+            'no_hp.digits_between' => 'nomor hp minimal 10 digit dan maksimal 13 digit',
             'email.email' => 'format email tidak valid',
             'jk.required' => 'jenis kelamin harus dipilih'
         ];
